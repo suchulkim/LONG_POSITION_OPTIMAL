@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="0; url=./dashboard.html">
+    <title>암호화폐 대시보드 - Crypto Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .manual-link {
+            margin-top: 30px;
+        }
+        .manual-link a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: 2px solid #ffd700;
+            padding: 12px 24px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .manual-link a:hover {
+            background-color: #ffd700;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 암호화폐 대시보드</h1>
+        <p>대시보드로 자동 이동 중입니다...</p>
+        <div class="loading"></div>
+        <div class="manual-link">
+            <p>자동으로 이동되지 않는 경우:</p>
+            <a href="./dashboard.html">대시보드 바로가기</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript를 통한 추가 리다이렉션 (Meta refresh와 이중 보장)
+        setTimeout(function() {
+            window.location.href = './dashboard.html';
+        }, 1000);
+        
+        // 즉시 리다이렉션 시도
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('/index.html')) {
+            window.location.replace('./dashboard.html');
+        }
+    </script>
+</body>
+</html>
