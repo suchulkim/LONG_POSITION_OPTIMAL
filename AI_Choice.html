@@ -416,7 +416,7 @@
         <!-- 헤더 -->
         <div class="header">
             <h1>🧠 AI 코인선물 롱포지션 종목 분석</h1>
-            <div class="subtitle">신경망 기반 분석 • 2025-09-30 23:05:27</div>
+            <div class="subtitle">신경망 기반 분석 • 2025-09-30 23:10:54</div>
         </div>
 
         <!-- 개선된 네비게이션 -->
@@ -430,19 +430,53 @@
 
         <!-- 최고 점수 종목 분석 -->
         
-            <div class="analysis-summary">
-                <h2 class="section-title">📈 분석 대상 종목</h2>
-                <p>분석할 수 있는 종목이 없습니다.</p>
+        <div class="analysis-summary">
+            <h2 class="section-title">📈 AI 롱포지션 최고점수 평가 종목</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">SNXUSDT</div>
+                    <div class="stat-label">종목명</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40</div>
+                    <div class="stat-label">최종 점수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40.0%</div>
+                    <div class="stat-label">신뢰도</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">39.7%</div>
+                    <div class="stat-label">GO 확률</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$1.122000</div>
+                    <div class="stat-label">현재가</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value risk-badge risk-high">HIGH</div>
+                    <div class="stat-label">리스크</div>
+                </div>
             </div>
             
+            <div class="tracking-info">
+                <div class="tracking-info-title">📊 24시간 성과 추적 시스템</div>
+                <div class="tracking-info-text">
+                    이 종목은 24시간 후 실제 가격 변화를 자동으로 추적하여 분석 정확도를 검증합니다. 
+                    추적 결과는 아래 히스토리 테이블에서 확인할 수 있습니다.
+                </div>
+            </div>
+        </div>
+        
 
         <!-- 개선된 실시간 차트 -->
         
         <div class="chart-section" id="chartSection">
             <div class="chart-header">
-                <h2 class="section-title">📈 BTCUSDT 실시간 차트 (4시간봉)</h2>
+                <h2 class="section-title">📈 SNXUSDT 실시간 차트 (4시간봉)</h2>
                 <div class="chart-controls">
-                    <a href="https://www.binance.com/en/futures/BTC_USDT" target="_blank" class="chart-btn binance-btn">
+                    <a href="https://www.binance.com/en/futures/SNX_USDT" target="_blank" class="chart-btn binance-btn">
                         🏦 바이낸스에서 보기
                     </a>
                 </div>
@@ -457,7 +491,7 @@
             new TradingView.widget({
                 "width": "100%",
                 "height": 800,
-                "symbol": "BINANCE:BTCUSDT",
+                "symbol": "BINANCE:SNXUSDT",
                 "interval": "240",
                 "timezone": "Asia/Seoul",
                 "theme": "dark",
@@ -488,7 +522,7 @@
                 <div class="tracking-info-text">
                     <strong>승률:</strong> 16.7% (1/6) | 
                     <strong>평균 수익률:</strong> -5.94% | 
-                    <strong>총 추적 건수:</strong> 9건
+                    <strong>총 추적 건수:</strong> 10건
                 </div>
             </div>
             
@@ -512,6 +546,15 @@
                     </thead>
                     <tbody>
                         
+                <tr style="font-size: 1.3rem;">
+                    <td style="font-weight: bold; color: var(--accent-color);">2025-09-30 (화) 23:10</td>
+                    <td><a href="https://www.binance.com/en/futures/SNX_USDT" target="_blank" class="symbol-link">SNXUSDT</a></td>
+                    <td style="font-weight: bold; color: var(--accent-color);">40</td>
+                    <td style="font-weight: bold; color: var(--accent-color);">39.7%</td>
+                    <td><div class="tracking-result tracking-pending">대기중</div></td>
+                    <td><span class="risk-badge risk-medium">대기</span></td>
+                </tr>
+            
                 <tr style="font-size: 1.3rem;">
                     <td style="font-weight: bold; color: var(--accent-color);">2025-09-30 (화) 22:45</td>
                     <td><a href="https://www.binance.com/en/futures/IDOL_USDT" target="_blank" class="symbol-link">IDOLUSDT</a></td>
