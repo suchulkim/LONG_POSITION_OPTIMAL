@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>암호화폐 시가총액 가중지수 대시보드</title>
+        <meta charset="utf-8">
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
+            
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            .header { 
+                text-align: center; 
+                margin-bottom: 30px; 
+                background: linear-gradient(135deg, #4facfe, #00f2fe);
+                color: black;
+                padding: 2rem; 
+                border-radius: 15px; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
+            }
+            
+            .header .subtitle {
+                opacity: 0.9;
+                font-size: 1.1rem;
+            }
+            
+            /* 네비게이션 메뉴 스타일 (AI_Choice.html과 동일) */
+            .nav-menu {
+                background: #ffffff;
+                border-radius: 15px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                border: 1px solid #e0e6ed;
+                font-size : 1.6rem;
+            }
+
+            .nav-links {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-link {
+                padding: 0.8rem 1.8rem;
+                color: white;
+                text-decoration: none;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                font-weight: 600;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            }
+
+            .nav-link:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                text-decoration: none;
+            }
+
+            .nav-link.dashboard {
+                background: linear-gradient(135deg, #007bff, #0056b3);
+            }
+
+            .nav-link.dashboard:hover {
+                background: linear-gradient(135deg, #0056b3, #004085);
+            }
+
+            .nav-link.market {
+                background: linear-gradient(135deg, #28a745, #1e7e34);
+            }
+
+            .nav-link.market:hover {
+                background: linear-gradient(135deg, #1e7e34, #155724);
+            }
+
+            .nav-link.pattern {
+                background: linear-gradient(135deg, #fd7e14, #e55100);
+            }
+
+            .nav-link.pattern:hover {
+                background: linear-gradient(135deg, #e55100, #bf360c);
+            }
+
+            .nav-link.ai {
+                background: linear-gradient(135deg, #6f42c1, #4e2a84);
+            }
+
+            .nav-link.ai:hover {
+                background: linear-gradient(135deg, #4e2a84, #3d1a6b);
+            }
+            
+            .chart-container { 
+                margin: 20px 0; 
+                padding: 10px; 
+                background-color: white; 
+                border-radius: 15px; 
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+            
+            .chart-frame { 
+                width: 100%; 
+                height: 800px; 
+                border: none; 
+                border-radius: 8px; 
+            }
+            
+            .footer { 
+                text-align: center; 
+                margin-top: 30px; 
+                color: #666; 
+                background-color: white; 
+                padding: 20px; 
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+            
+            .stats { 
+                display: flex; 
+                justify-content: space-around; 
+                margin: 20px 0; 
+            }
+            
+            .stat-item { 
+                background-color: #f8f9fa; 
+                padding: 15px; 
+                border-radius: 8px; 
+                text-align: center; 
+            }
+            
+            @media (max-width: 768px) {
+                .nav-links {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .header h1 {
+                    font-size: 2rem;
+                }
+            }
+        </style>
+        <script>
+            // 페이지 로드 시 차트 표시
+            window.onload = function() {
+                const chartFrame = document.getElementById('main-chart');
+                if (chartFrame) {
+                    chartFrame.src = '코인선물_종합지수.html';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>📊 코인선물 종합지수</h1>
+                <div class="subtitle">생성시간: 2025-10-14 08:10:59</div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <strong>코인선물 종합지수</strong><br>Market Cap Weighted Index
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 네비게이션 -->
+            <div class="nav-menu">
+                <div class="nav-links">
+                    <a href="BinanceMarketOverview.html" class="nav-link market">🌍 코인선물 시장 현황</a>
+                    <a href="CandlePatternAnalysis.html" class="nav-link pattern">📈 코인선물 숏포지션 패턴 검출 현황</a>
+                    <a href="AI_Choice.html" class="nav-link ai">🤖 코인선물 AI 숏포지션 종목분석</a>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <iframe id="main-chart" class="chart-frame" src="코인선물_종합지수.html"></iframe>
+            </div>
+            
+            <div class="footer">
+                <h3>💡 차트 사용법</h3>
+                <p><strong>확대/축소:</strong> 마우스 휠 사용 | <strong>이동:</strong> 드래그 | <strong>초기화:</strong> 더블클릭</p>
+                <p><strong>항목 on/off:</strong> 범례 클릭 | <strong>외부 링크:</strong> 상단 버튼 클릭</p>
+                <hr style="margin: 20px 0; border: 1px solid #eee;">
+                <p style="font-size: 14px;">🔄 데이터는 4시간봉 기준, 최근 7일간의 캔들 데이터입니다.</p>
+            </div>
+        </div>
+    </body>
+    </html>
