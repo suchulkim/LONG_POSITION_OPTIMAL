@@ -1,0 +1,639 @@
+
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>암호화폐 패턴 최적화 분석 결과</title>
+        <script src="https://s3.tradingview.com/tv.js"></script>
+        <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+        <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f4c75;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #e0e6ed;
+            --chart-bg: #1e222d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .nav-menu {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 1.3rem 2.5rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link.dashboard {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .nav-link.market {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .nav-link.pattern {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            filter: brightness(1.1);
+        }
+
+        .analysis-summary {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .chart-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .chart-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .binance-btn {
+            background: linear-gradient(135deg, #f0b90b, #f8d12f);
+            color: #1e2329;
+        }
+
+        .binance-btn:hover {
+            background: linear-gradient(135deg, #fcd535, #f0b90b);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 185, 11, 0.4);
+        }
+
+        .chart-container {
+            height: 800px;
+            margin-top: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: var(--chart-bg);
+        }
+
+        .history-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-table th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .history-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .symbol-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .symbol-link:hover {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        .risk-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .risk-low {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .risk-medium {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .risk-high {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .risk-profit {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: 2px solid #155724;
+            font-weight: 900;
+        }
+
+        .tracking-result {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .tracking-profit {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .tracking-loss {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .tracking-takeprofit {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 3px solid #28a745;
+            font-weight: 900;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+            animation: profit-glow 2s infinite;
+        }
+
+        @keyframes profit-glow {
+            0%, 100% { box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4); }
+            50% { box-shadow: 0 6px 25px rgba(40, 167, 69, 0.7); }
+        }
+
+        .tracking-pending {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .tracking-failed {
+            background: #e9ecef;
+            color: #6c757d;
+            border: 2px solid #adb5bd;
+        }
+
+        .tracking-stoploss {
+            background: linear-gradient(135deg, #ffe5e5, #ffcccc);
+            color: #8b0000;
+            border: 2px solid #dc3545;
+            font-weight: 900;
+        }
+
+        .return-stats {
+            font-size: 1.1rem;
+            margin-top: 0.3rem;
+        }
+
+        .best-return {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .worst-return {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.2);
+        }
+
+        .warning-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .warning-text {
+            color: #856404;
+            line-height: 1.8;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .tracking-info {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.2);
+        }
+
+        .tracking-info-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .tracking-info-text {
+            color: #1976d2;
+            line-height: 1.6;
+            font-size: 1.4rem;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        .no-symbol-message {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 3px solid #ffc107;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.3);
+        }
+        
+        .no-symbol-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+        
+        .no-symbol-text {
+            font-size: 1.5rem;
+            color: #856404;
+            line-height: 1.8;
+        }
+        
+        .filter-info {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .filter-info-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .filter-info-text {
+            color: #1976d2;
+            line-height: 1.6;
+            font-size: 1.3rem;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 패턴 최적화 AI 롱포지션 분석</h1>
+            <div class="subtitle">음봉-양봉-양봉-양봉 / 양봉-양봉-양봉-양봉 패턴 전문 • +55% 익절 / -18% 손절 시스템 • 2025-10-18 18:10:57</div>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link dashboard">📊 코인선물 종합 지수</a>
+                <a href="BinanceMarketOverview.html" class="nav-link market">🌍 코인선물 시장 현황</a>
+                <a href="CandlePatternAnalysis.html" class="nav-link pattern">📈 코인선물 롱포지션 패턴 검출 현황</a>
+            </div>
+        </div>
+
+        
+        <div class="analysis-summary">
+            <h2 class="section-title">📈 패턴 최적화 AI 최고점수 종목</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">ARCUSDT</div>
+                    <div class="stat-label">종목명</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">71</div>
+                    <div class="stat-label">최종 점수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">71.0%</div>
+                    <div class="stat-label">신뢰도</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">70.7%</div>
+                    <div class="stat-label">추가상승 확률</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$0.013180</div>
+                    <div class="stat-label">현재가</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value risk-badge risk-high">HIGH</div>
+                    <div class="stat-label">리스크</div>
+                </div>
+            </div>
+            
+            <div class="tracking-info">
+                <div class="tracking-info-title">🎯 패턴 최적화 AI 특징</div>
+                <div class="tracking-info-text">
+                    • 음봉-양봉-양봉-양봉 / 양봉-양봉-양봉-양봉 패턴에만 특화된 학습<br>
+                    • 18개 특성 (기존 15개 + 패턴 강도/가속도/타입)<br>
+                    • 추가 상승에 최적화된 레이블링<br>
+                    • +55% 익절 시스템 적용<br>
+                    • -18% 손절 시스템 적용
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 class="section-title">📈 ARCUSDT 실시간 차트 (4시간봉)</h2>
+                <div class="chart-controls">
+                    <a href="https://www.binance.com/en/futures/ARC_USDT" target="_blank" class="chart-btn binance-btn">
+                        🏦 바이낸스에서 보기
+                    </a>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div id="tradingview_chart" style="height: 800px; width: 100%;"></div>
+            </div>
+        </div>
+        
+        <script>
+            new TradingView.widget({
+                "width": "100%",
+                "height": 800,
+                "symbol": "BINANCE:ARCUSDT",
+                "interval": "240",
+                "timezone": "Asia/Seoul",
+                "theme": "dark",
+                "style": "1",
+                "locale": "kr",
+                "toolbar_bg": "#000000",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": "tradingview_chart",
+                "studies": [
+                    "RSI@tv-basicstudies",
+                    "MASimple@tv-basicstudies",
+                    "Volume@tv-basicstudies"
+                ]
+            });
+        </script>
+        
+        
+        <div class="history-section">
+            <h2 class="section-title">📋 패턴 최적화 AI 24시간 성과 추적</h2>
+            
+            <div class="tracking-info">
+                <div class="tracking-info-title">📊 추적 성과 요약</div>
+                <div class="tracking-info-text">
+                    <strong>승률:</strong> 0.0% (0/0) | 
+                    <strong>누적 수익률:</strong> <span class="negative">+0.00%</span> | 
+                    <strong>총 추적 건수:</strong> 1건<br>
+                    <strong>🎉 익절 발동:</strong> <span class="positive">0건 (0.0%)</span> | 
+                    <strong>🛑 손절 발동:</strong> <span class="negative">0건 (0.0%)</span>
+                </div>
+            </div>
+
+            <div id="cumulativeReturnChart" style="width: 100%; height: 500px; margin: 2rem 0;"></div>
+
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>종목</th>
+                        <th>점수</th>
+                        <th>AI 확률</th>
+                        <th>24시간 결과</th>
+                        <th>수익률 범위</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                <tr style="font-size: 1.2rem;">
+                    <td style="font-weight: bold;">2025-10-18 (토) 18:10</td>
+                    <td><a href="https://www.binance.com/en/futures/ARC_USDT" target="_blank" class="symbol-link">ARCUSDT</a></td>
+                    <td style="font-weight: bold;">71</td>
+                    <td style="font-weight: bold;">70.7%</td>
+                    <td><div class="tracking-result tracking-pending">대기중</div></td>
+                    <td><div class="return-stats">-</div></td>
+                    <td><span class="risk-badge risk-medium">대기</span></td>
+                </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <script>
+            
+            const layout = {
+                title: '완료된 거래가 없습니다',
+                xaxis: { title: '날짜' },
+                yaxis: { title: '누적 수익률 (%)' }
+            };
+            Plotly.newPlot('cumulativeReturnChart', [], layout);
+            
+        </script>
+        
+
+        <div class="warning-box">
+            <div class="warning-title">🚨 CRITICAL INVESTMENT WARNING 🚨</div>
+            <div class="warning-text">
+                <strong>이 시스템은 교육 목적으로만 제공됩니다:</strong><br><br>
+                🎉 <strong>+55% 익절 시스템: 목표 수익 달성 시 자동 종료</strong><br>
+                🛑 <strong>-18% 손절 시스템: 손실 제한 (슬리피지 가능)</strong><br>
+                🔴 <strong>패턴 최적화 AI도 절대 100% 정확하지 않습니다</strong><br>
+                🔴 <strong>과거 데이터가 미래 수익을 보장하지 않습니다</strong><br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
