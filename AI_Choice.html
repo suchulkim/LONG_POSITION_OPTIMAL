@@ -474,7 +474,7 @@
     <div class="container">
         <div class="header">
             <h1>🧠 패턴 최적화 AI 롱포지션 종목 분석</h1>
-            <div class="subtitle">음봉-양봉-양봉 / 양봉-양봉-양봉 패턴 전문 • +55% 익절 / -18% 손절 시스템 • 2025-10-19 12:43:04</div>
+            <div class="subtitle">음봉-양봉-양봉 / 양봉-양봉-양봉 패턴 전문 • +55% 익절 / -18% 손절 시스템 • 2025-10-19 12:45:59</div>
         </div>
 
         <div class="nav-menu">
@@ -504,7 +504,7 @@
                 <div class="filter-info">
                     <div class="filter-info-title">📋 필터링 상세 정보</div>
                     <div class="filter-info-text">
-                        • 최근 선정 이력으로 제외: AIAUSDT<br><br><strong>🔍 점수 상위 후보 종목:</strong><br>1. AIAUSDT - 점수: 20, 신뢰도: 71.0%<br>
+                        • 최근 선정 이력으로 제외: AIAUSDT<br><br><strong>🔍 점수 상위 후보 종목:</strong><br>1. AIAUSDT - 점수: 23, 신뢰도: 67.0%<br>
                     </div>
                 </div>
                 
@@ -556,10 +556,10 @@
             <div class="tracking-info">
                 <div class="tracking-info-title">📊 추적 성과 요약</div>
                 <div class="tracking-info-text">
-                    <strong>승률:</strong> 0.0% (0/0) | 
-                    <strong>누적 수익률:</strong> <span class="negative">+0.00%</span> | 
+                    <strong>승률:</strong> 100.0% (1/1) | 
+                    <strong>누적 수익률:</strong> <span class="positive">+55.00%</span> | 
                     <strong>총 추적 건수:</strong> 4건<br>
-                    <strong>🎉 익절 발동:</strong> <span class="positive">0건 (0.0%)</span> | 
+                    <strong>🎉 익절 발동:</strong> <span class="positive">1건 (100.0%)</span> | 
                     <strong>🛑 손절 발동:</strong> <span class="negative">0건 (0.0%)</span>
                 </div>
             </div>
@@ -615,9 +615,9 @@
                     <td><a href="https://www.binance.com/en/futures/BAS_USDT" target="_blank" class="symbol-link">BASUSDT</a></td>
                     <td style="font-weight: bold;">46</td>
                     <td style="font-weight: bold;">45.7%</td>
-                    <td><div class="tracking-result tracking-pending">대기중</div></td>
-                    <td><div class="return-stats">-</div></td>
-                    <td><span class="risk-badge risk-medium">대기</span></td>
+                    <td><div class="tracking-result tracking-takeprofit">🎉 익절 +55.00%</div></td>
+                    <td><div class="return-stats"><span class="best-return">최고: +58.75%</span><br><span class="worst-return">최저: -6.92%</span></div></td>
+                    <td><span class="risk-badge risk-profit">익절</span></td>
                 </tr>
             
                 </tbody>
@@ -626,13 +626,78 @@
         
         <script>
             
-            const layout = {
-                title: '완료된 거래가 없습니다',
-                xaxis: { title: '날짜' },
-                yaxis: { title: '누적 수익률 (%)' }
-            };
-            Plotly.newPlot('cumulativeReturnChart', [], layout);
-            
+        const dates = ["2025-10-18"];
+        const opens = [0];
+        const highs = [55.0];
+        const lows = [0];
+        const closes = [55.0];
+        
+        const candlestick = {
+            type: 'candlestick',
+            x: dates,
+            open: opens,
+            high: highs,
+            low: lows,
+            close: closes,
+            increasing: {
+                line: { color: '#26a69a', width: 2 },
+                fillcolor: '#26a69a'
+            },
+            decreasing: {
+                line: { color: '#ef5350', width: 2 },
+                fillcolor: '#ef5350'
+            },
+            name: '일별 누적 수익률'
+        };
+        
+        const line = {
+            type: 'scatter',
+            mode: 'lines+markers',
+            x: dates,
+            y: closes,
+            line: {
+                color: 'rgba(102, 126, 234, 0.6)',
+                width: 2,
+                dash: 'dot'
+            },
+            marker: {
+                size: 6,
+                color: 'rgba(102, 126, 234, 0.8)'
+            },
+            name: '누적 라인'
+        };
+        
+        const data = [candlestick, line];
+        
+        const layout = {
+            title: {
+                text: '패턴 최적화 AI 누적 수익률 차트 (3개 캔들)',
+                font: { size: 18, weight: 'bold' }
+            },
+            xaxis: {
+                title: '날짜',
+                rangeslider: { visible: false },
+                type: 'date'
+            },
+            yaxis: {
+                title: '누적 수익률 (%)',
+                ticksuffix: '%',
+                zeroline: true,
+                zerolinecolor: '#999',
+                zerolinewidth: 2
+            },
+            showlegend: true,
+            height: 500
+        };
+        
+        const config = {
+            responsive: true,
+            displayModeBar: true,
+            displaylogo: false
+        };
+        
+        Plotly.newPlot('cumulativeReturnChart', data, layout, config);
+        
         </script>
         
 
