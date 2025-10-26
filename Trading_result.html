@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자동매매 결과</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 2px solid #e0e6ed;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            padding: 1.3rem 2.5rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .nav-link.dashboard { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .nav-link.market { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .nav-link.pattern { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .nav-link.ai-choice { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .nav-link.trading-result { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            filter: brightness(1.1);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .stat-value.positive { color: #28a745; }
+        .stat-value.negative { color: #dc3545; }
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+        .chart-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        .chart-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .table-section {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+        tr:hover { background: #f8f9fa; }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .status-open { background: #ffc107; color: #856404; }
+        .status-closed { background: #28a745; color: white; }
+        .pnl-positive { color: #28a745; font-weight: bold; }
+        .pnl-negative { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 자동매매 결과</h1>
+            <div class="subtitle">패턴 최적화 AI 코인선물 롱포지션 자동매매 시스템</div>
+            <div class="subtitle">생성 시간: 2025-10-26 14:33:07</div>
+        </div>
+        
+        <div class="nav-menu">
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link dashboard">📊 코인선물 종합 지수</a>
+                <a href="BinanceMarketOverview.html" class="nav-link market">🌍 코인선물 시장 현황</a>
+                <a href="CandlePatternAnalysis.html" class="nav-link pattern">📈 코인선물 롱포지션 패턴 검출 현황</a>
+                <a href="AI_Choice.html" class="nav-link ai-choice">🧠 코인선물 AI 롱포지션 종목 선정</a>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">총 거래 횟수</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value positive">0</div>
+                <div class="stat-label">수익 거래</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.0%</div>
+                <div class="stat-label">승률</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value negative">+0.00%</div>
+                <div class="stat-label">누적 수익률</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value negative">+0.00%</div>
+                <div class="stat-label">평균 수익률</div>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <div class="chart-title">📈 누적 수익률 차트</div>
+            <div id="pnlChart" style="width: 100%; height: 500px;"></div>
+        </div>
+        
+        <div class="table-section">
+            <h2 style="margin-bottom: 20px;">📋 거래 내역</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>종목</th>
+                        <th>진입시간</th>
+                        <th>진입가</th>
+                        <th>종료시간</th>
+                        <th>종료가</th>
+                        <th>수익률</th>
+                        <th>포지션크기</th>
+                        <th>레버리지</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan='9' style='text-align: center;'>거래 내역이 없습니다.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        Plotly.newPlot('pnlChart', [], {title: '완료된 거래가 없습니다'});
+    </script>
+</body>
+</html>
