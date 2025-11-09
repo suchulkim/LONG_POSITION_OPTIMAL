@@ -151,7 +151,7 @@
         <div class="header">
             <h1>🤖 자동매매 결과</h1>
             <div class="subtitle">패턴 최적화 AI 코인선물 롱포지션 자동매매 시스템</div>
-            <div class="subtitle">생성 시간: 2025-11-10 04:44:05</div>
+            <div class="subtitle">생성 시간: 2025-11-10 06:35:19</div>
         </div>
         
         <div class="nav-menu">
@@ -165,23 +165,23 @@
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value">0</div>
+                <div class="stat-value">1</div>
                 <div class="stat-label">총 거래 횟수</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value positive">0</div>
+                <div class="stat-value positive">1</div>
                 <div class="stat-label">수익 거래</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">0.0%</div>
+                <div class="stat-value">100.0%</div>
                 <div class="stat-label">승률</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value negative">+0.00%</div>
+                <div class="stat-value positive">+7.77%</div>
                 <div class="stat-label">누적 수익률</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value negative">+0.00%</div>
+                <div class="stat-value positive">+7.77%</div>
                 <div class="stat-label">평균 수익률</div>
             </div>
         </div>
@@ -213,12 +213,12 @@
                     <td><strong>COMMONUSDT</strong></td>
                     <td>2025-11-09 00:48</td>
                     <td>$0.011816</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
+                    <td>2025-11-10 06:34</td>
+                    <td>$0.012734</td>
+                    <td class="pnl-positive">+7.77%</td>
                     <td>$50.0</td>
                     <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
+                    <td><span class="status-badge status-closed">CLOSED</span></td>
                 </tr>
             
 
@@ -292,7 +292,27 @@
     </div>
     
     <script>
-        Plotly.newPlot('pnlChart', [], {title: '완료된 거래가 없습니다'});
+        
+        const data = [{
+            type: 'candlestick',
+            x: ["2025-11-10"],
+            open: [0],
+            high: [7.77],
+            low: [0],
+            close: [7.77],
+            increasing: {line: {color: '#26a69a'}},
+            decreasing: {line: {color: '#ef5350'}}
+        }];
+        
+        const layout = {
+            title: '',
+            xaxis: {title: '날짜'},
+            yaxis: {title: '누적 수익률 (%)', ticksuffix: '%'},
+            height: 500
+        };
+        
+        Plotly.newPlot('pnlChart', data, layout);
+        
     </script>
 </body>
 </html>
