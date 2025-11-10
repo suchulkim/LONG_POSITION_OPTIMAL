@@ -1,370 +1,485 @@
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자동매매 결과</title>
-    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #667eea;
-        }
-        .header h1 {
-            font-size: 2.5rem;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        .nav-menu {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            border: 2px solid #e0e6ed;
-        }
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .nav-link {
-            padding: 1.3rem 2.5rem;
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-weight: 700;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-        .nav-link.dashboard { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .nav-link.market { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .nav-link.pattern { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .nav-link.ai-choice { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-        .nav-link.trading-result { background: linear-gradient(135deg, #fa709a, #fee140); }
-        .nav-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            filter: brightness(1.1);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid #dee2e6;
-            transition: transform 0.3s;
-        }
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        .stat-value.positive { color: #28a745; }
-        .stat-value.negative { color: #dc3545; }
-        .stat-label {
-            color: #666;
-            font-size: 1rem;
-        }
-        .chart-section {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 40px;
-        }
-        .chart-title {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .table-section {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-        th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-        }
-        tr:hover { background: #f8f9fa; }
-        .status-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-        .status-open { background: #ffc107; color: #856404; }
-        .status-closed { background: #28a745; color: white; }
-        .pnl-positive { color: #28a745; font-weight: bold; }
-        .pnl-negative { color: #dc3545; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🤖 자동매매 결과</h1>
-            <div class="subtitle">패턴 최적화 AI 코인선물 롱포지션 자동매매 시스템</div>
-            <div class="subtitle">생성 시간: 2025-11-10 20:56:30</div>
-        </div>
-        
-        <div class="nav-menu">
-            <div class="nav-links">
-                <a href="dashboard.html" class="nav-link dashboard">📊 코인선물 종합 지수</a>
-                <a href="BinanceMarketOverview.html" class="nav-link market">🌍 코인선물 시장 현황</a>
-                <a href="CandlePatternAnalysis.html" class="nav-link pattern">📈 코인선물 롱포지션 패턴 검출 현황</a>
-                <a href="AI_Choice.html" class="nav-link ai-choice">🧠 코인선물 AI 롱포지션 종목 선정</a>
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>자동매매 결과</title>
+        <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #333;
+                padding: 20px;
+            }
+            .container {
+                max-width: 1600px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 40px;
+                padding-bottom: 20px;
+                border-bottom: 3px solid #667eea;
+            }
+            .header h1 {
+                font-size: 2.5rem;
+                color: #667eea;
+                margin-bottom: 10px;
+            }
+            .header .subtitle {
+                color: #666;
+                font-size: 1.1rem;
+            }
+            .nav-menu {
+                background: white;
+                border-radius: 15px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                border: 2px solid #e0e6ed;
+            }
+            .nav-links {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            .nav-link {
+                padding: 1.3rem 2.5rem;
+                color: white;
+                text-decoration: none;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                font-weight: 700;
+                font-size: 1.5rem;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                text-align: center;
+            }
+            .nav-link.dashboard { background: linear-gradient(135deg, #667eea, #764ba2); }
+            .nav-link.market { background: linear-gradient(135deg, #f093fb, #f5576c); }
+            .nav-link.pattern { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+            .nav-link.ai-choice { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+            .nav-link.trading-result { background: linear-gradient(135deg, #fa709a, #fee140); }
+            .nav-link:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                filter: brightness(1.1);
+            }
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 40px;
+            }
+            .stat-card {
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                padding: 25px;
+                border-radius: 15px;
+                text-align: center;
+                border: 2px solid #dee2e6;
+                transition: transform 0.3s;
+            }
+            .stat-card:hover { transform: translateY(-5px); }
+            .stat-value {
+                font-size: 2rem;
+                font-weight: bold;
+                color: #667eea;
+                margin-bottom: 10px;
+            }
+            .stat-value.positive { color: #28a745; }
+            .stat-value.negative { color: #dc3545; }
+            .stat-label {
+                color: #666;
+                font-size: 1rem;
+            }
+            .chart-section {
+                background: #f8f9fa;
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+            }
+            .chart-title {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .table-section {
+                overflow-x: auto;
+            }
+            .table-section h2 {
+                margin-bottom: 30px;
+                font-size: 2rem;
+                color: #333;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+            }
+            th, td {
+                padding: 20px 15px;
+                text-align: center;
+                border-bottom: 2px solid #e9ecef;
+                font-size: 1.1rem;
+            }
+            th {
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                color: white;
+                font-weight: 700;
+                font-size: 1.2rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            tbody tr {
+                transition: all 0.3s ease;
+            }
+            tbody tr:hover { 
+                background: #f8f9fa;
+                transform: scale(1.01);
+            }
+            .symbol-link {
+                color: #0066cc;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 1.3rem;
+                transition: all 0.3s;
+            }
+            .symbol-link:hover {
+                color: #0052a3;
+                text-decoration: underline;
+            }
+            .datetime {
+                color: #555;
+                font-size: 1.05rem;
+                font-weight: 500;
+            }
+            .price {
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: #333;
+            }
+            .pnl-cell {
+                font-weight: 700;
+                font-size: 1.3rem;
+                padding: 12px 20px;
+                border-radius: 8px;
+            }
+            .pnl-positive { 
+                color: #28a745;
+                background: rgba(40, 167, 69, 0.1);
+            }
+            .pnl-negative { 
+                color: #dc3545;
+                background: rgba(220, 53, 69, 0.1);
+            }
+            .status-badge {
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 1rem;
+                font-weight: 700;
+                display: inline-block;
+            }
+            .status-open { 
+                background: #ffc107; 
+                color: #856404;
+                animation: pulse 2s infinite;
+            }
+            .status-closed { 
+                background: #28a745; 
+                color: white; 
+            }
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.7; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🤖 자동매매 결과</h1>
+                <div class="subtitle">패턴 최적화 AI 코인선물 롱포지션 자동매매 시스템</div>
+                <div class="subtitle">생성 시간: 2025-11-10 23:36:59</div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-links">
+                    <a href="dashboard.html" class="nav-link dashboard">📊 코인선물 종합 지수</a>
+                    <a href="BinanceMarketOverview.html" class="nav-link market">🌍 코인선물 시장 현황</a>
+                    <a href="CandlePatternAnalysis.html" class="nav-link pattern">📈 코인선물 롱포지션 패턴 검출 현황</a>
+                    <a href="AI_Choice.html" class="nav-link ai-choice">🧠 코인선물 AI 롱포지션 종목 선정</a>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">총 거래 횟수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value positive">2</div>
+                    <div class="stat-label">수익 거래</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40.0%</div>
+                    <div class="stat-label">승률</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value negative">-2.12%</div>
+                    <div class="stat-label">누적 수익률</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value negative">-0.42%</div>
+                    <div class="stat-label">평균 수익률</div>
+                </div>
+            </div>
+            
+            <div class="chart-section">
+                <div class="chart-title">📈 누적 수익률 차트</div>
+                <div id="pnlChart" style="width: 100%; height: 500px;"></div>
+            </div>
+            
+            <div class="table-section">
+                <h2>📋 거래 내역</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>종목</th>
+                            <th>진입가</th>
+                            <th>종료가</th>
+                            <th>수익률</th>
+                            <th>PNL</th>
+                            <th>포지션크기</th>
+                            <th>레버리지</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                <tr>
+                    <td class="datetime">2025-11-10 20:56</td>
+                    <td><a href="https://www.binance.com/en/futures/BDXNUSDT" target="_blank" class="symbol-link">BDXNUSDT</a></td>
+                    <td class="price">$0.070756</td>
+                    <td class="price">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-open">대기중</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 16:44</td>
+                    <td><a href="https://www.binance.com/en/futures/ICNTUSDT" target="_blank" class="symbol-link">ICNTUSDT</a></td>
+                    <td class="price">$0.299400</td>
+                    <td class="price">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-open">대기중</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 12:43</td>
+                    <td><a href="https://www.binance.com/en/futures/EDENUSDT" target="_blank" class="symbol-link">EDENUSDT</a></td>
+                    <td class="price">$0.122200</td>
+                    <td class="price">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-open">대기중</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 08:43</td>
+                    <td><a href="https://www.binance.com/en/futures/1INCHUSDT" target="_blank" class="symbol-link">1INCHUSDT</a></td>
+                    <td class="price">$0.223600</td>
+                    <td class="price">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-open">대기중</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 04:44</td>
+                    <td><a href="https://www.binance.com/en/futures/FETUSDT" target="_blank" class="symbol-link">FETUSDT</a></td>
+                    <td class="price">$0.341200</td>
+                    <td class="price">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="pnl-cell ">-</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-open">대기중</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 20:56</td>
+                    <td><a href="https://www.binance.com/en/futures/RIVERUSDT" target="_blank" class="symbol-link">RIVERUSDT</a></td>
+                    <td class="price">$7.366000</td>
+                    <td class="price">$7.123000</td>
+                    <td class="pnl-cell pnl-negative">-3.30%</td>
+                    <td class="pnl-cell pnl-negative">$-1.65</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-closed">완료</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 16:43</td>
+                    <td><a href="https://www.binance.com/en/futures/SAPIENUSDT" target="_blank" class="symbol-link">SAPIENUSDT</a></td>
+                    <td class="price">$0.262370</td>
+                    <td class="price">$0.249500</td>
+                    <td class="pnl-cell pnl-negative">-4.91%</td>
+                    <td class="pnl-cell pnl-negative">$-2.46</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-closed">완료</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 12:43</td>
+                    <td><a href="https://www.binance.com/en/futures/XMRUSDT" target="_blank" class="symbol-link">XMRUSDT</a></td>
+                    <td class="price">$404.510000</td>
+                    <td class="price">$421.260000</td>
+                    <td class="pnl-cell pnl-positive">+4.14%</td>
+                    <td class="pnl-cell pnl-positive">$+2.07</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-closed">완료</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 08:43</td>
+                    <td><a href="https://www.binance.com/en/futures/HOOKUSDT" target="_blank" class="symbol-link">HOOKUSDT</a></td>
+                    <td class="price">$0.065300</td>
+                    <td class="price">$0.061500</td>
+                    <td class="pnl-cell pnl-negative">-5.82%</td>
+                    <td class="pnl-cell pnl-negative">$-2.91</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-closed">완료</span></td>
+                </tr>
+            
+
+                <tr>
+                    <td class="datetime">2025-11-10 06:34</td>
+                    <td><a href="https://www.binance.com/en/futures/COMMONUSDT" target="_blank" class="symbol-link">COMMONUSDT</a></td>
+                    <td class="price">$0.011816</td>
+                    <td class="price">$0.012734</td>
+                    <td class="pnl-cell pnl-positive">+7.77%</td>
+                    <td class="pnl-cell pnl-positive">$+3.88</td>
+                    <td class="price">$50.00</td>
+                    <td class="price">1x</td>
+                    <td><span class="status-badge status-closed">완료</span></td>
+                </tr>
+            
+                    </tbody>
+                </table>
             </div>
         </div>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">5</div>
-                <div class="stat-label">총 거래 횟수</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value positive">2</div>
-                <div class="stat-label">수익 거래</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">40.0%</div>
-                <div class="stat-label">승률</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value negative">-2.12%</div>
-                <div class="stat-label">누적 수익률</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value negative">-0.42%</div>
-                <div class="stat-label">평균 수익률</div>
-            </div>
-        </div>
+        <script>
+            
+        const dates = ["2025-11-10"];
+        const opens = [0];
+        const highs = [7.77];
+        const lows = [-2.12];
+        const closes = [-2.12];
         
-        <div class="chart-section">
-            <div class="chart-title">📈 누적 수익률 차트</div>
-            <div id="pnlChart" style="width: 100%; height: 500px;"></div>
-        </div>
-        
-        <div class="table-section">
-            <h2 style="margin-bottom: 20px;">📋 거래 내역</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>종목</th>
-                        <th>진입시간</th>
-                        <th>진입가</th>
-                        <th>종료시간</th>
-                        <th>종료가</th>
-                        <th>수익률</th>
-                        <th>포지션크기</th>
-                        <th>레버리지</th>
-                        <th>상태</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                <tr>
-                    <td><strong>COMMONUSDT</strong></td>
-                    <td>2025-11-09 00:48</td>
-                    <td>$0.011816</td>
-                    <td>2025-11-10 06:34</td>
-                    <td>$0.012734</td>
-                    <td class="pnl-positive">+7.77%</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-closed">CLOSED</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>HOOKUSDT</strong></td>
-                    <td>2025-11-09 08:43</td>
-                    <td>$0.065300</td>
-                    <td>2025-11-10 08:43</td>
-                    <td>$0.061500</td>
-                    <td class="pnl-negative">-5.82%</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-closed">CLOSED</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>XMRUSDT</strong></td>
-                    <td>2025-11-09 12:45</td>
-                    <td>$404.510000</td>
-                    <td>2025-11-10 12:43</td>
-                    <td>$421.260000</td>
-                    <td class="pnl-positive">+4.14%</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-closed">CLOSED</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>SAPIENUSDT</strong></td>
-                    <td>2025-11-09 16:44</td>
-                    <td>$0.262370</td>
-                    <td>2025-11-10 16:43</td>
-                    <td>$0.249500</td>
-                    <td class="pnl-negative">-4.91%</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-closed">CLOSED</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>RIVERUSDT</strong></td>
-                    <td>2025-11-09 20:44</td>
-                    <td>$7.366000</td>
-                    <td>2025-11-10 20:56</td>
-                    <td>$7.123000</td>
-                    <td class="pnl-negative">-3.30%</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-closed">CLOSED</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>FETUSDT</strong></td>
-                    <td>2025-11-10 04:44</td>
-                    <td>$0.341200</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>1INCHUSDT</strong></td>
-                    <td>2025-11-10 08:43</td>
-                    <td>$0.223600</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>EDENUSDT</strong></td>
-                    <td>2025-11-10 12:43</td>
-                    <td>$0.122200</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>ICNTUSDT</strong></td>
-                    <td>2025-11-10 16:44</td>
-                    <td>$0.299400</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
-                </tr>
-            
-
-                <tr>
-                    <td><strong>BDXNUSDT</strong></td>
-                    <td>2025-11-10 20:56</td>
-                    <td>$0.070756</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td class="">-</td>
-                    <td>$50.0</td>
-                    <td>1x</td>
-                    <td><span class="status-badge status-open">OPEN</span></td>
-                </tr>
-            
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <script>
-        
-        const data = [{
+        // 캔들차트
+        const candlestick = {
             type: 'candlestick',
-            x: ["2025-11-10"],
-            open: [0],
-            high: [7.77],
-            low: [-2.12],
-            close: [-2.12],
-            increasing: {line: {color: '#26a69a'}},
-            decreasing: {line: {color: '#ef5350'}}
-        }];
-        
-        const layout = {
-            title: '',
-            xaxis: {title: '날짜'},
-            yaxis: {title: '누적 수익률 (%)', ticksuffix: '%'},
-            height: 500
+            x: dates,
+            open: opens,
+            high: highs,
+            low: lows,
+            close: closes,
+            increasing: {
+                line: { color: '#26a69a', width: 2 },
+                fillcolor: '#26a69a'
+            },
+            decreasing: {
+                line: { color: '#ef5350', width: 2 },
+                fillcolor: '#ef5350'
+            },
+            name: '일별 누적 수익률'
         };
         
-        Plotly.newPlot('pnlChart', data, layout);
+        // 누적 라인 차트
+        const line = {
+            type: 'scatter',
+            mode: 'lines+markers',
+            x: dates,
+            y: closes,
+            line: {
+                color: 'rgba(102, 126, 234, 0.6)',
+                width: 2,
+                dash: 'dot'
+            },
+            marker: {
+                size: 6,
+                color: 'rgba(102, 126, 234, 0.8)'
+            },
+            name: '누적 라인'
+        };
         
-    </script>
-</body>
-</html>
+        const data = [candlestick, line];
+        
+        const layout = {
+            title: {
+                text: '패턴 최적화 AI 누적 수익률 차트',
+                font: { size: 18, weight: 'bold' }
+            },
+            xaxis: {
+                title: '날짜',
+                rangeslider: { visible: false },
+                type: 'date'
+            },
+            yaxis: {
+                title: '누적 수익률 (%)',
+                ticksuffix: '%',
+                zeroline: true,
+                zerolinecolor: '#999',
+                zerolinewidth: 2
+            },
+            showlegend: true,
+            height: 500,
+            hovermode: 'x unified'
+        };
+        
+        const config = {
+            responsive: true,
+            displayModeBar: true,
+            displaylogo: false,
+            modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d']
+        };
+        
+        Plotly.newPlot('pnlChart', data, layout, config);
+        
+        </script>
+    </body>
+    </html>
+    
