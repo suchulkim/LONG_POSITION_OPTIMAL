@@ -211,7 +211,7 @@
             <div class="header">
                 <h1>🤖 AI 매매 결과</h1>
                 <div class="subtitle">패턴 최적화 AI 코인선물 롱포지션 AI 매매 시스템</div>
-                <div class="subtitle">생성 시간: 2025-11-11 20:34:53</div>
+                <div class="subtitle">생성 시간: 2025-11-12 00:41:39</div>
             </div>
             
             <div class="nav-menu">
@@ -246,11 +246,11 @@
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-value" style="color: #667eea;">$337.41</div>
+                    <div class="stat-value" style="color: #667eea;">$338.26</div>
                     <div class="stat-label">총 잔액</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" style="color: #667eea;">$36.97</div>
+                    <div class="stat-value" style="color: #667eea;">$37.89</div>
                     <div class="stat-label">사용 가능 잔액</div>
                 </div>
             
@@ -528,23 +528,38 @@
         const layout = {
             title: {
                 text: '패턴 최적화 AI 누적 수익률 차트',
-                font: { size: 18, weight: 'bold' }
+                font: { size: 23, weight: 'bold' }
             },
             xaxis: {
-                title: '날짜',
+                title: {
+                    text: '날짜',
+                    font: { size: 18 }   
+                },
+                tickfont: { size: 16 },
                 rangeslider: { visible: false },
                 type: 'date'
             },
             yaxis: {
-                title: '누적 수익률 (%)',
+                title: {
+                    text: '누적 수익률 (%)',
+                    font: { size: 18 }   
+                },
+                tickfont: { size: 16 },   
                 ticksuffix: '%',
                 zeroline: true,
                 zerolinecolor: '#999',
                 zerolinewidth: 2
             },
+            legend: {
+                font: { size: 16 }        
+            },
+            font: { size: 16 },           
             showlegend: true,
             height: 500,
-            hovermode: 'x unified'
+            hovermode: 'x unified',
+            hoverlabel: {
+                font: { size: 14 }        
+            }
         };
         
         const config = {
