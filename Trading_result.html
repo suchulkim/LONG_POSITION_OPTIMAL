@@ -71,7 +71,7 @@
     <div class="header">
         <h1>🤖 자동매매 결과 (롱포지션)</h1>
         <div class="subtitle">AI 코인선물 롱포지션 자동매매 시스템</div>
-        <div class="subtitle">생성 시간: 2026-04-01 00:51:37</div>
+        <div class="subtitle">생성 시간: 2026-04-01 01:51:41</div>
     </div>
 
     <div class="nav-menu">
@@ -92,7 +92,7 @@
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-value">34</div>
+            <div class="stat-value">35</div>
             <div class="stat-label">총 거래 횟수</div>
         </div>
         <div class="stat-card">
@@ -100,27 +100,27 @@
             <div class="stat-label">수익 거래</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">44.1%</div>
+            <div class="stat-value">42.9%</div>
             <div class="stat-label">승률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">-0.72%</div>
+            <div class="stat-value negative">-3.09%</div>
             <div class="stat-label">누적 수익률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">-0.02%</div>
+            <div class="stat-value negative">-0.09%</div>
             <div class="stat-label">평균 수익률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">$-0.72</div>
+            <div class="stat-value negative">$-3.09</div>
             <div class="stat-label">누적 PNL</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">$373.71</div>
+            <div class="stat-value">$371.19</div>
             <div class="stat-label">총 잔액</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">$271.21</div>
+            <div class="stat-value">$371.19</div>
             <div class="stat-label">사용 가능 잔액</div>
         </div>
     </div>
@@ -148,12 +148,12 @@
                 <td>$307.620000</td>
                 <td><span class='price-sl'>$298.3900</span></td>
                 <td><span class='price-tp'>$326.0800</span></td>
-                <td>-</td>
-                <td class="">-</td>
-                <td class="">-</td>
+                <td>$305.190000</td>
+                <td class="pnl-negative">-2.37%</td>
+                <td class="pnl-negative">$-2.37</td>
                 <td>$100.0</td>
                 <td>3x</td>
-                <td><span class="status-badge status-open">대기중</span></td>
+                <td><span class="status-badge status-closed">완료</span></td>
             </tr>
 
             <tr>
@@ -637,14 +637,14 @@
 <script>
         const candlestick = {
             type:'candlestick', x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31"],
-            open:[0, 2.17, -12.46, -13.58, 15.89, 1.33, 3.42], high:[3.67, 2.17, -3.99, 15.89, 15.89, 3.42, 4.51], low:[0, -16.04, -14.33, -14.19, 1.33, 1.33, -0.72], close:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -0.72],
+            open:[0, 2.17, -12.46, -13.58, 15.89, 1.33, 3.42], high:[3.67, 2.17, -3.99, 15.89, 15.89, 3.42, 4.51], low:[0, -16.04, -14.33, -14.19, 1.33, 1.33, -3.09], close:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09],
             increasing:{line:{color:'#26a69a',width:2},fillcolor:'#26a69a'},
             decreasing:{line:{color:'#ef5350',width:2},fillcolor:'#ef5350'},
             name:'일별 누적 수익률'
         };
         const line = {
             type:'scatter', mode:'lines+markers',
-            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31"], y:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -0.72],
+            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31"], y:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09],
             line:{color:'rgba(15,96,15,0.6)',width:2,dash:'dot'},
             marker:{size:6,color:'rgba(15,96,15,0.8)'},
             name:'누적 라인'
