@@ -71,7 +71,7 @@
     <div class="header">
         <h1>🤖 자동매매 결과 (롱포지션)</h1>
         <div class="subtitle">AI 코인선물 롱포지션 자동매매 시스템</div>
-        <div class="subtitle">생성 시간: 2026-04-02 16:51:49</div>
+        <div class="subtitle">생성 시간: 2026-04-02 17:51:54</div>
     </div>
 
     <div class="nav-menu">
@@ -92,7 +92,7 @@
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-value">41</div>
+            <div class="stat-value">42</div>
             <div class="stat-label">총 거래 횟수</div>
         </div>
         <div class="stat-card">
@@ -100,27 +100,27 @@
             <div class="stat-label">수익 거래</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">43.9%</div>
+            <div class="stat-value">42.9%</div>
             <div class="stat-label">승률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">-9.16%</div>
+            <div class="stat-value negative">-11.77%</div>
             <div class="stat-label">누적 수익률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">-0.22%</div>
+            <div class="stat-value negative">-0.28%</div>
             <div class="stat-label">평균 수익률</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value negative">$-9.16</div>
+            <div class="stat-value negative">$-11.77</div>
             <div class="stat-label">누적 PNL</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">$364.46</div>
+            <div class="stat-value">$361.71</div>
             <div class="stat-label">총 잔액</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">$55.71</div>
+            <div class="stat-value">$48.79</div>
             <div class="stat-label">사용 가능 잔액</div>
         </div>
     </div>
@@ -142,6 +142,20 @@
                 </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>2026-04-02 (목) 17:51</td>
+                <td><a href="https://www.binance.com/en/futures/BCHUSDT" class="symbol-link" target="_blank">BCHUSDT</a></td>
+                <td>$443.350000</td>
+                <td><span class='price-sl'>$430.0500</span></td>
+                <td><span class='price-tp'>$469.9500</span></td>
+                <td>-</td>
+                <td class="">-</td>
+                <td class="">-</td>
+                <td>$100.0</td>
+                <td>3x</td>
+                <td><span class="status-badge status-open">대기중</span></td>
+            </tr>
+
             <tr>
                 <td>2026-04-02 (목) 16:51</td>
                 <td><a href="https://www.binance.com/en/futures/FARTCOINUSDT" class="symbol-link" target="_blank">FARTCOINUSDT</a></td>
@@ -176,12 +190,12 @@
                 <td>$0.230100</td>
                 <td><span class='price-sl'>$0.2232</span></td>
                 <td><span class='price-tp'>$0.2439</span></td>
-                <td>-</td>
-                <td class="">-</td>
-                <td class="">-</td>
+                <td>$0.228100</td>
+                <td class="pnl-negative">-2.61%</td>
+                <td class="pnl-negative">$-2.61</td>
                 <td>$100.0</td>
                 <td>3x</td>
-                <td><span class="status-badge status-open">대기중</span></td>
+                <td><span class="status-badge status-closed">완료</span></td>
             </tr>
 
             <tr>
@@ -763,14 +777,14 @@
 <script>
         const candlestick = {
             type:'candlestick', x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02"],
-            open:[0, 2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15], high:[3.67, 2.17, -3.99, 15.89, 15.89, 3.42, 4.51, -0.73, 0.19], low:[0, -16.04, -14.33, -14.19, 1.33, 1.33, -3.09, -10.15, -10.15], close:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15, -9.16],
+            open:[0, 2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15], high:[3.67, 2.17, -3.99, 15.89, 15.89, 3.42, 4.51, -0.73, 0.19], low:[0, -16.04, -14.33, -14.19, 1.33, 1.33, -3.09, -10.15, -11.77], close:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15, -11.77],
             increasing:{line:{color:'#26a69a',width:2},fillcolor:'#26a69a'},
             decreasing:{line:{color:'#ef5350',width:2},fillcolor:'#ef5350'},
             name:'일별 누적 수익률'
         };
         const line = {
             type:'scatter', mode:'lines+markers',
-            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02"], y:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15, -9.16],
+            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02"], y:[2.17, -12.46, -13.58, 15.89, 1.33, 3.42, -3.09, -10.15, -11.77],
             line:{color:'rgba(15,96,15,0.6)',width:2,dash:'dot'},
             marker:{size:6,color:'rgba(15,96,15,0.8)'},
             name:'누적 라인'
