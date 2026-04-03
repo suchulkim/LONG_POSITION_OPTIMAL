@@ -116,7 +116,7 @@
         <h1>📈 AI 롱포지션 음음양양 패턴 분석</h1>
         <div class="subtitle">
             1H 역배열(200MA&gt;50MA&gt;현재가) + 음봉→음봉→양봉→양봉(진행) •
-            3시간 성과 추적 • 2026-04-03 12:50:59
+            3시간 성과 추적 • 2026-04-03 13:51:02
         </div>
     </div>
     <div class="nav-menu">
@@ -140,6 +140,17 @@
                 </div>
             </div>
     
+            <div class="warning-box"
+                 style="background:linear-gradient(135deg,#fff3cd,#ffeaa7);margin-top:2rem;">
+                <div class="warning-title">⚠️ 모든 종목이 필터링 규칙으로 제외되었습니다</div>
+                <div class="warning-text" style="font-size:1.4rem;line-height:1.8;">
+                    <strong>제외된 종목 목록:</strong><br>
+                    • 손실 이력: BTCUSDT, SIRENUSDT, DOTUSDT<br>
+                    
+                    
+                    <br><strong>현재 분석 주기에는 추적 대상이 없습니다.</strong>
+                </div>
+            </div>
     
         <div class="chart-section">
             <div class="chart-header">
@@ -175,10 +186,10 @@
                 <div class="tracking-info-title">📊 추적 성과 요약</div>
                 <div class="tracking-info-text">
                     <strong>승률:</strong>
-                    54.4% (31/57) |
+                    53.4% (31/58) |
                     <strong>누적 수익률:</strong>
                     <span class="negative">
-                        -6.43%</span> |
+                        -11.94%</span> |
                     <strong>총 추적 건수:</strong> 58건
                 </div>
             </div>
@@ -201,9 +212,9 @@
                            class="symbol-link">DRIFTUSDT</a></td>
                     <td style="font-weight:bold;">0</td>
                     <td style="font-weight:bold;">0.0%</td>
-                    <td><div class="tracking-result tracking-pending">대기중</div></td>
-                    <td><div class="return-stats">-</div></td>
-                    <td><span class="risk-badge risk-medium">대기</span></td>
+                    <td><div class="tracking-result tracking-loss">-5.51%</div></td>
+                    <td><div class="return-stats"><span class="best-return">최고:+-0.31%</span><br><span class="worst-return">최저:-12.20%</span></div></td>
+                    <td><span class="risk-badge risk-high">완료</span></td>
                 </tr>
                 <tr style="font-size:1.2rem;">
                     <td style="font-weight:bold;">2026-04-03 (금) 05:51</td>
@@ -781,14 +792,14 @@
         <script>
         const candlestick = {
             type:'candlestick', x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03"],
-            open:[0, 0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55], high:[0.93, 0.63, 4.44, 5.05, -0.66, -0.66, -1.56, -0.96, -1.37, 1.62, -6.43], low:[0, -5.35, -3.54, -3.77, -7.95, -2.53, -2.53, -3.01, -4.4, -6.55, -6.55], close:[0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55, -6.43],
+            open:[0, 0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55], high:[0.93, 0.63, 4.44, 5.05, -0.66, -0.66, -1.56, -0.96, -1.37, 1.62, -6.43], low:[0, -5.35, -3.54, -3.77, -7.95, -2.53, -2.53, -3.01, -4.4, -6.55, -11.94], close:[0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55, -11.94],
             increasing:{line:{color:'#26a69a',width:2},fillcolor:'#26a69a'},
             decreasing:{line:{color:'#ef5350',width:2},fillcolor:'#ef5350'},
             name:'일별 누적 수익률'
         };
         const line = {
             type:'scatter',mode:'lines+markers',
-            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03"],y:[0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55, -6.43],
+            x:["2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03"],y:[0.63, -3.54, 1.79, -3.77, -0.66, -2.53, -1.56, -3.01, -4.4, -6.55, -11.94],
             line:{color:'rgba(76,175,80,0.6)',width:2,dash:'dot'},
             marker:{size:6,color:'rgba(76,175,80,0.8)'},
             name:'누적 라인'
