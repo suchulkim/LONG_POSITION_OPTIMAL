@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>코인선물 롱포지션 3단계 패턴 검출 — 2026-04-07 20:50:47</title>
+    <title>코인선물 롱포지션 패턴 검출 — 2026-04-07 21:23:31</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -15,7 +15,7 @@
             font-size: 16px; line-height: 1.6;
         }
         .container {
-            max-width: 1500px; margin: 0 auto;
+            max-width: 1400px; margin: 0 auto;
             background-color: white; border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden;
         }
@@ -40,30 +40,43 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
+        /* 퍼널 */
+        .funnel {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; padding: 20px; background: #fff;
+            border-bottom: 1px solid #eee; flex-wrap: wrap;
+        }
+        .funnel-step {
+            display: flex; flex-direction: column; align-items: center;
+            background: #f0fff0; border-radius: 10px;
+            padding: 12px 24px; min-width: 120px;
+        }
+        .funnel-step .label { font-size: 0.8em; color: #666; }
+        .funnel-step .count { font-size: 1.8em; font-weight: bold; color: #1b5e20; }
+        .funnel-arrow { font-size: 1.8em; color: #aaa; }
+
         /* 단계 카드 */
         .steps-container {
-            display: grid; grid-template-columns: repeat(3, 1fr);
+            display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 15px; padding: 20px 15px; background: #f8fff8;
         }
         .step-card {
             background: white; border-radius: 12px;
-            padding: 18px 15px; text-align: center;
+            padding: 20px; text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
         .step-card.step1 { border-top: 4px solid #4caf50; }
-        .step-card.step2 { border-top: 4px solid #26a69a; }
-        .step-card.step3 { border-top: 4px solid #66bb6a; }
-        .step-num  { font-size: 1.8em; font-weight: bold; margin-bottom: 8px; }
+        .step-card.step2 { border-top: 4px solid #66bb6a; }
+        .step-num   { font-size: 1.8em; font-weight: bold; margin-bottom: 8px; }
         .step1 .step-num { color: #4caf50; }
-        .step2 .step-num { color: #26a69a; }
-        .step3 .step-num { color: #66bb6a; }
-        .step-title { font-size: 1em; font-weight: bold; margin-bottom: 8px; }
-        .step-desc  { font-size: 0.88em; color: #555; line-height: 1.5; }
+        .step2 .step-num { color: #66bb6a; }
+        .step-title { font-size: 1.05em; font-weight: bold; margin-bottom: 8px; }
+        .step-desc  { font-size: 0.9em; color: #555; line-height: 1.5; }
 
-        /* 통계 */
+        /* 통계 카드 */
         .stats-container { padding: 20px 15px; }
         .stats-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr);
+            display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 15px; margin-bottom: 20px;
         }
         .stat-card {
@@ -71,31 +84,14 @@
             border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .stat-card.s1   { border-left: 4px solid #4caf50; }
-        .stat-card.s2   { border-left: 4px solid #26a69a; }
-        .stat-card.s3   { border-left: 4px solid #66bb6a; }
-        .stat-card.sopt { border-left: 4px solid #1b5e20; }
-        .stat-number { font-size: 2.2em; font-weight: bold; margin-bottom: 6px; }
-        .stat-card.s1   .stat-number { color: #4caf50; }
-        .stat-card.s2   .stat-number { color: #26a69a; }
-        .stat-card.s3   .stat-number { color: #66bb6a; }
-        .stat-card.sopt .stat-number { color: #1b5e20; }
+        .stat-card.s-total { border-left: 4px solid #90a4ae; }
+        .stat-card.s1      { border-left: 4px solid #4caf50; }
+        .stat-card.s2      { border-left: 4px solid #1b5e20; }
+        .stat-number { font-size: 2.4em; font-weight: bold; margin-bottom: 6px; }
+        .stat-card.s-total .stat-number { color: #607d8b; }
+        .stat-card.s1      .stat-number { color: #4caf50; }
+        .stat-card.s2      .stat-number { color: #1b5e20; }
         .stat-label { color: #666; font-size: 0.95em; line-height: 1.4; }
-
-        /* 퍼널 */
-        .funnel {
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; padding: 16px 20px; background: #fff;
-            border-bottom: 1px solid #eee; flex-wrap: wrap;
-        }
-        .funnel-step {
-            display: flex; flex-direction: column; align-items: center;
-            background: #f0fff0; border-radius: 10px;
-            padding: 10px 18px; min-width: 110px;
-        }
-        .funnel-step .label { font-size: 0.78em; color: #666; }
-        .funnel-step .count { font-size: 1.5em; font-weight: bold; color: #1b5e20; }
-        .funnel-arrow { font-size: 1.6em; color: #aaa; }
 
         /* 테이블 */
         .section-title {
@@ -103,26 +99,32 @@
             padding-bottom: 10px; border-bottom: 3px solid #0f600f;
         }
         .table-container { padding: 20px 15px; }
-        .table-wrapper { overflow-x: auto; margin-bottom: 25px; -webkit-overflow-scrolling: touch; }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table {
-            width: 100%; min-width: 900px; border-collapse: collapse;
+            width: 100%; min-width: 800px; border-collapse: collapse;
             background: white; border-radius: 10px; overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         th {
             background: linear-gradient(135deg, #1a2e1a 0%, #0f600f 100%);
-            color: white; padding: 14px 8px; text-align: center;
-            font-weight: 600; font-size: 0.9em; white-space: nowrap;
+            color: white; padding: 14px 10px; text-align: center;
+            font-weight: 600; font-size: 0.95em; white-space: nowrap;
         }
         td {
-            padding: 12px 8px; text-align: center;
-            border-bottom: 1px solid #eee; font-size: 0.9em;
+            padding: 13px 10px; text-align: center;
+            border-bottom: 1px solid #eee; font-size: 0.92em;
         }
         tr:hover { background-color: #f8fff8; }
-        .optimal-row { background-color: #e8f5e9; }
-        .optimal-row:hover { background-color: #c8e6c9; }
-        .third-row   { background-color: #f1f8e9; }
-        .third-row:hover { background-color: #dcedc8; }
+        .result-row { background-color: #e8f5e9; }
+        .result-row:hover { background-color: #c8e6c9; }
+        .accel-row { background-color: #fff8e1; }
+        .accel-row:hover { background-color: #ffecb3; }
+        .badge-accel {
+            display: inline-block; margin-left: 6px;
+            padding: 2px 8px; border-radius: 20px;
+            background: #ff8f00; color: white;
+            font-size: 0.75em; font-weight: bold; vertical-align: middle;
+        }
 
         .symbol-cell { font-weight: bold; color: #1b5e20; text-align: left; }
         .symbol-link {
@@ -150,11 +152,7 @@
             font-size: 0.88em; line-height: 1.8;
         }
 
-        @media (max-width: 900px) {
-            .steps-container { grid-template-columns: repeat(2, 1fr); }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .steps-container { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .header h1 { font-size: 1.3em; }
@@ -166,25 +164,19 @@
 
     <!-- 헤더 -->
     <div class="header">
-        <h1>📊 코인선물 롱포지션 3단계 패턴 검출</h1>
-        <p>분석 시간: 2026-04-07 20:50:47 | USD/KRW: 1507.42원</p>
-        <p>거래대금 필터 → 1H 역배열(200MA&gt;50MA&gt;현재가) → 음봉·음봉·양봉·양봉(진행) 패턴</p>
+        <h1>📊 코인선물 롱포지션 패턴 검출</h1>
+        <p>분석 시간: 2026-04-07 21:23:31 | USD/KRW: 1507.42원</p>
+        <p>거래대금 필터 → 15m 음봉·음봉·양봉·양봉(진행) 패턴</p>
     </div>
 
     <!-- 네비게이션 -->
     <div class="nav-section">
         <div class="d-flex justify-content-center gap-2 flex-wrap">
             <a href="bullking_dashboard.html" class="btn btn-primary">
-                <i class="fas fa-chart-line"></i> 불단왕 주요 지표
-            </a>
-            <a href="futures_result_1h.html" class="btn btn-primary">
-                <i class="fas fa-chart-line"></i> 1시간봉 50ma 200ma 현재가 분석
+                <i class="fas fa-chart-line"></i> 불단왕 거시지표 현황
             </a>
             <a href="AI_Choice.html" class="btn btn-success">
-                <i class="fas fa-robot"></i> AI 롱포지션 종목 분석
-            </a>
-            <a href="Trading_result.html" class="btn btn-success">
-                <i class="fas fa-robot"></i> 매매 결과 분석
+                <i class="fas fa-robot"></i> AI 롱포지션 분석
             </a>
         </div>
     </div>
@@ -193,7 +185,7 @@
     <div class="funnel">
         <div class="funnel-step">
             <span class="label">전체 종목</span>
-            <span class="count">전체</span>
+            <span class="count">542</span>
         </div>
         <span class="funnel-arrow">→</span>
         <div class="funnel-step" style="background:#e8f5e9;">
@@ -201,13 +193,8 @@
             <span class="count" style="color:#4caf50;">36</span>
         </div>
         <span class="funnel-arrow">→</span>
-        <div class="funnel-step" style="background:#e0f2f1;">
-            <span class="label">2차 (200MA&gt;50MA&gt;현재가)</span>
-            <span class="count" style="color:#26a69a;">9</span>
-        </div>
-        <span class="funnel-arrow">→</span>
         <div class="funnel-step" style="background:#c8e6c9;">
-            <span class="label">⭐ 3차 (음음양양)</span>
+            <span class="label">⭐ 2차 (음음양양)</span>
             <span class="count" style="color:#1b5e20;">0</span>
         </div>
     </div>
@@ -225,18 +212,9 @@
         </div>
         <div class="step-card step2">
             <div class="step-num">2차</div>
-            <div class="step-title">📉 1H 역배열 + 하방</div>
-            <div class="step-desc">
-                1H 완성봉 기준<br>
-                <strong>200MA &gt; 50MA &gt; 현재가</strong><br>
-                역배열 구간 + 50MA 아래
-            </div>
-        </div>
-        <div class="step-card step3">
-            <div class="step-num">3차</div>
             <div class="step-title">🕯️ 반등 캔들 패턴</div>
             <div class="step-desc">
-                1H 캔들 시퀀스<br>
+                15m 캔들 시퀀스<br>
                 <strong>음봉 → 음봉 → 양봉 → 양봉(진행)</strong><br>
                 2연속 하락 후 반등 신호 포착
             </div>
@@ -246,32 +224,27 @@
     <!-- 통계 카드 -->
     <div class="stats-container">
         <div class="stats-grid">
+            <div class="stat-card s-total">
+                <div class="stat-number">542</div>
+                <div class="stat-label">전체 종목<br>(USDT 무기한 선물)</div>
+            </div>
             <div class="stat-card s1">
                 <div class="stat-number">36</div>
                 <div class="stat-label">1차 통과<br>(거래대금 1000억+)</div>
             </div>
             <div class="stat-card s2">
-                <div class="stat-number">9</div>
-                <div class="stat-label">2차 통과<br>(200MA&gt;50MA&gt;현재가)</div>
-            </div>
-            <div class="stat-card s3">
                 <div class="stat-number">0</div>
-                <div class="stat-label">3차 통과<br>(음음양양 패턴)</div>
-            </div>
-            <div class="stat-card sopt">
-                <div class="stat-number">9</div>
-                <div class="stat-label">패턴 대기 중<br>(2차 통과 / 3차 미감지)</div>
+                <div class="stat-label">⭐ 최종 감지<br>(음음양양 패턴)</div>
             </div>
         </div>
     </div>
 
-    <!-- 테이블 1: 3차 통과 (최종 감지) -->
+    <!-- 결과 테이블 -->
     <div class="table-container">
-        <h2 class="section-title">⭐ 최종 감지: 3차 통과 (0개)</h2>
+        <h2 class="section-title">⭐ 최종 감지 종목 (0개) — ★ 양봉2&gt;양봉1 가속: 0개 / 기타: 0개</h2>
         <div class="note">
             <div class="note-title">💡 투자 포인트</div>
-            <p>역배열 구간(200MA&gt;50MA&gt;현재가)에서 음봉→음봉→양봉→양봉(진행) 패턴 발생 종목.</p>
-            <p>2연속 하락 후 반등 전환 시그널 — 단기 롱 진입 검토 가능.</p>
+            <p>15m 기준 음봉→음봉→양봉→양봉(진행) 패턴 발생 종목. 2연속 하락 후 반등 전환 시그널.</p>
             <p>진행 중인 양봉이므로 봉 마감 전 패턴이 바뀔 수 있습니다. 반드시 차트를 직접 확인하세요.</p>
         </div>
         <div class="table-wrapper">
@@ -280,172 +253,12 @@
                     <tr>
                         <th>순위</th><th>심볼</th><th>현재가</th>
                         <th>24H%</th>
-                        <th>1H 50MA</th><th>1H 200MA</th>
-                        <th>↔50MA</th><th>↔200MA</th><th>역배열강도</th>
                         <th>음봉1%</th><th>음봉2%</th>
                         <th>양봉1%</th><th>양봉2%(진행)</th>
                         <th>거래대금</th>
                     </tr>
                 </thead>
-                <tbody><tr><td colspan="14" style="text-align:center;padding:30px;color:#999;">감지된 종목이 없습니다</td></tr></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 테이블 2: 2차 통과 (패턴 대기) -->
-    <div class="table-container">
-        <h2 class="section-title">📋 2차 통과 — 패턴 대기 중 (9개)</h2>
-        <div class="note">
-            <div class="note-title">💡 관찰 포인트</div>
-            <p>200MA&gt;50MA&gt;현재가 조건 충족 종목. 음음양양 패턴 미발생 상태 — 다음 스캔 시 3차 진입 가능성 있음.</p>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>순위</th><th>심볼</th><th>현재가</th>
-                        <th>24H%</th>
-                        <th>1H 50MA</th><th>1H 200MA</th>
-                        <th>↔50MA</th><th>↔200MA</th><th>역배열강도</th>
-                        <th>거래대금</th>
-                    </tr>
-                </thead>
-                <tbody>
-            <tr class="third-row">
-                <td>1</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/SOLUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">SOL<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>79.240000</td>
-                <td class="negative">-3.80%</td>
-                <td>80.777000</td>
-                <td>81.159350</td>
-                <td class="negative">-1.90%</td>
-                <td class="negative">-2.36%</td>
-                <td class="negative">+0.47%</td>
-                <td>2.4조</td>
-            </tr>
-            <tr class="third-row">
-                <td>2</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/XRPUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">XRP<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>1.305500</td>
-                <td class="negative">-3.27%</td>
-                <td>1.322128</td>
-                <td>1.324312</td>
-                <td class="negative">-1.26%</td>
-                <td class="negative">-1.42%</td>
-                <td class="negative">+0.17%</td>
-                <td>7,945억</td>
-            </tr>
-            <tr class="third-row">
-                <td>3</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/DOGEUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">DOGE<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>0.090450</td>
-                <td class="negative">-2.72%</td>
-                <td>0.091370</td>
-                <td>0.091451</td>
-                <td class="negative">-1.01%</td>
-                <td class="negative">-1.09%</td>
-                <td class="negative">+0.09%</td>
-                <td>6,067억</td>
-            </tr>
-            <tr class="third-row">
-                <td>4</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/BNBUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">BNB<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>598.000000</td>
-                <td class="negative">-1.27%</td>
-                <td>600.085400</td>
-                <td>600.288100</td>
-                <td class="negative">-0.35%</td>
-                <td class="negative">-0.38%</td>
-                <td class="negative">+0.03%</td>
-                <td>4,062억</td>
-            </tr>
-            <tr class="third-row">
-                <td>5</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/RIVERUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">RIVER<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>11.640000</td>
-                <td class="negative">-0.03%</td>
-                <td>11.716000</td>
-                <td>13.443665</td>
-                <td class="negative">-0.65%</td>
-                <td class="negative">-13.42%</td>
-                <td class="negative">+14.75%</td>
-                <td>2,892억</td>
-            </tr>
-            <tr class="third-row">
-                <td>6</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/STOUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">STO<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>0.138720</td>
-                <td class="negative">-13.51%</td>
-                <td>0.160128</td>
-                <td>0.221428</td>
-                <td class="negative">-13.37%</td>
-                <td class="negative">-37.35%</td>
-                <td class="negative">+38.28%</td>
-                <td>2,321억</td>
-            </tr>
-            <tr class="third-row">
-                <td>7</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/ENAUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">ENA<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>0.080400</td>
-                <td class="negative">-3.37%</td>
-                <td>0.080728</td>
-                <td>0.084459</td>
-                <td class="negative">-0.41%</td>
-                <td class="negative">-4.81%</td>
-                <td class="negative">+4.62%</td>
-                <td>1,543억</td>
-            </tr>
-            <tr class="third-row">
-                <td>8</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/PIPPINUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">PIPPIN<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>0.034250</td>
-                <td class="positive">+3.32%</td>
-                <td>0.037971</td>
-                <td>0.047783</td>
-                <td class="negative">-9.80%</td>
-                <td class="negative">-28.32%</td>
-                <td class="negative">+25.84%</td>
-                <td>1,296억</td>
-            </tr>
-            <tr class="third-row">
-                <td>9</td>
-                <td class="symbol-cell">
-                    <a href="https://www.binance.com/en/futures/AAVEUSDT?timeframe=1h"
-                       target="_blank" class="symbol-link">AAVE<span style="color:#aaa;font-weight:400;font-size:0.85em">/USDT</span></a>
-                </td>
-                <td>86.730000</td>
-                <td class="negative">-10.85%</td>
-                <td>93.730600</td>
-                <td>95.588500</td>
-                <td class="negative">-7.47%</td>
-                <td class="negative">-9.27%</td>
-                <td class="negative">+1.98%</td>
-                <td>1,287억</td>
-            </tr></tbody>
+                <tbody><tr><td colspan="10" style="text-align:center;padding:30px;color:#999;">감지된 종목이 없습니다</td></tr></tbody>
             </table>
         </div>
     </div>
@@ -457,9 +270,9 @@
             <p style="color:#aaa;">본 분석은 참고용이며, 실제 투자 시 추가 분석·리스크 관리가 필요합니다.</p>
             <p style="color:#aaa;">패턴 분석만으로 투자 판단을 내리지 마시고 개별 차트 및 뉴스를 반드시 확인하세요.</p>
         </div>
-        <p>생성: 2026-04-07 20:50:47 | 바이낸스 USDT 선물 전종목</p>
-        <p>종목명 클릭 → Binance 선물 1H 차트 &nbsp;|&nbsp; MA = 1H 완성봉 단순이동평균 &nbsp;|&nbsp; 역배열강도 = (200MA−50MA)÷50MA×100</p>
-        <p>1차: 36개 → 2차: 9개 → ⭐ 3차: 0개</p>
+        <p>생성: 2026-04-07 21:23:31 | 바이낸스 USDT 선물 전종목 542개</p>
+        <p>종목명 클릭 → Binance 선물 15m 차트</p>
+        <p>1차:36개 → ⭐ 2차:0개</p>
     </div>
 
 </div>
