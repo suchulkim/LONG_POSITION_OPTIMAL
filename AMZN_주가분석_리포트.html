@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMZN 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#ff9900; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#ffb84d; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#ffb84d; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
+  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
+  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
+  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+  section{margin-top:36px;}
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
+  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
+  .callout b{color:var(--text);}
+  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
+  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 7:05 (KST)</span>
+    </div>
+    <h1>Amazon (AMZN) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AMZNUSDT.P</span></h1>
+    
+    <div class="price-card">
+      <div>
+        <div class="price-main">$254.62</div>
+        <div class="chg-down">일봉 -0.34% · 하락채널, SMA20 하회</div>
+      </div>
+      <div class="price-sub">실적 후 고점 대비 조정. 롱 청산 성격 하락, 4H RSI 과매도 근접.</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AMZNUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_amzn_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AMZNUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_amzn_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 하락채널. <b>15분봉</b>: SMA20·SMA200 하회.</div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain"><li>2분기 매출 $200.6B(+20%), AWS +37%</li><li>AWS 수주잔고 $496B, AI 연환산 $25B</li><li>광고 +26%, Strong Buy 컨센서스</li><li>목표주가 ~$316 괴리</li></ul>
+    </div>
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain"><li>FTC 광고 소송 리스크</li><li>CapEx $220B — FCF 압박</li><li>3분기 가이던스 컨센서스 하회</li><li>매크로·하락채널 약세</li></ul>
+    </div>
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>SMA20 재돌파 시 $270~$280 회복</div>
+      <div class="scenario base"><b>기본</b>$250~$262 박스권, 소송·FOMC 소화</div>
+      <div class="scenario bear"><b>약세</b>$250 붕괴 시 $240 테스트</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 매출 구조 (FY2026 2분기)</h2>
+    <table>
+<tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+<tr><td>🛒 북미</td><td class="num">$116.2B</td><td class="num" style="color:var(--pos-text)">+16%</td><td class="num">57.9%</td></tr>
+<tr><td>☁️ AWS</td><td class="num">$42.2B</td><td class="num" style="color:var(--pos-text)">+37%</td><td class="num">21.1%</td></tr>
+<tr><td>🌍 국제</td><td class="num">$42.2B</td><td class="num" style="color:var(--pos-text)">+15%</td><td class="num">21.0%</td></tr>
+<tr><td><b>합계</b></td><td class="num"><b>$200.6B</b></td><td class="num"><b>+20%</b></td><td class="num"><b>100%</b></td></tr>
+</table>
+<div class="callout">→ AWS가 영업이익의 약 60%. <b>AWS 성장·FTC 소송</b>이 핵심 변수입니다.</div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>지속</td><td>FTC 광고 소송 진행</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>10월 30일 (금) 새벽 (추정)</td><td>FY2026 3분기 실적</td><td><span class="star">★★★★★</span></td></tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 7:05 (KST).
+  </footer>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_amzn_daily",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AMZNUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_amzn_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AMZNUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

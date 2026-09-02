@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KORU 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#e0304a;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --warn-bg:#2c2510;
+    --warn-text:#e0b84d;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .warn-banner{
+    margin-top:14px;
+    background:var(--warn-bg);
+    color:var(--warn-text);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:13.5px;
+    font-weight:600;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    position:relative;
+    width:100%;
+    height:600px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tradingview-widget-container{
+    width:100%;
+    height:100%;
+  }
+  .tradingview-widget-container > div{
+    width:100%;
+    height:100%;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 3:30 (KST)</span>
+    </div>
+    <h1>Direxion Daily South Korea Bull 3X ETF (KORU) 주가 분석 리포트<span class="ticker">NYSEARCA · Perpetual: KORUUSDT.P</span></h1>
+
+    <div class="warn-banner">
+      ⚠️ KORU는 MSCI Korea 25/50 지수 일간 수익률의 <b>+300%</b>를 추종하는 3배 레버리지 상품입니다.
+      일간 리밸런싱 구조상 변동성이 큰 장세에서는 기초지수 누적수익률과 크게 괴리(복리 감가)될 수 있어
+      단기 트레이딩 목적 외 장기 보유에는 적합하지 않습니다.
+    </div>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$19.04</div>
+        <div class="chg-up">일봉 +0.16% · 6~8월 극단적 변동성($10~48) 이후 하락쐐기 수렴 중</div>
+      </div>
+      <div class="price-sub">
+        6월 말 코스피 급등(마이크론 실적)으로 $48까지 급등했다가, 애플 가격인상發 반도체 랠리 우려와 7월 말 CXMT 상장 이슈로 $10선까지 폭락.
+        이후 8월 반등해 현재 $19선에서 하락쐐기 패턴 형성 중. 일봉 OI-가격 상관관계는 '숏 청산에 의한 상승 — 추세 약함'(-3.33)으로
+        신규 매수보다는 숏커버링 성격입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · KORUUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_koru_15m"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1일봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_koru_1d"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>3배 레버리지發 극단적 변동성</b></td>
+        <td>6/25 마이크론 실적 서프라이즈로 코스피 반도체주 폭등(+5.42%) 후 6/26 애플 가격인상 발표發 반도체 랠리 우려로 코스피 -5.81% 급락, 7/28에는 CXMT(중국 반도체) 상장 이슈로 코스피 -10.84% 폭락 — 3배 레버리지 특성상 기초지수 등락폭이 그대로 3배 증폭되어 KORU는 $48→$10선까지 극단적 낙폭 기록</td>
+        <td>단기간 -79%에 달하는 최대낙폭 경험, 레버리지 상품 특유의 복리 감가 효과로 기초지수 반등에도 완전한 가격 회복은 제한적</td>
+      </tr>
+      <tr>
+        <td><b>반도체 대형주 자사주 매입·소각</b></td>
+        <td>SK하이닉스 40조원 자사주 매입·소각, 삼성전자 90조~110조원 주주환원 계획 승인 — 코스피 시총 절반을 차지하는 두 종목의 하방 지지력 강화</td>
+        <td>9/1(화) 코스피가 장중 -1.28%까지 밀렸다가 반도체 대형주 반등에 힘입어 +0.23% 상승 마감(전약후강), KORU도 낙폭 만회</td>
+      </tr>
+      <tr>
+        <td><b>연준 매파 스탠스 확산 우려</b></td>
+        <td>잭슨홀 이후 매파적 연준 기조 확산 여부를 시장이 주시 중, 9/2 새벽 마이클 바 이사 발언 예정</td>
+        <td>추가 금리인상 시사 시 반도체 등 성장주 밸류에이션 부담 확대, 레버리지 상품 특성상 변동성 더욱 증폭 가능</td>
+      </tr>
+      <tr>
+        <td><b>8월 반도체 수출 사상 최대</b></td>
+        <td>8월 한국 반도체 수출이 역대 최대치를 기록하며 AI·메모리 펀더멘털이 지수 하단을 지지</td>
+        <td>극심한 변동성 국면에서도 저가 매수세 유입의 펀더멘털 근거로 작용, $10선에서 $19선까지 반등 배경</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → KORU의 최근 움직임은 <b>코스피 반도체 대형주를 둘러싼 매크로·개별 이슈가 3배 레버리지로 증폭</b>된 결과입니다.
+      기초지수(코스피/EWY) 대비 훨씬 큰 낙폭과 반등폭을 기록했으며, 현재는 하락쐐기 패턴에서 방향성을 탐색하는 국면입니다.
+      레버리지 상품 특성상 횡보·변동성 장세에서는 복리 감가로 인해 기초지수보다 더 불리한 성과를 낼 수 있다는 점에 유의해야 합니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">하락쐐기 저항</div>
+        <div class="value">~$20.7</div>
+        <div class="sub">SMA200(15분봉 $20.40) 부근</div>
+      </div>
+      <div class="kpi">
+        <div class="label">SMA20 (15분봉)</div>
+        <div class="value">$19.32</div>
+        <div class="sub">단기 지지·저항 라인</div>
+      </div>
+      <div class="kpi">
+        <div class="label">8월 저점권 지지</div>
+        <div class="value">~$10~13</div>
+        <div class="sub">붕괴 시 극단적 약세 재현 리스크</div>
+      </div>
+    </div>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인 (기초지수 관점)</h4>
+      <ul class="plain">
+        <li>SK하이닉스·삼성전자 대규모 자사주 매입·소각 및 주주환원 계획으로 지수 하방 경직성 강화</li>
+        <li>8월 반도체 수출 사상 최대 — AI·메모리 슈퍼사이클 펀더멘털 지속 확인</li>
+        <li>코스피가 최근 '전약후강' 패턴을 반복하며 장중 급락분을 반도체 대형주가 만회하는 흐름 지속</li>
+        <li>2026년 EWY·EWT 등 아시아 반도체 ETF가 연중 50~70%대 상승, 구조적 강세 사이클 배경</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>레버리지 복리 감가 리스크</b> — 변동성이 큰 횡보장에서는 3배 레버리지 특성상 기초지수보다 성과가 구조적으로 열위일 수 있음</li>
+        <li>연준 매파 스탠스 확산 우려 — 추가 금리인상 시사 시 반도체 등 성장주 밸류에이션 부담 확대, 레버리지로 변동성 증폭</li>
+        <li>2026년 코스피는 6~7월에만 서킷브레이커가 다수 발동될 정도로 극심한 변동성 장세 — KORU는 이를 3배로 겪는 구조</li>
+        <li>OI 지표상 '숏 청산에 의한 상승 — 추세 약함' — 신규 매수 유입보다 기존 숏 포지션 정리 성격</li>
+        <li>지정학 리스크(美-이란 긴장), SK그룹 일본 반도체 공장설 등 개별 이슈로 인한 노이즈 변동성 지속</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>하락쐐기 상단 돌파 및 SMA200($20.40) 회복 시 8월 반등 고점($25 부근) 재도전, 반도체 대형주 자사주 매입 효과 지속 시 추가 상승</div>
+      <div class="scenario base"><b>기본</b>$17~$21 박스권에서 연준 발언·FOMC(9/17) 대기하며 등락, 3배 레버리지 특성상 일중 변동성은 확대된 채 유지</div>
+      <div class="scenario bear"><b>약세</b>연준 매파 확산 및 반도체 대형주 조정 시 SMA20($19.32) 붕괴 후 $13~10 구간 재테스트 가능 — 레버리지 감가로 기초지수 대비 낙폭 더 클 수 있음</div>
+    </div>
+  </section>
+
+  <!-- 3. 주요일정 -->
+  <section>
+    <h2>3. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 2일 (수) 오전 2:05</td>
+        <td>연준 마이클 바 이사 발언 — 매파적 기조가 다른 위원들에게 확산되는지 확인 필요</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 3일 (목)</td>
+        <td>연준 베이지북 발표 + 월러 이사 인플레이션 발언</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>삼성전자·SK하이닉스 자사주 매입·소각 진행상황, HBM 경쟁구도 재편 관련 뉴스플로우</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견, 레버리지 특성상 영향 증폭</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 초 (예정)</td>
+        <td>9월 한국 반도체 수출 통계 발표 — 8월 사상 최대치 이후 연속 여부 확인</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. KORU는 3배 레버리지 ETF로 일반 ETF 대비 훨씬 높은 리스크를 수반하며, 변동성 장세에서는 복리 효과로 인해 장기 보유 시 기초지수 성과와 크게 괴리될 수 있습니다. 데이터 기준: 2026.09.02 오후 3:30 (KST). 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  function initWidgets() {
+    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:KORUUSDT.P",
+      "interval": "15",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_koru_15m"
+    });
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:KORUUSDT.P",
+      "interval": "D",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_koru_1d"
+    });
+  }
+  initWidgets();
+</script>
+
+</body>
+</html>

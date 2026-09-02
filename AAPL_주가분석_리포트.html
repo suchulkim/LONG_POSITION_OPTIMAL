@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAPL 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#0071e3; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
+  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
+  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
+  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+  section{margin-top:36px;}
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
+  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
+  .callout b{color:var(--text);}
+  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
+  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 7:05 (KST)</span>
+    </div>
+    <h1>Apple (AAPL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AAPLUSDT.P</span></h1>
+    
+    <div class="price-card">
+      <div>
+        <div class="price-main">$324.49</div>
+        <div class="chg-down">일봉 -0.29% · 전일 +2.61% 급등 후 조정</div>
+      </div>
+      <div class="price-sub">9/1 신임 CEO 취임 소식에 급등 후 상승채널 상단 부근 숨고르기. SMA20·SMA200 상회 유지.</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AAPLUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_aapl_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AAPLUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_aapl_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 상승채널 상단 부근. <b>15분봉</b>: SMA20 상회, 단기 과열 해소 국면.</div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain"><li>애널리스트 매수 우위, 평균 목표주가 현재가 수준</li><li>9/9 첫 폴더블 아이폰 공개 — 폼팩터 전환 기대</li><li>3분기 전 제품군 두 자릿수 성장, 서비스 +12%</li><li>신임 CEO 제품 중심 경영 재평가 기대</li></ul>
+    </div>
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain"><li>4분기 가이던스 둔화(+9~11%), 공급제약 경고</li><li>메모리 원가발 마진 하락 우려</li><li>폴더블 고가 정책 — 초기 수요 제한 가능</li><li>PER 37배, FOMC 매크로 변수</li></ul>
+    </div>
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>9/9 폴더블 호평 시 사상 최고가 $339 재도전</div>
+      <div class="scenario base"><b>기본</b>$315~$327 박스권, SMA20 부근 공방</div>
+      <div class="scenario bear"><b>약세</b>채널 하단($310) 이탈 시 $300 테스트</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 매출 구조 (FY2026 3분기)</h2>
+    <table>
+<tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+<tr><td>📱 아이폰</td><td class="num">$54.25B</td><td class="num" style="color:var(--pos-text)">+22%</td><td class="num">49.6%</td></tr>
+<tr><td>☁️ 서비스</td><td class="num">$30.74B</td><td class="num" style="color:var(--pos-text)">+12%</td><td class="num">28.1%</td></tr>
+<tr><td>💻 맥</td><td class="num">$10.35B</td><td class="num" style="color:var(--pos-text)">+29%</td><td class="num">9.5%</td></tr>
+<tr><td>🎧 웨어러블</td><td class="num">$7.88B</td><td class="num" style="color:var(--pos-text)">+7%</td><td class="num">7.2%</td></tr>
+<tr><td>📱 아이패드</td><td class="num">$6.19B</td><td class="num" style="color:var(--neg-text)">-6%</td><td class="num">5.7%</td></tr>
+<tr><td><b>합계</b></td><td class="num"><b>$109.4B</b></td><td class="num"><b>+16%</b></td><td class="num"><b>100%</b></td></tr>
+</table>
+<div class="callout">→ 아이폰이 매출의 약 50%. <b>9/9 폴더블·아이폰18 흥행</b>이 핵심 변수입니다.</div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>9월 10일 (목) 오전 2:00</td><td><b>Apple 신제품 이벤트</b> — 아이폰18·폴더블 공개</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>9월 18일 (금)</td><td>아이폰18 정식 출시</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+<tr><td>10월 30일 (금) 새벽</td><td>FY2026 4분기 실적</td><td><span class="star">★★★★★</span></td></tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 7:05 (KST).
+  </footer>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_aapl_daily",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AAPLUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_aapl_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AAPLUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

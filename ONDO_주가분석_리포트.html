@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONDO 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{margin-top:36px;}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:160px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+  }
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 6:15 (KST)</span>
+    </div>
+    <h1>Ondo (ONDO) 분석 리포트<span class="ticker">Crypto · Perpetual: ONDOUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$0.3423</div>
+        <div class="chg-up">일봉 +0.59% · 15분봉 +0.29%</div>
+      </div>
+      <div class="price-sub">
+        하락 쐐기/삼각형 하단 근처에서 반등 시도. 일봉 SMA20($0.3533) 하회, SMA200($0.3216) 상회.
+        15분봉은 SMA20($0.3418) 상회·SMA200($0.3452) 하회. OI 해석: 신규 롱 유입 — 추세 강함(단기 상승 압력).
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · ONDOUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_ondo_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · ONDOUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_ondo_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 5월 급등 이후 고점 낮추는 하락 쐐기 형성. SMA20 하회 중이나 SMA200 위 유지. 쐐기 하단 지지 여부가 단기 핵심.<br>
+      <b>15분봉</b>: SMA20 상회 반등, SMA200이 저항. OI 신규 롱 유입으로 단기 매수 압력 확인. $0.338~$0.348 구간 공방.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>RWA(실물자산 토큰화) 선두 주자 — TVL 약 $3.4~3.5B, 토큰화 주식·ETF·국채(USDY 등) 중심</li>
+        <li>기관 파트너십: J.P. Morgan, Mastercard, Franklin, BlackRock 관련 토큰화 상품 등</li>
+        <li>토큰화 주식 시장 점유율 높음(약 58~70% 수준 언급), 440개+ 자산 온체인화</li>
+        <li>15분봉 OI 신규 롱 유입 → 단기 추세 강화 신호</li>
+        <li>ATH($2대) 대비 크게 조정된 상태로, RWA 테마 재부각 시 레버리지 반등 여지</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>거버넌스/경영권 분쟁 이슈(창업자 관련 소송·승계 갈등)로 불확실성 상존</li>
+        <li>토큰 유틸리티가 거버넌스 중심이라 플랫폼 성장이 곧바로 토큰 수요로 연결되지 않을 수 있음</li>
+        <li>2027년 1월 대규모 언락 예정 — 매도 압력 잠재 리스크</li>
+        <li>일봉 SMA20 하회 + 하락 쐐기 구조로 기술적 저항 명확</li>
+        <li>크립토 전반 리스크오프 시 알트코인 동반 약세 가능성</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>SMA20($0.353) 돌파 + 쐐기 상단 이탈 시 $0.38~$0.42 재도전. RWA·기관 뉴스 호재 시 모멘텀 확대</div>
+      <div class="scenario base"><b>기본</b>$0.32~$0.36 박스권. SMA200 지지와 SMA20 저항 사이에서 횡보. 비트코인·이더 방향성에 동조화</div>
+      <div class="scenario bear"><b>약세</b>쐐기 하단·$0.32 이탈 시 $0.28~$0.30 테스트. 거버넌스 악화 또는 언락 경계 매물 출회 시 추가 하락</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 프로젝트·시장 구조</h2>
+    <table>
+      <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
+      <tr><td>🏛 프로젝트</td><td class="num">Ondo Finance</td><td class="num">RWA 토큰화 플랫폼</td></tr>
+      <tr><td>💰 시가총액</td><td class="num">약 $1.7B</td><td class="num">유통 기준</td></tr>
+      <tr><td>📊 TVL / AUM</td><td class="num">약 $3.4~3.5B</td><td class="num">프로토콜·RWA 자산</td></tr>
+      <tr><td>📈 주요 상품</td><td class="num">USDY, OUSG, 토큰화 주식·ETF</td><td class="num">국채·주식 온체인화</td></tr>
+      <tr><td>🔗 파트너</td><td class="num">JPM, Mastercard, Franklin 등</td><td class="num">기관급 인프라</td></tr>
+      <tr><td>⚠️ 리스크</td><td class="num">거버넌스 분쟁 / 2027.1 언락</td><td class="num">토큰 공급 압력</td></tr>
+    </table>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">토큰화 국채·수익상품</div>
+        <div class="rev-track"><div class="rev-fill" style="width:55%; background:#34c759;"></div></div>
+        <div class="rev-pct">~55%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">토큰화 주식·ETF</div>
+        <div class="rev-track"><div class="rev-fill" style="width:35%; background:#0071e3;"></div></div>
+        <div class="rev-pct">~35%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">기타</div>
+        <div class="rev-track"><div class="rev-fill" style="width:10%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">~10%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → ONDO는 <b>실물자산(RWA) 토큰화</b> 대표 프로젝트입니다.
+      플랫폼 TVL과 기관 파트너십은 강하지만, 토큰 가격은 ATH 대비 크게 하락한 상태이며 거버넌스·언락 이슈가 오버행으로 남아 있습니다.
+      단기적으로는 차트상 쐐기 지지와 OI 롱 유입이 반등 시도의 근거입니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정·변수 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정/변수</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>수시</td>
+        <td>거버넌스·경영권 소송/합의 관련 소식</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>수시</td>
+        <td>RWA TVL 증가, 신규 토큰화 자산·기관 파트너십 발표</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목)</td>
+        <td>FOMC — 리스크자산·알트 전반 변동성</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>2027년 1월</td>
+        <td>대규모 토큰 언락 예정 — 공급 증가 경계</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>BTC/ETH 추세</td>
+        <td>메이저 코인 방향성에 알트 동조화 강함</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 암호화폐는 변동성이 매우 큽니다. 데이터 기준: 2026.09.02 오후 6:15 (KST).
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_ondo_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:ONDOUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_ondo_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:ONDOUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

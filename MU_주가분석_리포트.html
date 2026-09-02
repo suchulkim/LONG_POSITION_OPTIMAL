@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MU 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    position:relative;
+  }
+  .rev-fill{
+    height:100%;
+    border-radius:6px 0 0 6px;
+  }
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 6:05 (KST)</span>
+    </div>
+    <h1>Micron (MU) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: MUUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$929.03</div>
+        <div class="chg-down">일봉 -0.11% · 전일 종가 $933.44(-2.64%) 대비 소폭 약세</div>
+      </div>
+      <div class="price-sub">
+        하락 채널 하단 부근에서 지지 시도 중. 일봉 SMA20($951) 하회, 15분봉은 SMA20($929.24) 근처·SMA200($941.42) 하회.
+        멀티 TF RSI 40~50대 중립~약세. OI 해석: 신규 숏 진입 — 하락 추세 강함 신호.
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · MUUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_mu_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · MUUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_mu_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 7월 고점 이후 하락 채널 형성. 현재 채널 하단~중단 구간에서 등락. SMA20($951)이 저항으로 작용 중.<br>
+      <b>15분봉</b>: SMA20 근처에서 횡보, SMA200 하회. OI상 신규 숏 유입으로 단기 하락 압력 우세. $920~$935 박스권 흐름.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>AI/HBM 수요 폭증 — Q3 FY2026 매출 $41.46B (+346% YoY), HBM4 램프로 Nvidia Vera Rubin 플랫폼 공급 중</li>
+        <li>애널리스트 Strong Buy 우위, 평균 목표주가 약 $1,500~1,550 (현재가 대비 +60%대 상승 여력)</li>
+        <li>DRAM·HBM 공급 부족이 2027년까지 지속될 것이라는 컨센서스</li>
+        <li>시가총액 약 $1.05T, AI 메모리 대장주로 재평가 지속</li>
+        <li>9/30 실적 발표를 앞두고 가이던스 상향 기대 가능</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>대만 공장 노조 파업 위협 — 보너스·성과급 분배 갈등, 생산 차질 리스크</li>
+        <li>기술적 하락 채널 + SMA20 하회, OI 신규 숏 유입으로 단기 모멘텀 약세</li>
+        <li>메모리 사이클 특성상 고점 이후 급격한 가격 조정 가능성 (과거 패턴)</li>
+        <li>매크로(금리·유가) 및 반도체 섹터 전반 약세 시 동반 하락</li>
+        <li>밸류에이션이 이미 크게 상승한 상태라 실적 눈높이 미달 시 변동성 확대</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>하락 채널 상단 돌파 + SMA20($951) 회복 시 $1,000 재도전. 9/30 실적·가이던스 호조 확인되면 목표가 $1,200~$1,500 구간 재평가</div>
+      <div class="scenario base"><b>기본</b>$900~$960 박스권 등락. 채널 하단 지지와 SMA20 저항 사이에서 방향성 탐색. 실적 발표 전까지 관망 심리 우세</div>
+      <div class="scenario bear"><b>약세</b>채널 하단 이탈 시 $850~$880 지지선 테스트. 대만 파업 현실화 또는 매크로 악화 시 추가 조정 가능</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 핵심 사업·실적 구조</h2>
+    <table>
+      <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
+      <tr><td>📊 Q3 FY2026 매출</td><td class="num">$41.46B</td><td class="num">+346% YoY (기록적)</td></tr>
+      <tr><td>💰 Q3 EPS</td><td class="num">$25.11</td><td class="num">컨센서스 대폭 상회</td></tr>
+      <tr><td>🏭 주력 제품</td><td class="num">DRAM / HBM / NAND</td><td class="num">HBM4 램프 가속</td></tr>
+      <tr><td>📈 시가총액</td><td class="num">약 $1.05T</td><td class="num">AI 메모리 대장</td></tr>
+      <tr><td>🎯 애널리스트 목표가</td><td class="num">$1,500~1,550</td><td class="num">Strong Buy 우세</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.09.30</td><td class="num">Q4 FY2026 (장 마감 후)</td></tr>
+    </table>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">DRAM / HBM</div>
+        <div class="rev-track"><div class="rev-fill" style="width:77%; background:#0071e3;"></div></div>
+        <div class="rev-pct">~77%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">NAND</div>
+        <div class="rev-track"><div class="rev-fill" style="width:20%; background:#34c759;"></div></div>
+        <div class="rev-pct">~20%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">기타</div>
+        <div class="rev-track"><div class="rev-fill" style="width:3%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">~3%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → Micron은 <b>AI 서버용 HBM·DRAM 공급</b>이 실적의 핵심입니다.
+      HBM4가 Nvidia Vera Rubin에 공급되기 시작했고, 2026~2027년 공급 부족이 지속될 것이라는 전망이 주가 지지 요인입니다.
+      다만 단기적으로는 기술적 하락 채널과 대만 노조 이슈가 부담으로 작용하고 있습니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>수시</td>
+        <td>대만 Micron 노조 파업 관련 소식 — 생산 차질 여부 모니터링</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 — 반도체·성장주 전반 민감</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 30일 (수) 새벽</td>
+        <td>FY2026 4분기 실적 발표 (미국 장 마감 후) + 컨퍼런스 콜 — HBM 가이던스 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>HBM4 출하·수율, Nvidia/클라우드 CAPEX 관련 뉴스</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>메모리 가격</td>
+        <td>DRAM·HBM 현물/계약 가격 동향 — 실적 가시성 직결</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 6:05 (KST) / Q3 실적은 FY2026 Q3(2026.06.24 발표) 기준.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_mu_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:MUUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_mu_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:MUUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

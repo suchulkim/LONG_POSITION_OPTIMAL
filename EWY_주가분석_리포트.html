@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EWY 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#e0304a;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    position:relative;
+    width:100%;
+    height:600px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tradingview-widget-container{
+    width:100%;
+    height:100%;
+  }
+  .tradingview-widget-container > div{
+    width:100%;
+    height:100%;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 3:27 (KST)</span>
+    </div>
+    <h1>iShares MSCI South Korea ETF (EWY) 주가 분석 리포트<span class="ticker">NYSEARCA · Perpetual: EWYUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$175.71</div>
+        <div class="chg-up">일봉 +0.02% · 8월 저점($164) 대비 상승쐐기 형성, SMA200(일봉 $179.46) 하회</div>
+      </div>
+      <div class="price-sub">
+        8월 말 저점 반등 이후 상승쐐기(rising wedge) 패턴 진행 중이며, 15분봉 SMA200($179.46) 하회·SMA20($176.41) 부근에서 등락.
+        일봉 OI-가격 상관관계는 '신규 진입 유입 — 추세 강함'(7.08)으로 신규 매수세가 견조하게 유입되고 있음을 시사합니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · EWYUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_ewy_15m"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1일봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_ewy_1d"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>반도체 대형주 자사주 매입·소각</b></td>
+        <td>SK하이닉스 40조원 규모 자사주 매입 및 전량 소각 발표, 삼성전자도 90조~110조원 규모 주주환원 계획 이사회 승인 — 코스피 시총의 약 절반을 차지하는 두 종목의 하방 지지력 강화</td>
+        <td>9/1(화) 코스피가 장중 -1.28%까지 밀렸다가 반도체 대형주 반등에 힘입어 +0.23% 상승 마감(전약후강 패턴)</td>
+      </tr>
+      <tr>
+        <td><b>8월 반도체 수출 사상 최대</b></td>
+        <td>8월 한국 반도체 수출이 역대 최대치를 기록하며 AI·메모리 펀더멘털이 지수 하단을 지지, EWY는 2026년 연중 +70%대 상승(AI發 메모리 슈퍼사이클 반영)</td>
+        <td>실적·수출 펀더멘털이 지수 급락 국면마다 저가 매수세 유입의 근거로 작용</td>
+      </tr>
+      <tr>
+        <td><b>연준 매파 스탠스 확산 우려</b></td>
+        <td>잭슨홀 이후 매파적 연준 기조가 다른 위원들에게도 확산되는지 시장이 예의주시 중, 9/2 새벽 마이클 바 이사 발언 예정</td>
+        <td>추가 금리인상 시사 시 장기금리 상승 및 성장주(반도체) 밸류에이션 부담 확대 가능</td>
+      </tr>
+      <tr>
+        <td><b>지정학 리스크·개별 이슈 혼재</b></td>
+        <td>미국-이란 무력 충돌 재개 우려로 지정학 긴장 재확대, SK그룹 회장의 일본 반도체 공장 설립 검토설(SK하이닉스 측 "사실무근" 부인), 삼성바이오로직스 3조원 유상증자에 따른 지분 희석 우려</td>
+        <td>지수 변동성 확대 요인이나 개별 이슈 성격이 강해 시장 전체 추세보다는 종목별 노이즈로 작용</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 최근 코스피·EWY의 변동성은 <b>연준 매파 우려발 하락과 반도체 대형주 자사주 매입·수출 펀더멘털발 반등</b>이 반복되는
+      '전약후강' 패턴이 특징입니다. 삼성전자·SK하이닉스가 지수의 약 절반을 차지하는 구조상, 두 종목의 자사주 정책과
+      미국 반도체·AI 센티먼트가 EWY 방향성을 좌우하는 핵심 변수입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">상승쐐기 상단 저항</div>
+        <div class="value">~$190</div>
+        <div class="sub">돌파 시 8월 이전 고점대 재도전</div>
+      </div>
+      <div class="kpi">
+        <div class="label">SMA20 (15분봉)</div>
+        <div class="value">$176.41</div>
+        <div class="sub">단기 지지·저항 공방 라인</div>
+      </div>
+      <div class="kpi">
+        <div class="label">8월 저점 지지</div>
+        <div class="value">~$164</div>
+        <div class="sub">붕괴 시 추세 전환 신호</div>
+      </div>
+    </div>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>SK하이닉스·삼성전자 대규모 자사주 매입·소각 및 주주환원 계획으로 대형주 하방 경직성 강화</li>
+        <li>8월 반도체 수출 사상 최대 — AI·메모리 슈퍼사이클 펀더멘털 지속 확인</li>
+        <li>일봉 OI-가격 상관관계 '신규 진입 유입 — 추세 강함'(7.08)으로 견조한 신규 매수세 유입 신호</li>
+        <li>EWY·EWT(대만) 등 아시아 반도체 ETF가 2026년 AI發 랠리로 연중 50~70%대 상승, 구조적 강세 사이클 지속</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>연준 매파 스탠스 확산 우려 — 추가 금리인상 시사 시 반도체 등 성장주 밸류에이션 부담 확대</li>
+        <li>2026년 코스피는 급등락이 매우 심한 한 해로, 6~7월에만 서킷브레이커가 다수 발동될 정도로 변동성 큰 시장</li>
+        <li>미국-이란 지정학 리스크 재확대 — 위험자산 전반 리스크오프 소지</li>
+        <li>15분봉 기준 SMA200($179.46) 하회 지속 — 중기 추세 약화 신호와 신규 매수세 유입이 상충하는 혼조 구간</li>
+        <li>상승쐐기 패턴 특성상 하방 이탈 시 기술적 매도 압력 확대 가능</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>상승쐐기 상단 돌파 및 SMA200($179.46) 회복 시 $190 재도전, 반도체 대형주 자사주 매입 효과 지속 시 신고가 경신 가능</div>
+      <div class="scenario base"><b>기본</b>$170~$182 박스권에서 연준 위원 발언·FOMC(9/17) 대기하며 등락, 반도체 대형주 개별 이슈에 따른 변동성 지속</div>
+      <div class="scenario bear"><b>약세</b>연준 매파 확산 확인 및 지정학 리스크 심화 시 SMA20($176.41) 붕괴 후 8월 저점($164) 재테스트 가능</div>
+    </div>
+  </section>
+
+  <!-- 3. 주요일정 -->
+  <section>
+    <h2>3. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 2일 (수) 오전 2:05</td>
+        <td>연준 마이클 바 이사 발언 — 매파적 기조가 다른 위원들에게 확산되는지 확인 필요</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 3일 (목)</td>
+        <td>연준 베이지북 발표 + 월러 이사 인플레이션 발언</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>삼성전자·SK하이닉스 자사주 매입·소각 진행상황, HBM 경쟁구도 재편 관련 뉴스플로우</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 초 (예정)</td>
+        <td>9월 한국 반도체 수출 통계 발표 — 8월 사상 최대치 이후 연속 여부 확인</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 3:27 (KST). 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  function initWidgets() {
+    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:EWYUSDT.P",
+      "interval": "15",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_ewy_15m"
+    });
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:EWYUSDT.P",
+      "interval": "D",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_ewy_1d"
+    });
+  }
+  initWidgets();
+</script>
+
+</body>
+</html>

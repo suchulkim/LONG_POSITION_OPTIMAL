@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>META 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#0866ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:170px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    position:relative;
+  }
+  .rev-fill{
+    height:100%;
+    border-radius:6px 0 0 6px;
+  }
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    position:relative;
+    width:100%;
+    height:600px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tradingview-widget-container{
+    width:100%;
+    height:100%;
+  }
+  .tradingview-widget-container > div{
+    width:100%;
+    height:100%;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 3:30 (KST)</span>
+    </div>
+    <h1>Meta Platforms (META) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: METAUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$576.68</div>
+        <div class="chg-down">일봉 -0.23% · 8월 저점($541) 이후 상승추세선 지지받으며 반등</div>
+      </div>
+      <div class="price-sub">
+        7/29 2분기 실적 발표 후 CapEx 부담으로 급락했으나, 8/29~31 대규모 소송 합의 소식과 저평가 재평가로 저점 대비 +6~7% 반등.
+        15분봉 SMA20($576.93) 부근에서 등락하며 SMA200($574.35)을 상회, 상승추세선 지지 확인 중.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · METAUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_meta_15m"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1일봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_meta_1d"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>대규모 소송 합의</b></td>
+        <td>8/29~31 소셜미디어 중독 관련 청소년 피해 소송에 대해 약 $170~180억 규모 합의 타결 소식 — 다수 주 검찰총장이 제기한 소송의 상당 부분 해소</td>
+        <td>장기간 시장을 짓눌러온 대형 법적 리스크가 부분적으로 해소되며 저점 반등의 핵심 트리거로 작용</td>
+      </tr>
+      <tr>
+        <td><b>애널리스트 저평가 재평가</b></td>
+        <td>"Meta 주가가 너무 저렴해 보인다"는 분석 확산, 최근 5거래일 중 4일 상승하며 2주간 +6.4% 반등 — 구글(GOOGL)과 유사한 저점 랠리 가능성 거론</td>
+        <td>AI 투자 부담 우려로 눌렸던 밸류에이션에 대한 재평가 시도, 저가 매수세 유입</td>
+      </tr>
+      <tr>
+        <td><b>2분기 실적 후 CapEx 충격(배경)</b></td>
+        <td>7/29 실적에서 매출은 컨센서스 상회($608억, +28%YoY)했으나 EPS 미스($6.18 vs 컨센 $7.22), 2026년 CapEx 가이던스 $1,300~1,450억으로 상향, 분기 잉여현금흐름 급감(-$7.84억)에 시간외 -8~10% 급락</td>
+        <td>이후 한 달간 하락 압력의 배경이 된 이벤트, 최근 반등은 이 충격을 일부 되돌리는 과정</td>
+      </tr>
+      <tr>
+        <td><b>OpenAI發 광고시장 경쟁 리스크</b></td>
+        <td>OpenAI의 광고 사업이 빠르게 성장하며 Google·Meta의 디지털 광고 점유율을 잠식할 수 있다는 우려 부각(Evercore ISI 등)</td>
+        <td>핵심 수익원인 광고 사업에 대한 장기 경쟁 구도 재편 우려, 밸류에이션 상단 제약 요인</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 최근 반등은 <b>소송 리스크 해소와 저평가 인식 확산</b>이 트리거였습니다. 다만 배경에는 여전히
+      2분기 CapEx 충격의 여진과 OpenAI發 광고 경쟁 리스크가 깔려 있어, 반등이 추세 전환으로 이어질지는
+      추가 확인이 필요한 국면입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>2분기 매출 $608억(+28%YoY), 광고매출 +27%, 일일활성사용자(DAP) 36.0억(+3%YoY) — 핵심 사업 견조</li>
+        <li>대형 소송 리스크 부분 해소로 불확실성 축소, 저평가 인식 확산에 따른 재평가 랠리 기대</li>
+        <li>Reality Labs 매출 +16%YoY(AI 글래스 호조), 손실폭도 예상($50.7억)보다 양호($46.2억)</li>
+        <li>WhatsApp 유료 메시징 등 신규 수익원(Family of Apps 기타매출) +73%YoY로 고성장 — 광고 의존도 다변화 신호</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>2026년 CapEx $1,300~1,450억 가이던스로 대폭 상향, 분기 잉여현금흐름 사실상 소진(-$7.84억) — AI 투자 부담 지속</li>
+        <li>EPS 컨센서스 미스로 6분기 연속 서프라이즈 행진 종료, 3분기 매출 가이던스($610~640억)도 컨센서스 소폭 하회</li>
+        <li>OpenAI 등 신규 경쟁자의 광고시장 진출 — 장기 점유율 리스크</li>
+        <li>Reality Labs 누적 손실 $800억 이상 지속 — 장기 수익성에 대한 의문 여전</li>
+        <li>청소년 관련 추가 소송이 2026년 중 다수 진행 예정 — 이번 합의로 모든 리스크가 해소된 것은 아님</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>저항선($590) 돌파 시 8월 고점권($600대) 재도전, 소송 리스크 추가 해소 및 AI 투자 성과 가시화 시 지속 상승</div>
+      <div class="scenario base"><b>기본</b>$555~$590 박스권에서 소송·매크로 변수 소화, FOMC(9/17) 대기 심리 지속</div>
+      <div class="scenario bear"><b>약세</b>상승추세선(현재 ~$560 부근) 붕괴 시 CapEx 부담 재부각되며 8월 저점($541~520)대 재테스트 가능</div>
+    </div>
+  </section>
+
+  <!-- 3. 매출구조 -->
+  <section>
+    <h2>3. 매출 구조 (2026년 2분기 기준)</h2>
+    <table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>📢 광고(Family of Apps - Advertising)</td><td class="num">$59.36B</td><td class="num" style="color:var(--pos-text)">+27%</td><td class="num">97.6%</td></tr>
+      <tr><td>💬 기타(WhatsApp 유료메시징 등)</td><td class="num">$1.00B</td><td class="num" style="color:var(--pos-text)">+73%</td><td class="num">1.6%</td></tr>
+      <tr><td>🥽 Reality Labs(AI글래스·Quest)</td><td class="num">$0.43B</td><td class="num" style="color:var(--pos-text)">+16%</td><td class="num">0.7%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$60.8B</b></td><td class="num"><b>+28%</b></td><td class="num"><b>100%</b></td></tr>
+    </table>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">광고</div>
+        <div class="rev-track"><div class="rev-fill" style="width:97.6%; background:#0866ff;"></div></div>
+        <div class="rev-pct">97.6%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">기타(WhatsApp 등)</div>
+        <div class="rev-track"><div class="rev-fill" style="width:1.6%; background:#34c759;"></div></div>
+        <div class="rev-pct">1.6%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Reality Labs</div>
+        <div class="rev-track"><div class="rev-fill" style="width:0.7%; background:#8e44ad;"></div></div>
+        <div class="rev-pct">0.7%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조로, OpenAI 등 신규 경쟁자의 광고시장 진출이
+      장기적으로 부담이 될 수 있는 이유입니다. Reality Labs는 매출 비중이 1% 미만에 불과하지만
+      영업손실은 분기당 $46억에 달해, 손익 기여도와 매출 비중의 괴리가 매우 큰 사업부입니다.
+      WhatsApp 유료 메시징 등 신규 수익원(+73%YoY)이 아직 작지만 가장 빠르게 성장하는 부문입니다.
+    </div>
+  </section>
+
+  <!-- 4. 주요일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>지속</td>
+        <td>청소년 관련 추가 소송(2026년 다수 재판 예정) 진행상황 — 이번 합의 이후 잔여 리스크 확인 필요</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>OpenAI 광고사업 확장 관련 뉴스플로우 — Meta·Google 광고 점유율 영향 주시</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>11월 4일 (수) 새벽 (예정)</td>
+        <td>FY2026 3분기 실적 발표 (11/3 미 증시 마감 후, 한국시간 익일 새벽) — EPS 컨센서스 $6.61(YoY -8.8%), CapEx 가이던스 추가 조정 여부 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 3:30 (KST) / 실적은 META FY2026 Q2(발표일 2026.07.29) 기준. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  function initWidgets() {
+    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:METAUSDT.P",
+      "interval": "15",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_meta_15m"
+    });
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:METAUSDT.P",
+      "interval": "D",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_meta_1d"
+    });
+  }
+  initWidgets();
+</script>
+
+</body>
+</html>

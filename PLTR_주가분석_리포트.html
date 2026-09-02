@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLTR 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{margin-top:36px;}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+  }
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 6:20 (KST)</span>
+    </div>
+    <h1>Palantir (PLTR) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: PLTRUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$178.69</div>
+        <div class="chg-down">일봉 -0.82% · 전일 종가 $179.92(-3.47%) 대비 약세 지속</div>
+      </div>
+      <div class="price-sub">
+        8월 급등 후 고점 부근에서 조정. 일봉 SMA20($178.49) 근처, 15분봉 SMA20($179.08)·SMA200($183.53) 하회.
+        멀티 TF RSI 15분~1H 28~37로 단기 과매도 구간. OI 해석: 롱 청산에 의한 하락 — 하락 약함(반등 여지).
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · PLTRUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_pltr_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · PLTRUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_pltr_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 8월 초 실적 이후 급등, 상승 채널 상단 근처에서 조정 중. SMA20 근처 지지 시도. RSI 일봉 56대로 아직 과열 해소 여지.<br>
+      <b>15분봉</b>: SMA20·SMA200 하회, 단기 하락 채널. OI상 롱 청산 성격의 하락으로 추세 약함 → 기술적 반등 가능성 존재.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>Q2 2026 실적 호조 — 매출 +93% YoY, 미국 상업 +149%, 미국 정부 +90%, Rule of 40 155%</li>
+        <li>FY2026 가이던스 상향 — 매출 약 $8.15B(+82% YoY), 미국 상업 +134% 이상</li>
+        <li>미 육군 TITAN 시스템 8대 공급 계약 발표(9/1) — 국방 AI 수주 지속</li>
+        <li>AIP(인공지능 플랫폼) 기반 상업·정부 수요 동시 확대, 순유지율(NDR) 157%</li>
+        <li>OI 롱 청산 성격 하락 → 추세 약화, 단기 과매도(RSI 28~37)로 기술적 반등 여지</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>밸류에이션 부담 — P/E 150배대, 이미 고성장 상당 부분 선반영</li>
+        <li>8월 급등 후 고점 부근 조정, 15분봉 SMA200 하회로 단기 모멘텀 약세</li>
+        <li>매크로(금리·유가) 및 소프트웨어/AI 섹터 전반 약세 시 동반 조정</li>
+        <li>상업 성장 가속에도 정부 의존도는 여전히 높음 — 예산·정치 리스크</li>
+        <li>목표가 평균 약 $192 수준으로 현재가 대비 상승 여력 제한적(컨센서스 Buy)</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>SMA20 회복 + $185 돌파 시 $190~$200 재도전. 국방·상업 추가 수주 뉴스 시 모멘텀 재개</div>
+      <div class="scenario base"><b>기본</b>$170~$185 박스권. 실적 소화 국면에서 횡보하며 11월 Q3 실적 대기</div>
+      <div class="scenario bear"><b>약세</b>$170 이탈 시 $155~$160 지지선 테스트. 매크로 악화 또는 밸류에이션 재평가 시 추가 조정</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 핵심 실적 구조 (Q2 2026)</h2>
+    <table>
+      <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
+      <tr><td>📊 총 매출 성장</td><td class="num">+93% YoY</td><td class="num">기록적 성장률</td></tr>
+      <tr><td>🇺🇸 미국 매출</td><td class="num">+115% YoY</td><td class="num">전체의 약 81%</td></tr>
+      <tr><td>🏢 미국 상업</td><td class="num">+149% YoY</td><td class="num">AIP 채택 가속</td></tr>
+      <tr><td>🛡 미국 정부</td><td class="num">+90% YoY</td><td class="num">국방·민수 병행</td></tr>
+      <tr><td>📈 Rule of 40</td><td class="num">155%</td><td class="num">12분기 연속 개선</td></tr>
+      <tr><td>🎯 FY2026 가이던스</td><td class="num">~$8.15B</td><td class="num">+82% YoY (상향)</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.02 예상</td><td class="num">Q3 2026 (장 마감 후)</td></tr>
+    </table>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">미국 정부</div>
+        <div class="rev-track"><div class="rev-fill" style="width:42%; background:#0071e3;"></div></div>
+        <div class="rev-pct">~42%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">미국 상업</div>
+        <div class="rev-track"><div class="rev-fill" style="width:39%; background:#34c759;"></div></div>
+        <div class="rev-pct">~39%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">국제</div>
+        <div class="rev-track"><div class="rev-fill" style="width:19%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">~19%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → Palantir는 <b>AIP 기반 상업 AI + 국방/정부</b> 투트랙 성장 구조입니다.
+      Q2에 미국 상업이 폭발적으로 성장했고, TITAN 등 국방 수주도 이어지고 있습니다.
+      단기적으로는 급등 후 조정 + 높은 밸류에이션이 부담이며, OI상 롱 청산 성격의 하락은 기술적 반등 가능성을 시사합니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>수시</td>
+        <td>미 육군 TITAN 등 국방·정부 추가 계약 발표</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 — 성장주·소프트웨어 민감</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>11월 2일 (월) 예상</td>
+        <td>Q3 2026 실적 발표 (장 마감 후) — 상업 성장·가이던스 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>AIP 채택 확대, Sovereignty Bootcamp·대형 딜 소식</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 6:20 (KST) / Q2 실적은 2026.08.03 발표 기준.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_pltr_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:PLTRUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_pltr_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:PLTRUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

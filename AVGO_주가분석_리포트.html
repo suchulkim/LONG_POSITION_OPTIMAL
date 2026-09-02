@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVGO 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#cc0000; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#ff5c5c; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#ff5c5c; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
+  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
+  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
+  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+  section{margin-top:36px;}
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
+  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
+  .callout b{color:var(--text);}
+  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
+  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 7:05 (KST)</span>
+    </div>
+    <h1>Broadcom (AVGO) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AVGOUSDT.P</span></h1>
+    <div class="countdown-banner">⏰ FY2026 3분기 실적 — 9/3(목) 오전 5시(KST) 발표 예정</div>
+    <div class="price-card">
+      <div>
+        <div class="price-main">$370.10</div>
+        <div class="chg-down">일봉 -0.41% · 실적 대기 $365~$377 수렴</div>
+      </div>
+      <div class="price-sub">가이던스 상향 여부가 핵심. 직전 분기 서프라이즈에도 미상향으로 -12.6% 급락 전례.</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AVGOUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_avgo_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AVGOUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_avgo_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;"><b>일봉/15분봉</b>: SMA20·SMA200 수렴, 실적 대기 횡보.</div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain"><li>AI반도체 수주 $300억+, 백로그 탄탄</li><li>OpenAI·Google·Meta 등 커스텀칩 고객</li><li>Strong Buy 우세, 목표주가 $518+</li><li>3분기 AI $16B 가이던스</li></ul>
+    </div>
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain"><li>가이던스 미상향 시 급락 전례</li><li>총이익률 하락 압력(AI 믹스)</li><li>내재변동성 ±8.7% — 기대치 높음</li><li>밸류에이션 프리미엄</li></ul>
+    </div>
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>가이던스 상향 시 $400+ 갭업, 고점 재도전</div>
+      <div class="scenario base"><b>기본</b>부합 시 $355~$390 변동성 장세</div>
+      <div class="scenario bear"><b>약세</b>미상향 시 -10% 급락, $330~$340 테스트</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 매출 구조 (FY2026 2분기)</h2>
+    <table>
+<tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+<tr><td>🖥️ 반도체</td><td class="num">$15.0B</td><td class="num" style="color:var(--pos-text)">+79%</td><td class="num">67.6%</td></tr>
+<tr><td>&nbsp;&nbsp;└ AI반도체</td><td class="num">$10.8B</td><td class="num" style="color:var(--pos-text)">+143%</td><td class="num">48.7%</td></tr>
+<tr><td>💾 인프라 SW</td><td class="num">$7.2B</td><td class="num" style="color:var(--pos-text)">+9%</td><td class="num">32.4%</td></tr>
+<tr><td><b>합계</b></td><td class="num"><b>$22.2B</b></td><td class="num"><b>+48%</b></td><td class="num"><b>100%</b></td></tr>
+</table>
+<div class="callout">→ AI반도체가 매출의 ~49%. <b>3분기 실적·가이던스</b>가 즉시 방향성을 결정합니다.</div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>9월 3일 (목) 오전 5:00</td><td><b>FY2026 3분기 실적</b></td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>9월 3일 (목) 오전 6:00</td><td>실적 컨퍼런스콜</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 7:05 (KST).
+  </footer>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_avgo_daily",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AVGOUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_avgo_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:AVGOUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

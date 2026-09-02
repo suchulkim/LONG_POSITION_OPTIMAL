@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOOGL 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#4285f4;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:170px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    position:relative;
+  }
+  .rev-fill{
+    height:100%;
+    border-radius:6px 0 0 6px;
+  }
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    position:relative;
+    width:100%;
+    height:600px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tradingview-widget-container{
+    width:100%;
+    height:100%;
+  }
+  .tradingview-widget-container > div{
+    width:100%;
+    height:100%;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 3:29 (KST)</span>
+    </div>
+    <h1>Alphabet (GOOGL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: GOOGLUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$337.23</div>
+        <div class="chg-down">일봉 -0.01% · 8월 고점($382) 대비 하락채널 지속, 4개월 연속 하락월 기록</div>
+      </div>
+      <div class="price-sub">
+        AI 리더십 이탈 및 대규모 CapEx 상향 충격으로 8월 고점 대비 약 -12% 조정. 15분봉 SMA200($339.33) 하회,
+        일봉 OI-가격 상관관계는 '롱 청산에 의한 하락 — 하락 약함'(-0.64)으로 패닉보다는 포지션 정리 성격의 조정입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · GOOGLUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_googl_15m"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1일봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_googl_1d"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 하락의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>AI 리더십 이탈</b></td>
+        <td>8/5 구글 수석과학자 제프 딘(27년 재직)이 퇴사해 동료들과 독립 AI 스타트업 'Discovery Loop' 창업, 데미스 하사비스는 딥마인드 CEO에서 회장·알파벳 수석과학자로 이동(실무는 코레이 카부쿠오글루 SVP가 승계)</td>
+        <td>OpenAI·Anthropic과의 AI 인재 경쟁 심화 국면에서 핵심 기술리더 공백 우려, 채용 경쟁력 약화 우려로 투자심리 위축</td>
+      </tr>
+      <tr>
+        <td><b>CapEx 대폭 상향 충격</b></td>
+        <td>2026년 자본지출 가이던스를 $1,800~1,900억 → $1,950~2,050억으로 상향(1분기 만에 $150억 증액), 분기 잉여현금흐름(FCF)이 사상 처음으로 마이너스(-$59억) 전환</td>
+        <td>클라우드 수요 대응이라는 명분에도 수익성·현금흐름 희석 우려로 실적 발표 당일 주가 변동성 확대</td>
+      </tr>
+      <tr>
+        <td><b>4개월 연속 하락월</b></td>
+        <td>Alphabet 주가가 4개월 연속 월간 하락 마감(CNBC "Alphabet notches fourth down month in a row"), 최근 90일간 약 -8.6% 하락</td>
+        <td>단기 모멘텀 약화가 누적되며 기술적 하락채널 형성, 저항선 돌파 실패 반복</td>
+      </tr>
+      <tr>
+        <td><b>규제·파트너십 리스크</b></td>
+        <td>EU 반독점 당국이 구글의 퍼블리셔向 제안에 대한 피드백을 수렴 중(뉴스 광고 관련 규제), 웨이모-우버 파트너십 관계 균열설 보도</td>
+        <td>규제 리스크 및 로보택시 사업 확장 전략 불확실성이 배경 압박 요인으로 작용</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 이번 조정은 <b>펀더멘털 훼손보다 AI 인재 이탈이라는 심리적 요인과 CapEx 상향에 따른 단기 수익성 우려</b>가 겹친 국면입니다.
+      OI 지표상 '롱 청산에 의한 하락(하락 약함)'으로 나타나 패닉 매도보다는 포지션 조정 성격이 강하며,
+      실적 자체는 12분기 연속 두 자릿수 성장을 이어가는 등 견조합니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>2분기 매출 $1,198억(+24%YoY) — 12분기 연속 두 자릿수 성장, 컨센서스($1,169억) 상회</li>
+        <li>Google Cloud 매출 +82%YoY($248억), 영업이익 3배 이상 증가, 백로그 $5,140억(전분기 대비 +$500억 이상 순증)</li>
+        <li>Search(+17%)·YouTube 광고(+13%) 등 핵심 광고 사업 견조, Gemini Enterprise 포춘100의 90% 채택</li>
+        <li>Fervo Energy와 396MW 지열발전 전력구매계약(PPA) 체결 — AI 데이터센터 전력 확보 전략 지속</li>
+        <li>TPU(자체 AI 반도체) 최초 하드웨어 매출 인식 시작 — 커스텀 실리콘 수익화 초기 단계</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>제프 딘 등 핵심 AI 인재 이탈 지속 시 OpenAI·Anthropic 대비 기술 경쟁력 약화 우려</li>
+        <li>CapEx $2,050억까지 상향 + 분기 FCF 사상 최초 마이너스 — 고강도 투자국면의 수익성 부담 지속</li>
+        <li>EU 반독점 규제 리스크(퍼블리셔 관련), 웨이모-우버 파트너십 불확실성 등 규제·전략 리스크 산재</li>
+        <li>기술적으로 4개월 연속 하락월 + 하락채널 지속 — 추세 반전 확인까지 시간 필요</li>
+        <li>9/16까지 진행 중인 증권 집단소송 옵트아웃 마감 — 소송 관련 헤드라인 리스크 상존</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>하락채널 상단($352) 돌파 및 SMA200(15분봉 $339.33) 회복 시 8월 고점($382) 재도전, Cloud 고성장 지속 확인 시 추가 반등</div>
+      <div class="scenario base"><b>기본</b>$330~$352 박스권에서 AI 인재 이슈·매크로 변수 소화하며 등락, FOMC(9/17) 대기 심리 지속</div>
+      <div class="scenario bear"><b>약세</b>하락채널 하단 붕괴 및 추가 AI 인재 이탈 뉴스 발생 시 $320 지지 재테스트, 7월 급락 저점($296) 노출 가능성</div>
+    </div>
+  </section>
+
+  <!-- 3. 매출구조 -->
+  <section>
+    <h2>3. 매출 구조 (2026년 2분기 기준)</h2>
+    <table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>🔍 검색 및 기타(Search & Other)</td><td class="num">$63.3B</td><td class="num" style="color:var(--pos-text)">+17%</td><td class="num">52.8%</td></tr>
+      <tr><td>☁️ Google Cloud</td><td class="num">$24.8B</td><td class="num" style="color:var(--pos-text)">+82%</td><td class="num">20.7%</td></tr>
+      <tr><td>📱 구독·플랫폼·기기</td><td class="num">$12.9B</td><td class="num" style="color:var(--pos-text)">+15%</td><td class="num">10.8%</td></tr>
+      <tr><td>▶️ YouTube 광고</td><td class="num">$11.1B</td><td class="num" style="color:var(--pos-text)">+13%</td><td class="num">9.2%</td></tr>
+      <tr><td>🌐 Google 네트워크(기타)</td><td class="num">$7.2B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">6.0%</td></tr>
+      <tr><td>🚗 기타 베팅(Waymo 등)</td><td class="num">$0.38B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">0.3%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$119.8B</b></td><td class="num"><b>+24%</b></td><td class="num"><b>100%</b></td></tr>
+    </table>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">검색 및 기타</div>
+        <div class="rev-track"><div class="rev-fill" style="width:52.8%; background:#4285f4;"></div></div>
+        <div class="rev-pct">52.8%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Google Cloud</div>
+        <div class="rev-track"><div class="rev-fill" style="width:20.7%; background:#34a853;"></div></div>
+        <div class="rev-pct">20.7%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">구독·플랫폼·기기</div>
+        <div class="rev-track"><div class="rev-fill" style="width:10.8%; background:#fbbc04;"></div></div>
+        <div class="rev-pct">10.8%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">YouTube 광고</div>
+        <div class="rev-track"><div class="rev-fill" style="width:9.2%; background:#ea4335;"></div></div>
+        <div class="rev-pct">9.2%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Google 네트워크</div>
+        <div class="rev-track"><div class="rev-fill" style="width:6.0%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">6.0%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → 검색 광고가 여전히 매출의 절반 이상(52.8%)을 차지하는 구조이나, <b>Google Cloud의 성장 기여도가 빠르게 확대</b>되고 있습니다(+82%YoY, 비중 20.7%).
+      백로그 $5,140억 중 절반 이상이 향후 24개월 내 매출로 인식될 예정이어서, Cloud가 향후 실적의 핵심 성장 동력으로 자리잡는 흐름입니다.
+      다만 이를 위한 CapEx 부담이 단기 수익성에는 역풍으로 작용하고 있습니다.
+    </div>
+  </section>
+
+  <!-- 4. 주요일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 4일 (금)</td>
+        <td>배당 락일(ex-date), 주당 $0.22 배당</td>
+        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 16일 (수)</td>
+        <td>증권 집단소송 옵트아웃(제외 신청) 마감일 — 관련 헤드라인 리스크 주시</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>AI 인재 이탈 관련 추가 뉴스플로우, EU 반독점 규제(퍼블리셔 제안) 진행상황</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 27일 (화) 새벽 (예정)</td>
+        <td>FY2026 3분기 실적 발표 (10/27 미 증시 마감 후) — Cloud 고성장 지속 여부 및 CapEx 가이던스 추가 조정 여부 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 3:29 (KST) / 실적은 Alphabet FY2026 Q2(발표일 2026.07.22) 기준. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  function initWidgets() {
+    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:GOOGLUSDT.P",
+      "interval": "15",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_googl_15m"
+    });
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "OKX:GOOGLUSDT.P",
+      "interval": "D",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_googl_1d"
+    });
+  }
+  initWidgets();
+</script>
+
+</body>
+</html>

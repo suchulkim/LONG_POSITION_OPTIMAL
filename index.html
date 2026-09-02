@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주가 분석 리포트 · Watchlist</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #181b22;
+    --card-hover: #1e222c;
+    --text: #eef0f4;
+    --text-soft: #9aa2b1;
+    --border: #2a2e38;
+    --accent: #4ea1ff;
+    --up: #ff6b6b;
+    --down: #5fd188;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+  header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+  }
+  h1 {
+    font-size: 26px;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--text-soft);
+  }
+  .search-wrap {
+    margin: 20px 0 24px;
+  }
+  .search-wrap input {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+  }
+  .search-wrap input:focus {
+    border-color: var(--accent);
+  }
+  .search-wrap input::placeholder {
+    color: var(--text-soft);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  a.card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  }
+  a.card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  a.card .sym {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    margin-bottom: 4px;
+  }
+  a.card .name {
+    font-size: 12.5px;
+    color: var(--text-soft);
+  }
+  a.card .tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #20242d;
+    color: var(--text-soft);
+  }
+  a.card .tag.stock { color: #4ea1ff; }
+  a.card .tag.etf { color: #34c759; }
+  a.card .tag.crypto { color: #f7931a; }
+  a.card .tag.commodity { color: #e0b84d; }
+  a.card .tag.lev { color: #ff6b6b; }
+  .section-title {
+    font-size: 13px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 28px 0 12px;
+  }
+  footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  .count {
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026.09.02 · Watchlist Reports</div>
+    <h1>주가 분석 리포트</h1>
+    <p class="sub">각 카드를 클릭하면 해당 종목 분석 리포트(실시간 차트 포함)로 이동합니다.</p>
+  </header>
+
+  <div class="search-wrap">
+    <input type="search" id="q" placeholder="종목 검색 (예: NVDA, 비트코인…)" autocomplete="off">
+  </div>
+  <div class="count" id="count"></div>
+
+  <div class="section-title">주식 · ADR</div>
+  <div class="grid" id="stocks">
+    <a class="card" href="AAPL_주가분석_리포트.html" data-q="aapl apple 애플"><div class="sym">AAPL</div><div class="name">Apple</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AMD_주가분석_리포트.html" data-q="amd advanced micro"><div class="sym">AMD</div><div class="name">Advanced Micro Devices</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AMZN_주가분석_리포트.html" data-q="amzn amazon 아마존"><div class="sym">AMZN</div><div class="name">Amazon</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AVGO_주가분석_리포트.html" data-q="avgo broadcom 브로드컴"><div class="sym">AVGO</div><div class="name">Broadcom</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="GOOGL_주가분석_리포트.html" data-q="googl google alphabet 구글"><div class="sym">GOOGL</div><div class="name">Alphabet (Google)</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="META_주가분석_리포트.html" data-q="meta facebook 메타"><div class="sym">META</div><div class="name">Meta Platforms</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="MU_주가분석_리포트.html" data-q="mu micron 마이크론"><div class="sym">MU</div><div class="name">Micron Technology</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="NVDA_주가분석_리포트.html" data-q="nvda nvidia 엔비디아"><div class="sym">NVDA</div><div class="name">NVIDIA</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="PLTR_주가분석_리포트.html" data-q="pltr palantir 팔란티어"><div class="sym">PLTR</div><div class="name">Palantir</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="TSLA_주가분석_리포트.html" data-q="tsla tesla 테슬라"><div class="sym">TSLA</div><div class="name">Tesla</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="TSM_주가분석_리포트.html" data-q="tsm tsmc 대만 반도체 파운드리"><div class="sym">TSM</div><div class="name">TSMC (ADR)</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="MSTR_주가분석_리포트.html" data-q="mstr microstrategy 마이크로스트래티지"><div class="sym">MSTR</div><div class="name">MicroStrategy</div><span class="tag stock">Stock</span></a>
+  </div>
+
+  <div class="section-title">ETF · 레버리지</div>
+  <div class="grid" id="etfs">
+    <a class="card" href="QQQ_주가분석_리포트.html" data-q="qqq nasdaq 나스닥"><div class="sym">QQQ</div><div class="name">Invesco QQQ</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="SPY_주가분석_리포트.html" data-q="spy sp500 s&amp;p"><div class="sym">SPY</div><div class="name">S&amp;P 500 ETF</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="SOXL_주가분석_리포트.html" data-q="soxl semiconductor 반도체 레버리지"><div class="sym">SOXL</div><div class="name">반도체 3x ETF</div><span class="tag lev">3x Lev</span></a>
+    <a class="card" href="SKHY_주가분석_리포트.html" data-q="skhy sk hynix 하이닉스"><div class="sym">SKHY</div><div class="name">SK Hynix 관련</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="SNDK_주가분석_리포트.html" data-q="sndk sandisk 샌디스크"><div class="sym">SNDK</div><div class="name">SanDisk 관련</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="EWY_주가분석_리포트.html" data-q="ewy korea 한국"><div class="sym">EWY</div><div class="name">iShares Korea ETF</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="KORU_주가분석_리포트.html" data-q="koru korea 3x 레버리지"><div class="sym">KORU</div><div class="name">Korea 3x ETF</div><span class="tag lev">3x Lev</span></a>
+  </div>
+
+  <div class="section-title">크립토 · 원자재</div>
+  <div class="grid" id="crypto">
+    <a class="card" href="BTC_주가분석_리포트.html" data-q="btc bitcoin 비트코인"><div class="sym">BTC</div><div class="name">Bitcoin</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="ETH_주가분석_리포트.html" data-q="eth ethereum 이더리움"><div class="sym">ETH</div><div class="name">Ethereum</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="SOL_주가분석_리포트.html" data-q="sol solana 솔라나"><div class="sym">SOL</div><div class="name">Solana</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="ONDO_주가분석_리포트.html" data-q="ondo"><div class="sym">ONDO</div><div class="name">Ondo Finance</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="CRCL_주가분석_리포트.html" data-q="crcl circle usdc"><div class="sym">CRCL</div><div class="name">Circle (USDC)</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="XAU_주가분석_리포트.html" data-q="xau gold 금"><div class="sym">XAU</div><div class="name">Gold (XAU/USD)</div><span class="tag commodity">Commodity</span></a>
+  </div>
+
+  <footer>
+    ※ 각 리포트는 공개 차트·뉴스 기반 분석이며 투자 조언이 아닙니다.<br>
+    GitHub Pages에 업로드하면 <code>https://&lt;username&gt;.github.io/&lt;repo&gt;/</code> 형태로 접근할 수 있습니다.
+  </footer>
+</div>
+<script>
+  const cards = [...document.querySelectorAll('a.card')];
+  const countEl = document.getElementById('count');
+  function updateCount() {
+    const n = cards.filter(c => c.style.display !== 'none').length;
+    countEl.textContent = n + '개 리포트';
+  }
+  updateCount();
+  document.getElementById('q').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    cards.forEach(c => {
+      const hay = (c.dataset.q + ' ' + c.textContent).toLowerCase();
+      c.style.display = !q || hay.includes(q) ? '' : 'none';
+    });
+    updateCount();
+  });
+</script>
+</body>
+</html>

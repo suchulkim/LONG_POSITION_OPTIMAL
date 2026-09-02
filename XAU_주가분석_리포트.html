@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XAU 금 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{margin-top:36px;}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 7:00 (KST)</span>
+    </div>
+    <h1>Gold (XAU) 분석 리포트<span class="ticker">XAU/USD · Perpetual: XAUUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$4,331.9</div>
+        <div class="chg-up">일봉 +0.04% · 최근 급락 후 소폭 반등</div>
+      </div>
+      <div class="price-sub">
+        상승 채널 중하단. 일봉 SMA20($4,494)·SMA200($4,521) 하회.
+        15분봉 SMA20($4,314) 상회·SMA200($4,401) 하회. OI 해석: 숏 청산에 의한 상승 — 추세 약함.
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · XAUUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_xau_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · XAUUSDT.P (OKX) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_xau_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 8월 반등 후 하락, SMA20·SMA200 하회. 상승 채널 하단 지지 테스트 구간.<br>
+      <b>15분봉</b>: 급락 후 숏 청산 성격의 반등. SMA20 상회했으나 SMA200 하회로 단기 추세는 아직 약세.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>중동(이란) 긴장·지정학 리스크 — 전통적 안전자산 수요</li>
+        <li>중앙은행 금 매입 구조적 수요 (장기 지지)</li>
+        <li>인플레이션 재점화(유가 상승) 시 헤지 수요 가능</li>
+        <li>최근 급락 후 과매도 구간에서의 기술적 반등 여지</li>
+        <li>장기 상승 추세·채널 구조 유지 시 지지 가능</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>금리 재인상 우려</b> — FOMC(9/17) 인상 확률 ~67%, 국채 수익률 4.8%대</li>
+        <li>달러 강세 + 실질금리 상승 → 무수익 자산(금) 매력 저하</li>
+        <li>일봉 SMA20·SMA200 하회, 최근 3~4일 급락(~6%)</li>
+        <li>지정학 리스크에도 불구하고 금리·달러가 상방 압력으로 작용</li>
+        <li>OI상 상승 추세 약함 (숏 청산 성격)</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>$4,400~$4,450 회복 + SMA20 재돌파 시 $4,600 재도전. 지정학 심화·금리 기대 완화 시</div>
+      <div class="scenario base"><b>기본</b>$4,200~$4,450 박스권. FOMC·고용 지표 대기 구간에서 변동성 확대</div>
+      <div class="scenario bear"><b>약세</b>$4,250~$4,268 이탈 시 $4,100~$4,150 테스트. 금리 인상 확정·달러 추가 강세 시</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 시장 구조·특성</h2>
+    <table>
+      <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
+      <tr><td>🥇 자산</td><td class="num">금 (XAU/USD)</td><td class="num">안전자산·인플레 헤지</td></tr>
+      <tr><td>📊 주요 동인</td><td class="num">실질금리 · 달러 · 지정학</td><td class="num">현재는 금리가 우위</td></tr>
+      <tr><td>🏦 수요</td><td class="num">중앙은행 매입 + ETF</td><td class="num">구조적 지지</td></tr>
+      <tr><td>⚠️ 단기 압박</td><td class="num">국채 수익률 상승 · 달러 강세</td><td class="num">기회비용 증가</td></tr>
+      <tr><td>📅 핵심 이벤트</td><td class="num">FOMC · NFP · 유가·중동</td><td class="num">매크로 민감</td></tr>
+    </table>
+
+    <div class="callout">
+      → 금은 현재 <b>금리·달러 상승</b>에 의해 압박받고 있습니다.
+      중동 긴장에도 불구하고 안전자산 수요가 금리 부담을 상쇄하지 못하는 구간입니다.
+      FOMC와 고용 지표가 단기 방향성을 결정할 가능성이 큽니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 4일 (금)</td>
+        <td>비농업 고용(NFP) — 금리 경로·달러 영향</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td><b>FOMC 금리결정</b> — 인상/동결이 금 가격 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>국채 수익률·달러·유가·중동 긴장 동향</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>중장기</td>
+        <td>중앙은행 금 매입, 실질금리 추이</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 7:00 (KST).
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_xau_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:XAUUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_xau_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:XAUUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

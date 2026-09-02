@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOXL 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{margin-top:36px;}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 6:40 (KST)</span>
+    </div>
+    <h1>SOXL 분석 리포트<span class="ticker">Direxion Daily Semiconductor Bull 3X · Perpetual: SOXLUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$102.97</div>
+        <div class="chg-down">일봉 -1.96% · 전일 대비 추가 약세</div>
+      </div>
+      <div class="price-sub">
+        하락 채널 중하단. 일봉 SMA20($122.08) 크게 하회. 멀티 TF RSI 28~38대로 과매도 근접.
+        OI 해석: 신규 숏 진입 — 하락 추세 강함.
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · SOXLUSDT.P (Bybit) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_soxl_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · SOXLUSDT.P (Bybit) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_soxl_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 6월 고점($300대) 이후 급락 채널 지속. SMA20($122) 하회 폭이 크고, RSI 약세. OI상 신규 숏 유입으로 하락 추세 강화.<br>
+      <b>15분봉</b>: SMA20($103.77)·SMA200($109.60) 모두 하회. 단기 반등 시도가 저항선에서 막히는 구조.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>AI·HBM·데이터센터 수요는 구조적으로 유지 — NVDA, MU, TSM, AVGO 등 펀더멘털 견조</li>
+        <li>고점 대비 60%대 조정으로 밸류에이션 부담 일부 완화</li>
+        <li>3배 레버리지 특성상 반도체 지수 반등 시 빠른 회복 가능</li>
+        <li>RSI 과매도 구간 진입 시 기술적 반등 여지</li>
+        <li>중장기 반도체 슈퍼사이클·AI CAPEX 스토리 유효</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>3배 레버리지</b> — 하락 시 손실 가속, 데일리 리밸런싱으로 장기 보유 불리</li>
+        <li>일봉 하락 채널 + SMA20 크게 하회, OI 신규 숏 유입으로 추세 강함</li>
+        <li>9월 계절성·FOMC 전후 금리 재인상 우려로 성장주·반도체 압박</li>
+        <li>유가·국채 수익률 상승 등 매크로 리스크오프</li>
+        <li>반도체 섹터 전반 약세 시 레버리지로 인해 추가 급락 가능</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>채널 상단·$110~$115 돌파 후 SMA20($122) 재도전. 반도체 대형주 실적·FOMC 완화 시 레버리지 반등</div>
+      <div class="scenario base"><b>기본</b>$95~$115 박스권. 하락 채널 지지와 단기 저항 사이에서 변동성 확대</div>
+      <div class="scenario bear"><b>약세</b>$100 이탈 시 $90~$95 테스트. 신규 숏 지속·매크로 악화 시 추가 하락 (레버리지 가속)</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 상품 구조</h2>
+    <table>
+      <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
+      <tr><td>📦 상품</td><td class="num">Direxion Daily Semiconductor Bull 3X</td><td class="num">반도체 지수 일일 3배 추종</td></tr>
+      <tr><td>📊 기초</td><td class="num">NYSE Semiconductor Index (또는 SOXX 유사)</td><td class="num">NVDA, MU, AMD, AVGO, TSM 등</td></tr>
+      <tr><td>⚡ 레버리지</td><td class="num">+3x (일일)</td><td class="num">장기 보유 시 경로 의존·감가</td></tr>
+      <tr><td>💰 보수</td><td class="num">약 0.75~0.91%</td><td class="num">연간</td></tr>
+      <tr><td>📈 주요 편입 비중</td><td class="num">NVDA, MU, AMD, AVGO, INTC, TSM 등</td><td class="num">AI·메모리·장비</td></tr>
+      <tr><td>⚠️ 리스크</td><td class="num">높은 변동성·청산·갭 리스크</td><td class="num">단기 트레이딩용</td></tr>
+    </table>
+
+    <div class="callout">
+      → SOXL은 <b>반도체 3배 레버리지 ETF</b>로, AI 붐에 따른 급등과 급락을 모두 경험했습니다.
+      현재 고점 대비 큰 폭 조정 + 신규 숏 유입 구간이므로, 추세 반전 확인 전까지는 하락 압력이 우세합니다.
+      레버리지 상품 특성상 단기 방향성 베팅에 적합하며, 중장기 홀딩은 불리할 수 있습니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 전 구간</td>
+        <td>9월 계절성 — 기술주·반도체 역사적 약세 경향 주의</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td><b>FOMC 금리결정</b> — 레버리지 성장주 민감도 최고</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>NVDA·MU·AVGO·TSM 개별 실적·가이던스, HBM·AI CAPEX 뉴스</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10~11월</td>
+        <td>반도체·장비주 실적 시즌 — 섹터 방향성 재확인</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. SOXL은 3배 레버리지 상품으로 원금 손실 위험이 매우 큽니다. 데이터 기준: 2026.09.02 오후 6:40 (KST).
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_soxl_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "BYBIT:SOXLUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_soxl_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "BYBIT:SOXLUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>

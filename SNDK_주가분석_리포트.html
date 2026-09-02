@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNDK 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{margin-top:36px;}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:var(--border);}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.02 (수) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 6:30 (KST)</span>
+    </div>
+    <h1>SanDisk (SNDK) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: SNDKUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$1,532.40</div>
+        <div class="chg-down">일봉 -0.10% · 전일 종가 $1,536.87(-1.90%) 대비 약세</div>
+      </div>
+      <div class="price-sub">
+        하락 채널 중하단. 일봉 SMA20($1,569) 하회.
+        15분봉 SMA20($1,534) 근처·SMA200($1,528) 상회. OI 해석: 롱 청산에 의한 하락 — 하락 약함.
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
+    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · SNDKUSDT.P (Binance) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_sndk_daily" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
+      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · SNDKUSDT.P (Binance) · 실시간</div>
+      <div class="tradingview-widget-container" style="height:480px;">
+        <div id="tv_sndk_15m" style="height:100%; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 6월 고점($2,300대) 이후 하락 채널 형성. SMA20($1,569) 하회 중. $1,450~$1,600 구간 지지 시도.<br>
+      <b>15분봉</b>: SMA20 근처 횡보, SMA200 상회. OI상 롱 청산 성격 하락으로 추세 약함 → 기술적 반등 여지.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>NAND·AI 스토리지 수요 폭증 — 데이터센터 SSD·엔터프라이즈 수요가 실적 견인</li>
+        <li>Q4 FY2026 매출 약 $9B 수준 기록, 고마진(Non-GAAP 총이익률 70%대 후반~80%) 지속</li>
+        <li>Kioxia와 일본 메모리 공장에 $31B 이상 투자 계획 — 중장기 공급 능력 확대</li>
+        <li>장기 공급계약(NBM) 다수 체결, 자사주 매입 프로그램 확대</li>
+        <li>OI 롱 청산 성격 하락 → 추세 약함, 고점 대비 30%+ 조정 후 기술적 반등 가능</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>고점($2,350대) 대비 큰 폭 조정, 일봉 SMA20 하회 + 하락 채널</li>
+        <li>메모리 사이클 특성상 가격 피크 이후 급격한 조정 리스크</li>
+        <li>밸류에이션이 이미 크게 상승한 구간 — 실적 눈높이 미달 시 변동성 확대</li>
+        <li>매크로(금리·유가) 및 반도체 섹터 전반 약세 시 동반 하락</li>
+        <li>중국 메모리 경쟁 심화 등 지정학·경쟁 리스크</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>SMA20($1,569) 회복 + 채널 상단 돌파 시 $1,700~$1,900 재도전. NAND 가격·AI 스토리지 호재 시</div>
+      <div class="scenario base"><b>기본</b>$1,450~$1,600 박스권. 하락 채널 지지와 SMA20 저항 사이에서 방향성 탐색</div>
+      <div class="scenario bear"><b>약세</b>$1,450 이탈 시 $1,300~$1,350 테스트. 매크로 악화·메모리 가격 조정 시 추가 하락</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 핵심 사업·실적 구조</h2>
+    <table>
+      <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
+      <tr><td>📦 사업</td><td class="num">NAND Flash / SSD</td><td class="num">AI·데이터센터 스토리지</td></tr>
+      <tr><td>💰 시가총액</td><td class="num">약 $225B</td><td class="num">2025년 WDC 스핀오프</td></tr>
+      <tr><td>📊 최근 매출</td><td class="num">Q4 FY26 약 $9B</td><td class="num">급성장·고마진</td></tr>
+      <tr><td>🤝 파트너</td><td class="num">Kioxia JV (일본)</td><td class="num">$31B+ 투자 계획</td></tr>
+      <tr><td>🎯 애널리스트</td><td class="num">Buy, 목표가 ~$2,100+</td><td class="num">상승 여력 제시</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.05 예상</td><td class="num">Q1 FY2027</td></tr>
+    </table>
+
+    <div class="callout">
+      → SanDisk는 <b>NAND·AI 스토리지</b> 수혜주로, 2025년 Western Digital에서 스핀오프된 후 AI 붐에 힘입어 급등했습니다.
+      고점 대비 30% 이상 조정된 상태이며, OI상 롱 청산 성격의 하락은 강한 추세 하락보다는 조정으로 해석됩니다.
+      중장기적으로는 NAND 공급 부족과 데이터센터 수요가 지지 요인입니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>수시</td>
+        <td>NAND 현물/계약 가격, AI 스토리지 수요, Kioxia 투자 진행</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC — 반도체·성장주 민감</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>11월 5일 예상</td>
+        <td>Q1 FY2027 실적 발표 — 가이던스·마진 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>자사주 매입, 장기 공급계약(NBM) 추가 체결 여부</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 6:30 (KST).
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_sndk_daily",
+    "width": "100%",
+    "height": 460,
+    "symbol": "BINANCE:SNDKUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_sndk_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "BINANCE:SNDKUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+</body>
+</html>
