@@ -203,6 +203,29 @@
   }
   .callout b{color:var(--text);}
 
+  .revenue-bar-wrap{margin:8px 0 4px;}
+  .revenue-bar-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--text-soft);
+    margin-bottom:4px;
+  }
+  .revenue-bar-track{
+    width:100%;
+    height:10px;
+    border-radius:6px;
+    background:var(--chip-bg);
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .revenue-bar-fill{
+    height:100%;
+    border-radius:6px;
+    background:var(--accent);
+  }
+  .revenue-bar-item{margin-bottom:12px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -217,20 +240,20 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.02 (수) · 업데이트</span>
+      <span>2026.09.04 (금) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 6:30 (KST)</span>
+      <span>기준시각 오전 6:00 (KST)</span>
     </div>
-    <h1>SK hynix (SKHY) 주가 분석 리포트<span class="ticker">ADR / Perpetual: SKHYUSDT.P · 본주 000660.KS</span></h1>
+    <h1>SK hynix (SKHY) 주가 분석 리포트<span class="ticker">ADR: SKHY (Nasdaq) · 본주 000660.KS (KOSPI)</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$159.27</div>
-        <div class="chg-down">일봉 -0.36% · 본주(코스피) 약 1,613,000원대 조정</div>
+        <div class="price-main">$163.67</div>
+        <div class="chg-down">ADR 9/3 정규장 종가 -0.79% · 본주(코스피 9/3 마감) 1,596,000원 -1.05%</div>
       </div>
       <div class="price-sub">
-        하락 쐐기/삼각수렴 중하단. 일봉 SMA20($162.50) 하회.
-        15분봉 SMA20($159.76) 근처·SMA200($161.96) 하회. OI 해석: 신규 숏 진입 — 하락 추세 강함.
+        코스피지수는 6,579.48(+0.26%)로 소폭 상승 마감했으나 SK하이닉스·삼성전자 등 반도체 대형주는 동반 약세.
+        글로벌 장기금리(미 국채금리) 상승에 따른 밸류에이션 부담이 최근 조정의 주된 배경으로 지목됨.
       </div>
     </div>
   </header>
@@ -253,8 +276,8 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 고점 이후 하락 쐐기 형성. SMA20($162.50) 하회 중. 쐐기 하단 지지 여부가 단기 핵심.<br>
-      <b>15분봉</b>: SMA20 근처 횡보, SMA200 하회. OI상 신규 숏 유입으로 단기 하락 압력 우세. $158~$162 구간 공방.
+      <b>최근 흐름</b>: 7월 나스닥 ADR 상장(약 265억 달러 조달, 사상 최대 규모 외국기업 IPO) 직후 극심한 변동성을 거쳐, 8월 중순 HBM 수요 기대감에 급등했다가 8월 말~9월 초 미 장기금리 상승 여파로 반도체 대형주 전반이 되돌림 중.<br>
+      <b>단기 변수</b>: 나스닥 반도체지수·미 국채금리 흐름에 연동되는 흐름이 이어지고 있으며, 국내 대형 투자자들은 단기 반등을 노린 저가 매수에 나서는 모습도 포착됨(9/3 한국경제 보도). 방향성은 9월 FOMC와 10월 실적 시즌 전까지 금리 재료에 좌우될 가능성.
     </div>
   </section>
 
@@ -264,49 +287,67 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>HBM 글로벌 1위(점유율 약 56~58%) — Nvidia AI GPU 핵심 공급사</li>
+        <li>HBM 글로벌 1위(점유율 약 56~58%) — Nvidia HBM4 물량의 약 3분의 2를 공급하는 것으로 알려짐</li>
         <li>Q2 2026 기록적 실적 — 매출 약 79.3조원(+257% YoY), 영업이익 약 60.5조원, 영업이익률 76%</li>
-        <li>HBM4 양산·샘플 출하, 2026~2027년 공급 부족 지속 전망</li>
-        <li>인디애나 AI 메모리 패키징 공장($4B) 착공, 미국 공급망 강화</li>
-        <li>S&P 신용등급 A- 상향 등 펀더멘털 인정</li>
+        <li>HBM4 양산 본격화, 2026~2027년 공급 부족 지속 전망 (SK하이닉스 자체 시장전망 포함)</li>
+        <li>인디애나 AI 메모리 패키징 공장($4B) 착공 등 미국 공급망 투자 지속</li>
+        <li>국내 증권가 목표주가 최고 322만원 제시 등 장기 강세 시각 유지, 대형 투자자 저가 매수 유입(9/3)</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>기술적 하락 쐐기 + SMA20 하회, OI 신규 숏 유입으로 단기 모멘텀 약세</li>
-        <li>삼성전자 HBM4 점유율 확대 압력 — 경쟁 심화 우려</li>
-        <li>고점 대비 큰 폭 조정 후 반등 구간에서 재조정 (본주 6월 고점 대비 약 40%대 하락 경험)</li>
-        <li>메모리 사이클·밸류에이션 피크 논란, 장기 공급계약으로 추가 업사이드 제한 인식</li>
-        <li>매크로(금리·유가) 및 반도체 섹터 전반 약세 시 동반 하락</li>
+        <li>최근 미 장기금리 상승에 따른 밸류에이션 부담 — 9/3 코스피 상승에도 하이닉스·삼성전자는 동반 하락</li>
+        <li>7월 ADR 상장 직후 극심한 변동성 — 7/13 실적 눈높이 하향 우려로 코스피 -15%·나스닥 -8.9% 기록적 급락, 이어 7월 말 반도체 섹터 전반 셀오프로 확산(글로벌 반도체 시총 1조달러 이상 증발)</li>
+        <li>HBM 가격 인상 속도가 예상보다 완만하다는 일부 증권사의 실적 눈높이 하향 이슈</li>
+        <li>삼성전자의 HBM4 조기 공급·품질 인증 추진 등 경쟁 심화</li>
+        <li>메모리 사이클·밸류에이션 고점 논쟁 지속, 매크로(금리) 민감도 확대</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>SMA20($162.5) 회복 + 쐐기 상단 돌파 시 $170~$180 재도전. HBM4·Nvidia 관련 호재 시 모멘텀 확대</div>
-      <div class="scenario base"><b>기본</b>$150~$165 박스권. 쐐기 지지와 SMA20 저항 사이에서 방향성 탐색. 10월 실적 대기</div>
-      <div class="scenario bear"><b>약세</b>쐐기 하단·$155 이탈 시 $145~$150 테스트. 경쟁 심화·매크로 악화 시 추가 조정</div>
+      <div class="scenario bull"><b>강세</b>미 장기금리 안정 + HBM4 관련 호재 시 ADR $170대 재도전, 본주 코스피 대형주 동반 강세</div>
+      <div class="scenario base"><b>기본</b>ADR $150~$170, 본주 150만~170만원대 박스권. 금리 재료 소화하며 10월 실적 시즌 대기</div>
+      <div class="scenario bear"><b>약세</b>미 국채금리 추가 상승·반도체 섹터 조정 심화 시 ADR $150 이하, 본주 150만원 하회 테스트 가능</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 핵심 실적·사업 구조</h2>
+    <h2>3. 핵심 실적·매출구조</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
       <tr><td>📊 Q2 2026 매출</td><td class="num">약 79.3조원</td><td class="num">+257% YoY (기록)</td></tr>
       <tr><td>💰 Q2 영업이익</td><td class="num">약 60.5조원</td><td class="num">영업이익률 76%</td></tr>
       <tr><td>🏆 HBM 점유율</td><td class="num">약 56~58%</td><td class="num">글로벌 1위</td></tr>
-      <tr><td>🏭 주력</td><td class="num">HBM3E / HBM4 · 서버 DRAM</td><td class="num">AI 메모리 핵심</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.10월 말 예상</td><td class="num">Q3 2026</td></tr>
-      <tr><td>🇺🇸 ADR</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7 대규모 상장</td></tr>
+      <tr><td>🏭 주력 제품</td><td class="num">HBM3E / HBM4 · 서버 DRAM · NAND(eSSD)</td><td class="num">AI 메모리 핵심</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.10월 말~11월 초 (잠정)</td><td class="num">Q3 2026, 공식일정 미확정</td></tr>
+      <tr><td>🇺🇸 ADR 상장</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7 상장, 약 265억 달러 조달</td></tr>
     </table>
 
+    <h3>매출구조도 (개념도)</h3>
+    <div class="revenue-bar-item">
+      <div class="revenue-bar-wrap">
+        <div class="revenue-bar-label"><span>DRAM (서버·PC·모바일 DRAM + HBM 포함)</span><span>핵심 매출원</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" style="width:82%;"></div></div>
+      </div>
+    </div>
+    <div class="revenue-bar-item">
+      <div class="revenue-bar-wrap">
+        <div class="revenue-bar-label"><span>NAND (eSSD 등 낸드플래시)</span><span>보완 매출원</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" style="width:18%;"></div></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:4px; font-size:12.5px;">
+      ※ 위 매출구조 막대는 DRAM 중심(HBM 포함) vs NAND의 상대적 비중을 개략적으로 보여주는 개념도이며, 회사가 세그먼트별 정확한 매출 비중(%)을 공식 공시하지 않아 절대 수치가 아닌 참고용입니다.
+    </div>
+
     <div class="callout">
-      → SK hynix는 <b>HBM·AI 메모리</b> 글로벌 리더입니다.
-      Q2 실적은 사상 최고 수준이었고, HBM4와 미국 공장 투자가 중장기 스토리입니다.
-      단기적으로는 기술적 하락 쐐기, 삼성 추격, OI 숏 유입이 부담으로 작용하고 있습니다.
+      → SK hynix는 <b>HBM·AI 메모리</b> 글로벌 리더입니다. 매출은 DRAM(서버·PC·모바일용 및 HBM)이 핵심이며,
+      AI 서버향 고부가 제품인 HBM이 최근 매출·수익성 개선을 견인하고 있습니다. NAND(eSSD 등)는 보완 사업이나
+      최근 낸드 가격 강세로 수익 기여도가 커지는 추세입니다. Q2 실적은 사상 최고 수준이었고, HBM4와 미국 공장
+      투자가 중장기 스토리입니다. 단기적으로는 글로벌 금리 상승, 삼성 추격이 부담 요인입니다.
     </div>
   </section>
 
@@ -321,24 +362,29 @@
       </tr>
       <tr>
         <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC — 반도체·성장주 전반 민감</td>
+        <td>FOMC 금리 결정(미국시각 9/15~16 회의) — 반도체·성장주 전반 민감</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>10월 말 예상</td>
-        <td>Q3 2026 실적 발표 — HBM 출하·가이던스 핵심</td>
+        <td>10월 1일 (목) 오전 5:30경</td>
+        <td>Micron(마이크론) FY26 4분기 실적 발표(미국시각 9/30 장 마감 후) — 메모리 업종 벨웨더, SK하이닉스 주가에 간접 영향</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 말~11월 초 (잠정)</td>
+        <td>SK하이닉스 Q3 2026 실적 발표 — HBM 출하·가격·Q4 가이던스 핵심 (공식일정 미확정)</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>삼성 HBM4 점유율, 인디애나 공장 진행, 본주·ADR 괴리</td>
+        <td>삼성전자 HBM4 조기공급 추진, 인디애나 공장 진행, 본주·ADR 가격 괴리, 미 국채금리 흐름</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 6:30 (KST) / Q2 실적은 2026.07 발표 기준. 본주(000660.KS)와 ADR(SKHY) 가격은 환율·수급에 따라 괴리될 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.09.03 코스피 종가, ADR(SKHY) 2026.09.03 나스닥 정규장 종가(한국시간 09.04 오전 5:00) / Q2 실적은 2026.07 발표 기준. 업데이트: 2026.09.04 오전 6:00 (KST). 본주와 ADR 가격은 환율·수급에 따라 괴리될 수 있습니다.
   </footer>
 
 </div>

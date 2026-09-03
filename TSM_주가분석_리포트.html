@@ -193,6 +193,26 @@
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
 
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    position:relative;
+  }
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+
   .callout{
     background:var(--chip-bg);
     border-radius:10px;
@@ -217,20 +237,21 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.02 (수) · 업데이트</span>
+      <span>2026.09.04 (금) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 6:55 (KST)</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/3 16:00 ET) 기준</span>
     </div>
     <h1>TSMC (TSM) 주가 분석 리포트<span class="ticker">NYSE ADR · Perpetual: TSMUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$412.45</div>
-        <div class="chg-down">일봉 -0.55% · SMA20 하회</div>
+        <div class="price-main">$417.05</div>
+        <div class="chg-up">일봉 +0.37% (+$1.55) · 시간외 -0.06%</div>
       </div>
       <div class="price-sub">
-        하락 채널 중하단. 일봉 SMA20($419.83) 하회. 멀티 TF RSI 30~44대로 약세.
-        OI 해석: 신규 숏 진입 — 하락 추세 강함. 9/10 8월 매출 발표 대기.
+        AI 파운드리 수요 확대와 7월 매출 서프라이즈(+44.7% YoY)를 바탕으로 견조한 흐름 지속.
+        Stifel 신규 매수 커버리지(목표가 $515), 무디스 등급전망 '긍정적' 상향 등 우호적 뉴스 흐름 속 시가총액 약 $1.95조.
+        9/10 8월 매출 발표 대기.
       </div>
     </div>
   </header>
@@ -253,8 +274,8 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 6~7월 고점 이후 하락 채널 형성. SMA20($419.83) 하회 중. $400~$420 구간 공방.<br>
-      <b>15분봉</b>: SMA20($413.23)·SMA200($417.19) 하회. OI상 신규 숏 유입으로 단기 하락 압력 우세.
+      <b>일봉</b>: AI 반도체 랠리 속 완만한 상승 흐름을 이어가며 $417선까지 회복. 애널리스트 목표가 상향·헤지펀드 매수세가 지지 요인으로 작용.<br>
+      <b>15분봉</b>: 실시간 지표는 상단 차트 참고. 단기적으로는 반도체 섹터 전반 뉴스·매크로 지표에 연동된 변동성이 예상됩니다.
     </div>
   </section>
 
@@ -264,48 +285,110 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>AI 파운드리 독점적 지위 — NVDA·AMD 등 선단 공정 핵심 공급사</li>
-        <li>Q2 2026 기록적 실적 — 매출 약 $40.2B(+34% YoY), 총이익률 67.7%</li>
-        <li>2026년 매출 성장 가이던스 40%+ 상향, 캡엑스 $60~64B</li>
-        <li>2nm·3nm 램프업, 미국·일본 공장 확장</li>
-        <li>월간 매출 지속 호조 (7월 +45% YoY)</li>
+        <li>AI 파운드리 독점적 지위 — NVDA·AMD·Apple 등 선단 공정 핵심 공급사, 2nm 5개 팹 동시 램프업으로 역대 최대 속도 증설</li>
+        <li>7월 매출 NT$467.58B(+44.7% YoY, +5.6% MoM), 1~7월 누적 NT$2,872.06B(+37.0% YoY) — AI 수요발 서프라이즈 지속</li>
+        <li>Q2 2026 매출 $40.20B(+34% YoY), 총이익률 67.7%·영업이익률 60.3% — HPC 매출 QoQ +20%로 스마트폰 비중 추월 확대</li>
+        <li>2026년 매출 성장 가이던스 40%대 유지, 분기 설비 발주 규모를 작년 12월 계획 대비 최대 1.9배로 상향 — AI 수요 대응 위한 공격적 증설</li>
+        <li>Stifel 신규 매수 커버리지(목표가 $515), 무디스 신용등급 전망 '긍정적' 상향, 컨센서스 '스트롱 바이' 평균 목표주가 약 $554 (현재가 대비 +33% 내외)</li>
+        <li>데이비드 테퍼·스탠리 드러켄밀러 등 대형 헤지펀드 보유 확대 포착</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>일봉 하락 채널 + SMA20 하회, OI 신규 숏 유입으로 추세 강함</li>
-        <li>고점($479) 대비 조정, 반도체 섹터 전반 약세 동반</li>
-        <li>매크로(금리·유가)·9월 계절성 부담</li>
-        <li>지정학·대만 리스크, 밸류에이션 부담 논란</li>
-        <li>단기적으로 8월 매출 발표 전후 변동성</li>
+        <li>2nm 초기 램프업 비용 부담 — 회사 측 Q3 총이익률 3~4%p 하락 압박 가이던스 제시</li>
+        <li>대만 관련 지정학 리스크·중국 수출통제 이슈 상존, PER 28배 수준의 밸류에이션 부담 논쟁 지속</li>
+        <li>스마트폰향 매출 QoQ -4%로 다소 둔화 — 신제품 성수기 진입 전 일시적 조정 가능성</li>
+        <li>반도체 섹터 전반 변동성, 9월 FOMC 등 매크로 이벤트 대기 구간</li>
+        <li>단기적으로 8월 매출 발표(9/10) 전후 변동성 확대 가능</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>SMA20($420) 회복 + 채널 상단 돌파 시 $440~$460 재도전. 8월 매출 호조·AI 수요 확인 시</div>
-      <div class="scenario base"><b>기본</b>$400~$425 박스권. 매출 발표·FOMC 대기 구간에서 횡보</div>
-      <div class="scenario bear"><b>약세</b>$400 이탈 시 $380~$390 테스트. 신규 숏 지속·매크로 악화 시 추가 조정</div>
+      <div class="scenario bull"><b>강세</b>8월 매출 서프라이즈 지속 확인 시 컨센서스 목표가($554 내외)를 향한 상승 흐름 재개, $430~$450권 도전</div>
+      <div class="scenario base"><b>기본</b>$400~$430 박스권 등락. 8월 매출 발표·FOMC를 소화하며 방향성 탐색</div>
+      <div class="scenario bear"><b>약세</b>지정학 리스크 재부각·매크로 악화 시 $390선 이하로 조정, 2nm 마진 압박 우려 부각</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 핵심 실적·사업 구조</h2>
+    <h2>3. 핵심 실적·매출구조</h2>
     <table>
       <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
-      <tr><td>🏭 사업</td><td class="num">세계 최대 파운드리</td><td class="num">선단 공정 점유율 압도적</td></tr>
-      <tr><td>📊 Q2 2026 매출</td><td class="num">약 $40.2B</td><td class="num">+34% YoY, 총이익률 67.7%</td></tr>
-      <tr><td>📈 2026 가이던스</td><td class="num">매출 성장 40%+</td><td class="num">캡엑스 $60~64B</td></tr>
-      <tr><td>🔬 공정</td><td class="num">2nm·3nm·5nm</td><td class="num">HPC/AI 비중 높음</td></tr>
-      <tr><td>📅 8월 매출</td><td class="num">9월 10일 (수) 오후 2:30 KST 전후</td><td class="num">월간 매출 공시</td></tr>
-      <tr><td>📅 Q3 실적</td><td class="num">10월 중순 예상</td><td class="num">가이던스 핵심</td></tr>
+      <tr><td>🏭 사업</td><td class="num">세계 최대 파운드리</td><td class="num">독립계 반도체 위탁생산, 선단 공정 점유율 압도적</td></tr>
+      <tr><td>📊 Q2 2026 매출</td><td class="num">$40.20B (NT$1,270.38B)</td><td class="num">+34% YoY, 총이익률 67.7% · 영업이익률 60.3%</td></tr>
+      <tr><td>📅 7월 매출</td><td class="num">NT$467.58B</td><td class="num">+44.7% YoY, +5.6% MoM</td></tr>
+      <tr><td>📅 1~7월 누적</td><td class="num">NT$2,872.06B</td><td class="num">+37.0% YoY</td></tr>
+      <tr><td>📈 2026 가이던스</td><td class="num">매출 성장 40%대</td><td class="num">분기 설비발주 최대 1.9배 상향</td></tr>
+      <tr><td>🔬 선단 공정</td><td class="num">2nm 5개 팹 동시 램프업</td><td class="num">3nm 월 18만 장 목표(+40%대 YoY)</td></tr>
+      <tr><td>📅 8월 매출 발표</td><td class="num">9월 10일 (목) 오후 2:30 KST</td><td class="num">월간 매출 공시</td></tr>
+      <tr><td>📅 Q3 실적 발표</td><td class="num">10월 15일 (목) 전후 (미확정)</td><td class="num">2nm 마진 영향·Q4 가이던스 핵심</td></tr>
     </table>
 
+    <h3>매출구조 — 응용처별 (Q2 2026)</h3>
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">HPC (고성능컴퓨팅/AI)</div>
+        <div class="rev-track"><div class="rev-fill" style="width:66%; background:#0071e3;"></div></div>
+        <div class="rev-pct">66%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">스마트폰</div>
+        <div class="rev-track"><div class="rev-fill" style="width:22%; background:#5ac8fa;"></div></div>
+        <div class="rev-pct">22%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">IoT</div>
+        <div class="rev-track"><div class="rev-fill" style="width:5%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">5%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">자동차</div>
+        <div class="rev-track"><div class="rev-fill" style="width:4%; background:#a2845e;"></div></div>
+        <div class="rev-pct">4%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">DCE·기타</div>
+        <div class="rev-track"><div class="rev-fill" style="width:3%; background:#c7c7cc;"></div></div>
+        <div class="rev-pct">3%</div>
+      </div>
+    </div>
+
+    <h3>매출구조 — 공정 노드별 (Q2 2026)</h3>
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">5nm</div>
+        <div class="rev-track"><div class="rev-fill" style="width:33%; background:#0071e3;"></div></div>
+        <div class="rev-pct">33%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">3nm</div>
+        <div class="rev-track"><div class="rev-fill" style="width:30%; background:#34c759;"></div></div>
+        <div class="rev-pct">30%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">7nm</div>
+        <div class="rev-track"><div class="rev-fill" style="width:11%; background:#ff9f0a;"></div></div>
+        <div class="rev-pct">11%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">2nm</div>
+        <div class="rev-track"><div class="rev-fill" style="width:3%; background:#af52de;"></div></div>
+        <div class="rev-pct">3%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">성숙공정(28nm+)</div>
+        <div class="rev-track"><div class="rev-fill" style="width:23%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">23%</div>
+      </div>
+    </div>
+
     <div class="callout">
-      → TSMC는 <b>AI 파운드리</b>의 핵심 공급사로, 실적과 가이던스는 여전히 강합니다.
-      단기적으로는 하락 채널·숏 유입·매크로 부담이 작용하고 있으며, 9/10 8월 매출 발표가 단기 촉매가 될 수 있습니다.
+      → TSMC는 <b>AI 파운드리</b>의 핵심 공급사로, HPC向 매출이 전체의 3분의 2를 차지하며 스마트폰향을 앞지르는 구조 전환이 뚜렷합니다.
+      2nm·3nm 선단 공정 비중이 이미 63%를 넘어섰고, 2nm 램프업 초기 비용이 단기 마진엔 부담이나
+      5개 팹 동시 가동은 향후 공급 능력 우위로 이어질 전망입니다. 9/10 8월 매출 발표가 단기 촉매가 될 수 있습니다.
     </div>
   </section>
 
@@ -314,30 +397,36 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 10일 (수) 오후 2:30 전후</td>
-        <td><b>8월 월간 매출 발표</b> — 수요 강도 확인</td>
+        <td>9월 10일 (목) 오후 2:30</td>
+        <td><b>8월 월간 매출 발표</b> — AI 수요 강도 재확인</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 — 반도체·성장주 민감</td>
+        <td>FOMC 금리결정 (현지 9/15~16 개최) — 반도체·성장주 민감</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>10월 중순</td>
-        <td>Q3 2026 실적 발표 — 가이던스·마진 핵심</td>
+        <td>10월 8일 (목) 오후 2:30</td>
+        <td>9월 월간 매출 발표</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 15일 (목) 전후 (미확정)</td>
+        <td>Q3 2026 실적 발표 예상 — 2nm 마진 영향·Q4 가이던스 핵심</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>2nm 램프업, 미국/일본 공장, NVDA·고객 수요 뉴스</td>
+        <td>2nm 5개 팹 램프업, 미국(애리조나)·일본(구마모토) 공장 확장, 대만 지정학 리스크·수출통제 뉴스</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.02 오후 6:55 (KST). 월간 매출 공시 시각은 대만 현지 일정에 따라 다소 변동될 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 16:00 ET 정규장 마감(KST 2026.09.04 오전 5:00 환산) / 월간 매출은 2026년 7월 실적(2026.08.10 발표) 기준 / 분기 실적은 Q2 2026(2026.07.16 발표) 기준.
+    Q3 2026 실적 발표일은 공식 미확정 추정치이며, 월간 매출 공시 시각은 대만 현지 일정에 따라 다소 변동될 수 있습니다.
   </footer>
 
 </div>
