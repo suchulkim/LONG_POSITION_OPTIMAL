@@ -169,9 +169,117 @@
     color: var(--down);
     border: 1px solid rgba(95, 209, 136, 0.35);
   }
+
+  /* ══════════════════════════════════════════════════════════
+     이벤트 일정 (event_schedule.js)
+     ══════════════════════════════════════════════════════════ */
+  .event-banner {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #171012;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-banner-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 9px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .event-banner .dday {
+    flex: none;
+    font-weight: 800;
+    font-size: 11.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255, 107, 107, 0.16);
+    color: var(--up);
+    border: 1px solid rgba(255, 107, 107, 0.4);
+    white-space: nowrap;
+  }
+  .event-banner .sep {
+    color: var(--border);
+  }
+  .event-banner .ev-name {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .event-banner .ev-time {
+    color: var(--text-soft);
+  }
+  .event-banner .ev-more {
+    margin-left: auto;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .event-banner .ev-more:hover { text-decoration: underline; }
+
+  .events-section { margin-bottom: 8px; }
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .event-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .event-row.imp-4 { border-left-color: #ff6b6b; }
+  .event-row.imp-3 { border-left-color: #f7931a; }
+  .event-row.imp-2 { border-left-color: #4ea1ff; }
+  .event-row.imp-1 { border-left-color: #5c6270; }
+  .event-row.done { opacity: 0.42; }
+  .ev-dday {
+    flex: none;
+    min-width: 50px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 6px 4px;
+    border-radius: 8px;
+    background: #20242d;
+    color: var(--text-soft);
+  }
+  .event-row.imp-4 .ev-dday { background: rgba(255, 107, 107, 0.16); color: var(--up); }
+  .ev-meta { flex: 1; min-width: 0; }
+  .ev-datetime { font-size: 12px; color: var(--text-soft); margin-bottom: 2px; }
+  .ev-title { font-size: 14.5px; font-weight: 600; }
+  .ev-note { font-weight: 400; color: var(--text-soft); font-size: 12.5px; }
+  .ev-tickers { font-size: 12px; color: var(--text-soft); margin-top: 4px; }
+  .ev-stars { flex: none; font-size: 13px; letter-spacing: 1px; color: #e0b84d; }
+  .ev-empty { font-size: 13px; color: var(--text-soft); padding: 8px 2px; }
+  details.events-past {
+    margin-top: 4px;
+  }
+  details.events-past summary {
+    cursor: pointer;
+    font-size: 12.5px;
+    color: var(--text-soft);
+    padding: 6px 2px;
+    list-style: none;
+  }
+  details.events-past summary::-webkit-details-marker { display: none; }
+  details.events-past summary::before { content: "▸ "; }
+  details.events-past[open] summary::before { content: "▾ "; }
+  details.events-past .events-list { margin-top: 8px; }
 </style>
 </head>
 <body>
+<div id="eventBanner" class="event-banner" hidden>
+  <div class="event-banner-inner" id="eventBannerInner"></div>
+</div>
 <div class="wrap">
   <header>
     <div class="eyebrow">2026.09.02 · Watchlist Reports</div>
@@ -226,7 +334,13 @@
     ※ 각 리포트는 공개 차트·뉴스 기반 분석이며 투자 조언이 아닙니다.<br>
     GitHub Pages에 업로드하면 <code>https://&lt;username&gt;.github.io/&lt;repo&gt;/</code> 형태로 접근할 수 있습니다.
   </footer>
+
+  <section class="events-section" id="eventsSection">
+    <div class="section-title">⏰ 주요 이벤트 일정 (KST)</div>
+    <div class="events-list" id="eventsList"></div>
+  </section>
 </div>
+<script src="event_schedule.js"></script>
 <script>
   const cards = [...document.querySelectorAll('a.card')];
   const countEl = document.getElementById('count');
@@ -318,6 +432,88 @@
 
   loadPatternSummary();
   setInterval(loadPatternSummary, PATTERN_REFRESH_MS);
+
+  // ══════════════════════════════════════════════════════════
+  // 주요 이벤트 일정 (event_schedule.js가 내보내는 window.SeptSchedule 사용)
+  // - 화면 상단 고정 배너: 가장 임박한 이벤트를 항상 노출
+  // - 본문 섹션: 다가오는 순서대로 전체 일정, 지난 일정은 접어서 표시
+  // ══════════════════════════════════════════════════════════
+  const EVENTS_REFRESH_MS = 60 * 1000; // D-day 카운트다운을 1분마다 갱신
+
+  function eventDateTime(ev) {
+    // dateKST/timeKST는 한국시간(KST, UTC+9) 기준이므로 명시적 오프셋을 붙여 파싱한다.
+    return new Date(ev.dateKST + 'T' + ev.timeKST + ':00+09:00');
+  }
+
+  function ddayLabel(ev, now) {
+    const diffMs = eventDateTime(ev).getTime() - now.getTime();
+    if (diffMs <= 0) return '완료';
+    const days = Math.ceil(diffMs / 86400000);
+    return days <= 0 ? '오늘' : 'D-' + days;
+  }
+
+  function eventRowHTML(ev, now, mod, done) {
+    return (
+      '<div class="event-row imp-' + ev.importance + (done ? ' done' : '') + '">' +
+        '<div class="ev-dday">' + ddayLabel(ev, now) + '</div>' +
+        '<div class="ev-meta">' +
+          '<div class="ev-datetime">' + ev.dateLabel + ' ' + ev.timeKST + ' KST</div>' +
+          '<div class="ev-title">' + ev.event + (ev.note ? ' <span class="ev-note">(' + ev.note + ')</span>' : '') + '</div>' +
+          '<div class="ev-tickers">' + ev.tickers.join(', ') + '</div>' +
+        '</div>' +
+        '<div class="ev-stars">' + mod.starsFor(ev.importance) + '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderEvents() {
+    const mod = window.SeptSchedule;
+    const bannerEl = document.getElementById('eventBanner');
+    const bannerInner = document.getElementById('eventBannerInner');
+    const listEl = document.getElementById('eventsList');
+    if (!mod) {
+      if (listEl) listEl.innerHTML = '<div class="ev-empty">event_schedule.js를 불러오지 못했습니다. index.html과 같은 폴더에 있는지 확인해 주세요.</div>';
+      return;
+    }
+
+    const now = new Date();
+    const all = mod.sortedByDate(mod.SEPTEMBER_2026_SCHEDULE);
+    const upcoming = all.filter(ev => eventDateTime(ev).getTime() > now.getTime());
+    const past = all.filter(ev => eventDateTime(ev).getTime() <= now.getTime());
+
+    // 화면 상단 고정 배너: 가장 임박한 이벤트 최대 2개
+    if (bannerEl && bannerInner) {
+      if (upcoming.length) {
+        const soonest = upcoming.slice(0, 2).map(ev =>
+          '<span class="dday">' + ddayLabel(ev, now) + '</span>' +
+          '<span class="ev-name">' + ev.event + '</span>' +
+          '<span class="ev-time">· ' + ev.dateLabel + ' ' + ev.timeKST + '</span>'
+        ).join('<span class="sep">&nbsp;|&nbsp;</span>');
+        const more = upcoming.length > 2 ? '<a href="#eventsSection" class="ev-more">전체 일정 →</a>' : '';
+        bannerInner.innerHTML = soonest + more;
+        bannerEl.hidden = false;
+      } else {
+        bannerEl.hidden = true;
+      }
+    }
+
+    // 본문: 다가오는 일정 먼저, 지난 일정은 접어서 하단에
+    if (listEl) {
+      let html = upcoming.map(ev => eventRowHTML(ev, now, mod, false)).join('');
+      if (!upcoming.length) {
+        html = '<div class="ev-empty">예정된 이벤트가 없습니다.</div>';
+      }
+      if (past.length) {
+        html += '<details class="events-past"><summary>지난 이벤트 (' + past.length + ')</summary>' +
+                  '<div class="events-list">' + past.map(ev => eventRowHTML(ev, now, mod, true)).join('') + '</div>' +
+                '</details>';
+      }
+      listEl.innerHTML = html;
+    }
+  }
+
+  renderEvents();
+  setInterval(renderEvents, EVENTS_REFRESH_MS);
 </script>
 </body>
 </html>
