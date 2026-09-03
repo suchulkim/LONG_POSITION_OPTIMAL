@@ -88,13 +88,6 @@
     border-color: var(--accent);
     transform: translateY(-1px);
   }
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .card-info { min-width: 0; }
   a.card .sym {
     font-size: 17px;
     font-weight: 700;
@@ -105,35 +98,6 @@
     font-size: 12.5px;
     color: var(--text-soft);
   }
-  .chg {
-    flex: none;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-    white-space: nowrap;
-    padding-top: 1px;
-  }
-  .chg.up { color: var(--up); }
-  .chg.down { color: var(--down); }
-  .chg.flat { color: var(--text-soft); }
-  .chg.loading {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-soft);
-    opacity: 0.6;
-  }
-  .chg.err {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-soft);
-    opacity: 0.5;
-  }
-  .quote-updated {
-    font-size: 12px;
-    color: var(--text-soft);
-    margin-top: 2px;
-  }
-  .quote-updated.stale { color: #6b7180; }
   a.card .tag {
     display: inline-block;
     margin-top: 8px;
@@ -322,7 +286,6 @@
     <h1>주가 분석 리포트</h1>
     <p class="sub">각 카드를 클릭하면 해당 종목 분석 리포트(실시간 차트 포함)로 이동합니다.</p>
     <div class="pattern-updated" id="patternUpdated">🔎 패턴 감지 데이터 불러오는 중...</div>
-    <div class="quote-updated" id="quoteUpdated">💹 실시간 등락률 불러오는 중...</div>
   </header>
 
   <div class="search-wrap">
@@ -332,52 +295,52 @@
 
   <div class="section-title">크립토</div>
   <div class="grid" id="crypto">
-    <a class="card" href="ETH_주가분석_리포트.html" data-q="eth ethereum 이더리움" data-sym="ETH"><div class="card-top"><div class="card-info"><div class="sym">ETH</div><div class="name">Ethereum</div></div><div class="chg loading" id="chg-ETH">···</div></div><span class="tag crypto">Crypto</span></a>
-    <a class="card" href="BTC_주가분석_리포트.html" data-q="btc bitcoin 비트코인" data-sym="BTC"><div class="card-top"><div class="card-info"><div class="sym">BTC</div><div class="name">Bitcoin</div></div><div class="chg loading" id="chg-BTC">···</div></div><span class="tag crypto">Crypto</span></a>
-    <a class="card" href="ONDO_주가분석_리포트.html" data-q="ondo" data-sym="ONDO"><div class="card-top"><div class="card-info"><div class="sym">ONDO</div><div class="name">Ondo Finance</div></div><div class="chg loading" id="chg-ONDO">···</div></div><span class="tag crypto">Crypto</span></a>
-    <a class="card" href="SOL_주가분석_리포트.html" data-q="sol solana 솔라나" data-sym="SOL"><div class="card-top"><div class="card-info"><div class="sym">SOL</div><div class="name">Solana</div></div><div class="chg loading" id="chg-SOL">···</div></div><span class="tag crypto">Crypto</span></a>
-    <a class="card" href="CRCL_주가분석_리포트.html" data-q="crcl circle usdc" data-sym="CRCL"><div class="card-top"><div class="card-info"><div class="sym">CRCL</div><div class="name">Circle (USDC)</div></div><div class="chg loading" id="chg-CRCL">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="MSTR_주가분석_리포트.html" data-q="mstr microstrategy 마이크로스트래티지" data-sym="MSTR"><div class="card-top"><div class="card-info"><div class="sym">MSTR</div><div class="name">MicroStrategy</div></div><div class="chg loading" id="chg-MSTR">···</div></div><span class="tag stock">Stock</span></a>
+    <a class="card" href="ETH_주가분석_리포트.html" data-q="eth ethereum 이더리움"><div class="sym">ETH</div><div class="name">Ethereum</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="BTC_주가분석_리포트.html" data-q="btc bitcoin 비트코인"><div class="sym">BTC</div><div class="name">Bitcoin</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="ONDO_주가분석_리포트.html" data-q="ondo"><div class="sym">ONDO</div><div class="name">Ondo Finance</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="SOL_주가분석_리포트.html" data-q="sol solana 솔라나"><div class="sym">SOL</div><div class="name">Solana</div><span class="tag crypto">Crypto</span></a>
+    <a class="card" href="CRCL_주가분석_리포트.html" data-q="crcl circle usdc"><div class="sym">CRCL</div><div class="name">Circle (USDC)</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="MSTR_주가분석_리포트.html" data-q="mstr microstrategy 마이크로스트래티지"><div class="sym">MSTR</div><div class="name">MicroStrategy</div><span class="tag stock">Stock</span></a>
   </div>
 
   <div class="section-title">미국지수</div>
   <div class="grid" id="us_index">
-    <a class="card" href="SPY_주가분석_리포트.html" data-q="spy sp500 s&amp;p" data-sym="SPY"><div class="card-top"><div class="card-info"><div class="sym">SPY</div><div class="name">S&amp;P 500 ETF</div></div><div class="chg loading" id="chg-SPY">···</div></div><span class="tag etf">ETF</span></a>
-    <a class="card" href="QQQ_주가분석_리포트.html" data-q="qqq nasdaq 나스닥" data-sym="QQQ"><div class="card-top"><div class="card-info"><div class="sym">QQQ</div><div class="name">Invesco QQQ</div></div><div class="chg loading" id="chg-QQQ">···</div></div><span class="tag etf">ETF</span></a>
+    <a class="card" href="SPY_주가분석_리포트.html" data-q="spy sp500 s&amp;p"><div class="sym">SPY</div><div class="name">S&amp;P 500 ETF</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="QQQ_주가분석_리포트.html" data-q="qqq nasdaq 나스닥"><div class="sym">QQQ</div><div class="name">Invesco QQQ</div><span class="tag etf">ETF</span></a>
   </div>
 
   <div class="section-title">한국지수</div>
   <div class="grid" id="kr_index">
-    <a class="card" href="EWY_주가분석_리포트.html" data-q="ewy korea 한국" data-sym="EWY"><div class="card-top"><div class="card-info"><div class="sym">EWY</div><div class="name">iShares Korea ETF</div></div><div class="chg loading" id="chg-EWY">···</div></div><span class="tag etf">ETF</span></a>
-    <a class="card" href="KORU_주가분석_리포트.html" data-q="koru korea 3x 레버리지" data-sym="KORU"><div class="card-top"><div class="card-info"><div class="sym">KORU</div><div class="name">Korea 3x ETF</div></div><div class="chg loading" id="chg-KORU">···</div></div><span class="tag lev">3x Lev</span></a>
+    <a class="card" href="EWY_주가분석_리포트.html" data-q="ewy korea 한국"><div class="sym">EWY</div><div class="name">iShares Korea ETF</div><span class="tag etf">ETF</span></a>
+    <a class="card" href="KORU_주가분석_리포트.html" data-q="koru korea 3x 레버리지"><div class="sym">KORU</div><div class="name">Korea 3x ETF</div><span class="tag lev">3x Lev</span></a>
   </div>
 
   <div class="section-title">원자재</div>
   <div class="grid" id="commodity">
-    <a class="card" href="XAU_주가분석_리포트.html" data-q="xau gold 금" data-sym="XAU"><div class="card-top"><div class="card-info"><div class="sym">XAU</div><div class="name">Gold (XAU/USD)</div></div><div class="chg loading" id="chg-XAU">···</div></div><span class="tag commodity">Commodity</span></a>
-    <a class="card" href="CL_주가분석_리포트.html" data-q="cl crude oil wti 원유" data-sym="CL"><div class="card-top"><div class="card-info"><div class="sym">CL</div><div class="name">WTI Crude Oil</div></div><div class="chg loading" id="chg-CL">···</div></div><span class="tag commodity">Commodity</span></a>
+    <a class="card" href="XAU_주가분석_리포트.html" data-q="xau gold 금"><div class="sym">XAU</div><div class="name">Gold (XAU/USD)</div><span class="tag commodity">Commodity</span></a>
+    <a class="card" href="CL_주가분석_리포트.html" data-q="cl crude oil wti 원유"><div class="sym">CL</div><div class="name">WTI Crude Oil</div><span class="tag commodity">Commodity</span></a>
   </div>
 
   <div class="section-title">AI, 반도체</div>
   <div class="grid" id="semi">
-    <a class="card" href="NVDA_주가분석_리포트.html" data-q="nvda nvidia 엔비디아" data-sym="NVDA"><div class="card-top"><div class="card-info"><div class="sym">NVDA</div><div class="name">NVIDIA</div></div><div class="chg loading" id="chg-NVDA">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="AMD_주가분석_리포트.html" data-q="amd advanced micro" data-sym="AMD"><div class="card-top"><div class="card-info"><div class="sym">AMD</div><div class="name">Advanced Micro Devices</div></div><div class="chg loading" id="chg-AMD">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="AVGO_주가분석_리포트.html" data-q="avgo broadcom 브로드컴" data-sym="AVGO"><div class="card-top"><div class="card-info"><div class="sym">AVGO</div><div class="name">Broadcom</div></div><div class="chg loading" id="chg-AVGO">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="SOXL_주가분석_리포트.html" data-q="soxl semiconductor 반도체 레버리지" data-sym="SOXL"><div class="card-top"><div class="card-info"><div class="sym">SOXL</div><div class="name">반도체 3x ETF</div></div><div class="chg loading" id="chg-SOXL">···</div></div><span class="tag lev">3x Lev</span></a>
-    <a class="card" href="SNDK_주가분석_리포트.html" data-q="sndk sandisk 샌디스크" data-sym="SNDK"><div class="card-top"><div class="card-info"><div class="sym">SNDK</div><div class="name">SanDisk</div></div><div class="chg loading" id="chg-SNDK">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="SKHY_주가분석_리포트.html" data-q="skhy sk hynix 하이닉스" data-sym="SKHY"><div class="card-top"><div class="card-info"><div class="sym">SKHY</div><div class="name">SK Hynix 관련</div></div><div class="chg loading" id="chg-SKHY">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="MU_주가분석_리포트.html" data-q="mu micron 마이크론" data-sym="MU"><div class="card-top"><div class="card-info"><div class="sym">MU</div><div class="name">Micron Technology</div></div><div class="chg loading" id="chg-MU">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="TSM_주가분석_리포트.html" data-q="tsm tsmc 대만 반도체 파운드리" data-sym="TSM"><div class="card-top"><div class="card-info"><div class="sym">TSM</div><div class="name">TSMC (ADR)</div></div><div class="chg loading" id="chg-TSM">···</div></div><span class="tag stock">Stock</span></a>
+    <a class="card" href="NVDA_주가분석_리포트.html" data-q="nvda nvidia 엔비디아"><div class="sym">NVDA</div><div class="name">NVIDIA</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AMD_주가분석_리포트.html" data-q="amd advanced micro"><div class="sym">AMD</div><div class="name">Advanced Micro Devices</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AVGO_주가분석_리포트.html" data-q="avgo broadcom 브로드컴"><div class="sym">AVGO</div><div class="name">Broadcom</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="SOXL_주가분석_리포트.html" data-q="soxl semiconductor 반도체 레버리지"><div class="sym">SOXL</div><div class="name">반도체 3x ETF</div><span class="tag lev">3x Lev</span></a>
+    <a class="card" href="SNDK_주가분석_리포트.html" data-q="sndk sandisk 샌디스크"><div class="sym">SNDK</div><div class="name">SanDisk</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="SKHY_주가분석_리포트.html" data-q="skhy sk hynix 하이닉스"><div class="sym">SKHY</div><div class="name">SK Hynix 관련</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="MU_주가분석_리포트.html" data-q="mu micron 마이크론"><div class="sym">MU</div><div class="name">Micron Technology</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="TSM_주가분석_리포트.html" data-q="tsm tsmc 대만 반도체 파운드리"><div class="sym">TSM</div><div class="name">TSMC (ADR)</div><span class="tag stock">Stock</span></a>
   </div>
 
   <div class="section-title">빅테크</div>
   <div class="grid" id="bigtech">
-    <a class="card" href="TSLA_주가분석_리포트.html" data-q="tsla tesla 테슬라" data-sym="TSLA"><div class="card-top"><div class="card-info"><div class="sym">TSLA</div><div class="name">Tesla</div></div><div class="chg loading" id="chg-TSLA">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="AAPL_주가분석_리포트.html" data-q="aapl apple 애플" data-sym="AAPL"><div class="card-top"><div class="card-info"><div class="sym">AAPL</div><div class="name">Apple</div></div><div class="chg loading" id="chg-AAPL">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="GOOGL_주가분석_리포트.html" data-q="googl google alphabet 구글" data-sym="GOOGL"><div class="card-top"><div class="card-info"><div class="sym">GOOGL</div><div class="name">Alphabet (Google)</div></div><div class="chg loading" id="chg-GOOGL">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="PLTR_주가분석_리포트.html" data-q="pltr palantir 팔란티어" data-sym="PLTR"><div class="card-top"><div class="card-info"><div class="sym">PLTR</div><div class="name">Palantir</div></div><div class="chg loading" id="chg-PLTR">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="META_주가분석_리포트.html" data-q="meta facebook 메타" data-sym="META"><div class="card-top"><div class="card-info"><div class="sym">META</div><div class="name">Meta Platforms</div></div><div class="chg loading" id="chg-META">···</div></div><span class="tag stock">Stock</span></a>
-    <a class="card" href="AMZN_주가분석_리포트.html" data-q="amzn amazon 아마존" data-sym="AMZN"><div class="card-top"><div class="card-info"><div class="sym">AMZN</div><div class="name">Amazon</div></div><div class="chg loading" id="chg-AMZN">···</div></div><span class="tag stock">Stock</span></a>
+    <a class="card" href="TSLA_주가분석_리포트.html" data-q="tsla tesla 테슬라"><div class="sym">TSLA</div><div class="name">Tesla</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AAPL_주가분석_리포트.html" data-q="aapl apple 애플"><div class="sym">AAPL</div><div class="name">Apple</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="GOOGL_주가분석_리포트.html" data-q="googl google alphabet 구글"><div class="sym">GOOGL</div><div class="name">Alphabet (Google)</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="PLTR_주가분석_리포트.html" data-q="pltr palantir 팔란티어"><div class="sym">PLTR</div><div class="name">Palantir</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="META_주가분석_리포트.html" data-q="meta facebook 메타"><div class="sym">META</div><div class="name">Meta Platforms</div><span class="tag stock">Stock</span></a>
+    <a class="card" href="AMZN_주가분석_리포트.html" data-q="amzn amazon 아마존"><div class="sym">AMZN</div><div class="name">Amazon</div><span class="tag stock">Stock</span></a>
   </div>
 
   <footer>
@@ -482,99 +445,6 @@
 
   loadPatternSummary();
   setInterval(loadPatternSummary, PATTERN_REFRESH_MS);
-
-  // ══════════════════════════════════════════════════════════
-  // 실시간 일간(24h) 등락률 (카드별 % 뱃지)
-  // - 전 종목 OKX 무기한선물(USDT-SWAP) 단일 API로 조회 (API 키 불필요)
-  //   GET https://www.okx.com/api/v5/market/tickers?instType=SWAP
-  //   한 번의 요청으로 전체 스왑 티커를 받아온 뒤, 이 프로젝트의 각 리포트가
-  //   이미 사용 중인 TradingView 심볼 규칙(OKX:{TICKER}USDT.P)과 동일하게
-  //   instId = "{TICKER}-USDT-SWAP" 로 매칭한다.
-  // - open24h 대비 last 가격으로 24시간 변동률을 계산한다.
-  // ══════════════════════════════════════════════════════════
-  const OKX_ENDPOINT = 'https://www.okx.com/api/v5/market/tickers?instType=SWAP';
-  const QUOTE_REFRESH_MS = 30 * 1000; // 30초마다 갱신
-  const quoteUpdatedEl = document.getElementById('quoteUpdated');
-  const lastGoodChg = {}; // 요청 실패 시 이전 값을 유지하기 위한 캐시 { SYM: {pct, ts} }
-
-  function okxInstId(sym) {
-    return sym.toUpperCase() + '-USDT-SWAP';
-  }
-
-  function setChgEl(sym, pct, isStale) {
-    const el = document.getElementById('chg-' + sym);
-    if (!el) return;
-    if (pct === null || pct === undefined || Number.isNaN(pct)) {
-      el.className = 'chg err';
-      el.textContent = isStale ? '· ·' : '조회불가';
-      return;
-    }
-    const sign = pct > 0 ? '+' : '';
-    const cls = pct > 0.001 ? 'up' : (pct < -0.001 ? 'down' : 'flat');
-    el.className = 'chg ' + cls + (isStale ? ' stale' : '');
-    el.textContent = sign + pct.toFixed(2) + '%';
-  }
-
-  async function fetchOkxSwapTickers() {
-    const res = await fetch(OKX_ENDPOINT, { cache: 'no-store' });
-    if (!res.ok) throw new Error('okx http ' + res.status);
-    const data = await res.json();
-    if (!data || data.code !== '0' || !Array.isArray(data.data)) {
-      throw new Error('okx bad payload');
-    }
-    const byInstId = {};
-    data.data.forEach(t => { byInstId[t.instId] = t; });
-    return byInstId;
-  }
-
-  async function refreshQuotes() {
-    const cards = [...document.querySelectorAll('a.card[data-sym]')];
-    const symbols = cards.map(c => c.dataset.sym);
-
-    try {
-      const byInstId = await fetchOkxSwapTickers();
-      symbols.forEach(sym => {
-        const t = byInstId[okxInstId(sym)];
-        let pct = null;
-        if (t) {
-          const last = parseFloat(t.last);
-          const open24h = parseFloat(t.open24h);
-          if (last > 0 && open24h > 0) {
-            pct = ((last - open24h) / open24h) * 100;
-          }
-        }
-        if (pct !== null && !Number.isNaN(pct)) {
-          lastGoodChg[sym] = { pct, ts: Date.now() };
-          setChgEl(sym, pct, false);
-        } else if (lastGoodChg[sym]) {
-          setChgEl(sym, lastGoodChg[sym].pct, true);
-        } else {
-          setChgEl(sym, null, false);
-        }
-      });
-
-      if (quoteUpdatedEl) {
-        const now = new Date();
-        const kst = now.toLocaleTimeString('ko-KR', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        quoteUpdatedEl.textContent = '💹 실시간 등락률(OKX 무기한선물 24h 기준) 갱신: ' + kst + ' KST';
-        quoteUpdatedEl.classList.remove('stale');
-      }
-    } catch (e) {
-      // OKX 요청 자체가 실패하면 모든 카드는 직전 값을 흐리게 유지
-      symbols.forEach(sym => {
-        if (lastGoodChg[sym]) setChgEl(sym, lastGoodChg[sym].pct, true);
-        else setChgEl(sym, null, false);
-      });
-      if (quoteUpdatedEl) {
-        quoteUpdatedEl.textContent = '💹 OKX 시세 조회 실패 — 잠시 후 재시도합니다';
-        quoteUpdatedEl.classList.add('stale');
-      }
-    }
-  }
-
-  refreshQuotes();
-  setInterval(refreshQuotes, QUOTE_REFRESH_MS);
-
 
   // ══════════════════════════════════════════════════════════
   // 주요 이벤트 일정 (event_schedule.js가 내보내는 window.SeptSchedule 사용)
