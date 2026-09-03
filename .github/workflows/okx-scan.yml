@@ -1,0 +1,63 @@
+name: OKX Pattern Scan
+
+# 15분마다 자동 실행 + Actions 탭에서 수동 실행("Run workflow") 버튼도 사용 가능.
+# GitHub Actions는 5분 미만 간격은 지원하지 않고, 서버가 바쁠 때는 예약 시각보다
+# 살짝 늦게 실행될 수 있습니다(공식적으로 지연 가능하다고 안내됨) — 정상입니다.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: {}
+
+# 이 저장소에 커밋을 푸시하려면 write 권한이 필요합니다.
+permissions:
+  contents: write
+
+# 이전 실행이 아직 커밋/푸시 중일 때 다음 스케줄 실행이 겹치지 않도록 방지
+# (겹치면 git push 충돌이 날 수 있어서, 겹치는 대신 뒤 실행은 대기열에 쌓임)
+concurrency:
+  group: okx-pattern-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 의존성 설치
+        run: pip install requests python-dotenv
+
+      - name: 패턴 스캔 실행 (OKX API 호출 → HTML/JS 생성)
+        env:
+          # 워치리스트는 여기서 직접 관리합니다 (파이썬 스크립트의 DEFAULT_WATCHLIST와 동일).
+          # 종목을 추가/삭제하고 싶으면 이 줄만 수정하면 됩니다.
+          WATCHLIST: "ETHUSDT.P,BTCUSDT.P,ONDOUSDT.P,SOLUSDT.P,SNDKUSDT.P,CRCLUSDT.P,SKHYUSDT.P,TSLAUSDT.P,AAPLUSDT.P,SPYUSDT.P,MSTRUSDT.P,GOOGLUSDT.P,SOXLUSDT.P,NVDAUSDT.P,QQQUSDT.P,XAUUSDT.P,MUUSDT.P,AMDUSDT.P,PLTRUSDT.P,EWYUSDT.P"
+          # 결과 HTML/JS를 저장소 루트(=GitHub Pages가 서빙하는 위치)에 바로 생성.
+          OUTPUT_DIR: ${{ github.workspace }}
+          # 로컬 PC용 두 번째 저장 경로(E:\Trader_KIM)는 CI에는 없으므로 비활성화.
+          SECOND_OUTPUT_DIR: ""
+        run: python scanner/okx_3candle_pattern_multi_tf.py
+
+      - name: 변경사항 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 결과 파일만 추가 (로그 CSV, 워치리스트 자동생성 파일 등은 저장소에 남기지 않음)
+          git add okx_3candle_pattern.html pattern_summary.js
+
+          if git diff --cached --quiet; then
+            echo "변경된 내용 없음 - 커밋 생략"
+            exit 0
+          fi
+
+          git commit -m "패턴 스캔 자동 갱신 $(date -u +'%Y-%m-%d %H:%M UTC')"
+
+          # 그 사이 다른 커밋이 먼저 푸시됐을 드문 경우를 대비해 한 번 재시도
+          git push || (git pull --rebase && git push)
