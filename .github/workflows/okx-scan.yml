@@ -12,7 +12,7 @@ on:
 permissions:
   contents: write
 
-# 이전 실행이 아직 커밋/푸시 중일 때 다음 스케줄 실행이 겹치지 않도록 방지
+# 이전 실행이 아직 커밋/푸시 중일 때 다음 스케줄 실행이 겹치지 않도록 방지dd
 # (겹치면 git push 충돌이 날 수 있어서, 겹치는 대신 뒤 실행은 대기열에 쌓임)
 concurrency:
   group: okx-pattern-scan
