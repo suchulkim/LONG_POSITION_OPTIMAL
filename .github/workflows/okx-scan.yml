@@ -48,6 +48,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "패턴 스캔 자동 갱신 $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "변경사항 없음"
+          git pull --no-rebase -X ours origin main
+          git push origin main
 
           # 결과 파일만 추가 (로그 CSV, 워치리스트 자동생성 파일 등은 저장소에 남기지 않음)
           git add okx_3candle_pattern.html pattern_summary.js
