@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETH 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#8a92ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.03 (목) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오후 11:50 (KST)</span>
+    </div>
+    <h1>이더리움 (ETH) 주가 분석 리포트<span class="ticker">Perpetual: ETHUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$2,390</div>
+        <div class="chg-down">일간 -1.1% · 주간 -3~6% · 8월 고점($2,550권) 대비 조정, $2,400 지지선 공방</div>
+      </div>
+      <div class="price-sub">
+        8월 한 달간 $1,850~1,900대에서 $2,550선까지 약 +30% 급등했으나, 이후 $2,550 저항선에서 거듭 밀리며
+        9월 첫째 주 들어 $2,380~2,440 박스권으로 되돌림. ETF 자금 유입은 이어지고 있지만 일별 유입 강도가
+        뚜렷이 둔화되고 있어, 8월 랠리의 상승 동력이 약해지는 국면으로 해석됩니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · ETHUSDT.P (OKX) · 15분봉 / 1시간봉 — 아래 탭에서 전환 가능</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_eth_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1시간봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_eth_1h" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>ETF 자금 유입세 둔화</b></td>
+        <td>8/17~8/28 9거래일 연속 순유입(총 $14.2억), 8/28 단일 세션 $2.258억(10개월래 최대) 기록 후 유입세 지속되고 있으나 일별 유입 규모가 $234.5백만→$87.7백만 등으로 큰 폭 축소, 11~12거래일째 연속 순유입 이어가는 중</td>
+        <td>기관 수급은 여전히 플러스지만 모멘텀 둔화 — 코인베이스 프리미엄 지수가 마이너스로 전환하며 현물 매수세 약화 신호</td>
+      </tr>
+      <tr>
+        <td><b>$2,550 저항선 재차 실패 &amp; 되돌림</b></td>
+        <td>8월 말 $2,542~2,550 구간에서 재차 돌파에 실패, 과열 지표(RSI 등) 되돌림과 함께 단기 차익실현 매물 출회 — 9월 첫 거래일 -1.1%, 주간 기준 -3~6% 조정</td>
+        <td>상승쐐기(rising wedge) 패턴상 하방 이탈 리스크 지속, $2,400 지지 여부가 단기 방향성의 분수령</td>
+      </tr>
+      <tr>
+        <td><b>거래소 입금·레버리지 청산 경계</b></td>
+        <td>대형 지갑에서 44,126 ETH가 코인베이스로, 70,739 ETH가 복수 거래소로 이체(잠재 매도 물량), 약 $10.8억 규모 롱 포지션이 청산 위험권에 노출, 10배 레버리지 고래 롱 $1.023억(청산가 $2,241)도 여전히 존재</td>
+        <td>거래소 유입 물량과 레버리지 청산이 겹칠 경우 단기 변동성 확대 가능, $2,241 부근이 주요 트리거 구간</td>
+      </tr>
+      <tr>
+        <td><b>매크로 역풍 + 계절성 약세</b></td>
+        <td>미 국채금리 상승과 달러 강세가 위험자산 전반에 부담, 잭슨홀 이후 매파적 연준 스탠스 여진 지속. 9월은 ETH 역사상 두 번째로 약한 달(11년 평균 -10.2%, 중앙값 -12.7%, 11번 중 4번만 상승 마감)</td>
+        <td>8월 급등 이후 프로핏테이킹 리스크가 계절성·매크로 부담과 겹쳐 부각, 온체인 SOPR도 1 이상으로 차익실현 국면 시사</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 8월 랠리는 <b>ETF 기관자금 유입이라는 구조적 동력</b>으로 촉발됐으나, $2,550 저항선 앞에서 유입 강도가
+      약해지며 <b>가격이 정체·조정</b>되는 국면입니다. 트랜잭션 수·활성 주소 수 등 <b>네트워크 활동 지표가 가격 상승을
+      뒷받침하지 못하는 점</b>이 랠리의 지속가능성에 대한 의구심을 키우고 있으며, 계절적 약세 패턴까지 겹쳐 있어
+      9월 초는 방향성 확인이 필요한 구간입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">핵심 저항</div>
+        <div class="value">$2,550</div>
+        <div class="sub">종가 기준 돌파 시 쐐기 무효화</div>
+      </div>
+      <div class="kpi">
+        <div class="label">0.618 피보나치 지지</div>
+        <div class="value">$2,438</div>
+        <div class="sub">지난주 지지로 작동, 유지 여부가 관건</div>
+      </div>
+      <div class="kpi">
+        <div class="label">붕괴 시 노출 구간</div>
+        <div class="value">$2,241~2,290</div>
+        <div class="sub">고래 청산가·Supertrend·200일 EMA 밀집</div>
+      </div>
+    </div>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>스팟 ETH ETF는 9/1까지 11~12거래일 연속 순유입 지속, 블랙록 ETHA는 출시 이후 단 하루도 순유출 없이 전체 유입의 약 72%(약 $10.2억) 흡수</li>
+        <li>이번 사이클 첫 고점 갱신(higher high) — 2025년 8월 고점 이후 이어진 하락추세선을 8월 랠리로 상향 돌파한 구조는 유효</li>
+        <li>Tom Lee(Fundstrat) 등은 비트코인 강세 연동 시 ETH $6,000 목표를 여전히 제시(중장기 낙관 시나리오)</li>
+        <li>0.618 피보나치($2,438) 지지가 유지될 경우 0.5 되돌림($2,880~2,920, 현재가 대비 약 +20%)이 다음 목표로 부상</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>$2,550 저항 재차 실패 + 코인베이스 프리미엄 마이너스 전환 — 현물 매수세가 8월 대비 약화</li>
+        <li>ETF 일별 유입 규모 뚜렷한 둔화(8/28 $2.26억 → 9/1 $0.9억 내외) — 자금 유입 지속에도 가격 전이 약화</li>
+        <li>거래소 입금 증가(11만 ETH 이상) + 약 $10.8억 규모 레버리지 롱 청산 위험 노출</li>
+        <li>트랜잭션 수·활성 주소 등 네트워크 활동 지표 하락 — 가격 상승을 온체인 펀더멘털이 확인해주지 못함</li>
+        <li>9월 계절성 약세(11년 평균 -10.2%)와 미 국채금리 상승·달러 강세 등 매크로 역풍이 중첩</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>$2,550 종가 기준 돌파 시 상승쐐기 무효화, $2,800~2,920(0.5 피보나치) 구간 목표 부상</div>
+      <div class="scenario base"><b>기본</b>$2,400~2,550 박스권에서 ETF 자금 흐름 둔화 여부와 CPI(9/11)·FOMC(9/17)를 대기하며 등락</div>
+      <div class="scenario bear"><b>약세</b>$2,400 및 $2,290(200일 EMA 부근) 붕괴 시 $2,241(고래 청산가) 테스트, 계절성 약세 심화 시 $2,160(20일 EMA)까지 조정 가능</div>
+    </div>
+  </section>
+
+  <!-- 3. 주요일정 -->
+  <section>
+    <h2>3. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>지속</td>
+        <td>스팟 ETH ETF 일별 자금 흐름 — 유입 지속 여부와 블랙록 ETHA 매수 강도가 핵심 변수</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 11일 (금) 밤 9:30</td>
+        <td>미국 8월 CPI(소비자물가지수) 발표 — FOMC 직전 마지막 주요 인플레이션 지표, 위험자산 전반 변동성 요인</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 18일 (금)</td>
+        <td>9월 월간 옵션만기 — 변동성 확대 구간과 겹침</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>2026년 3분기 중 (일자 미확정)</td>
+        <td>Glamsterdam 업그레이드(Fusaka 후속, 실행계층 Glasgow + 합의계층 Amsterdam) 메인넷 목표 — 테스트넷 진행 상황에 따라 일정 변동 가능</td>
+        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 오후 11:50 (KST) · 가격 및 ETF 자금 흐름 수치는 2026.09.02 미국 동부시간 기준 최신 보도 반영. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async></script>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  function initWidgets() {
+    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+    new TradingView.widget({
+      "autosize": true,
+      "symbol": "OKX:ETHUSDT.P",
+      "interval": "15",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_eth_15m"
+    });
+    new TradingView.widget({
+      "autosize": true,
+      "symbol": "OKX:ETHUSDT.P",
+      "interval": "60",
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv_eth_1h"
+    });
+  }
+  initWidgets();
+</script>
+
+</body>
+</html>
