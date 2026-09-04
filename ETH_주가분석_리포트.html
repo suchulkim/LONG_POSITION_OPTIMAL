@@ -216,6 +216,11 @@
     border-radius:8px;
     overflow:hidden;
   }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
   .charts-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -261,7 +266,7 @@
           <div class="cap" style="margin-top:4px;">15분봉</div>
           <div class="tv-widget-container">
             <div class="tradingview-widget-container">
-              <div id="tv_eth_15m"></div>
+              <div id="tv_eth_15m" style="height:100%; width:100%;"></div>
             </div>
           </div>
         </div>
@@ -269,7 +274,7 @@
           <div class="cap" style="margin-top:4px;">1시간봉</div>
           <div class="tv-widget-container">
             <div class="tradingview-widget-container">
-              <div id="tv_eth_1h"></div>
+              <div id="tv_eth_1h" style="height:100%; width:100%;"></div>
             </div>
           </div>
         </div>
