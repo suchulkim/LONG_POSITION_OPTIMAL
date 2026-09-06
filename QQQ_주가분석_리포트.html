@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QQQ 분석 리포트</title>
+<title>QQQ 분석 리포트 (업데이트)</title>
 <style>
   :root{
     --bg:#f5f6f8;
@@ -203,6 +203,33 @@
   }
   .callout b{color:var(--text);}
 
+  .reason-table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    font-size:13.5px;
+    margin-bottom:16px;
+  }
+  .reason-table th{
+    background:var(--table-head);
+    padding:12px 14px;
+    font-weight:600;
+    color:var(--text-soft);
+    text-align:left;
+  }
+  .reason-table td{
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  .reason-table tr:last-child td{border-bottom:none;}
+  .reason-table .col-cause{width:22%; font-weight:600;}
+  .reason-table .col-content{width:48%;}
+  .reason-table .col-impact{width:30%; color:var(--text-soft);}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -217,20 +244,20 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.06 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:30 (KST) · 미국 09/03(목) 정규장 마감 기준</span>
+      <span>기준시각 미국 9/4 정규장 마감 (KST 9/5 새벽)</span>
     </div>
     <h1>Invesco QQQ 분석 리포트<span class="ticker">Nasdaq-100 ETF · Perpetual: QQQUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$717.67</div>
-        <div class="chg-up">일봉 +1.19% · 전일 종가 $709.24 대비 반등 (+$8.43)</div>
+        <div class="price-main">$718.96</div>
+        <div class="chg-up">9/4(미 동부시간) 정규장 종가 · 전일 대비 +0.18% (+$1.29) · 고가 $721.86 / 저가 $716.56</div>
       </div>
       <div class="price-sub">
-        미 국채 10년물 금리가 장중 4.81%(2023년 11월 이후 최고)까지 급등했다가 4.75% 부근으로 되밀리며 위험자산 심리 회복.
-        일중 변동폭 $709.69~$718.92, 52주 범위 $555.60~$748.65. 20일 이동평균선 부근까지 반등하며 저항 테스트 중.
+        9/3 +1.19% 반등($717.67) 후, 9/4 NFP 서프라이즈(+16.2만 명)에도 불구하고 소폭 상승 마감. 
+        Nasdaq-100도 29,544.16(+0.21%)으로 상대적으로 견조. SPY가 약세를 보인 것과 달리 기술주 중심의 QQQ는 차별화 흐름.
       </div>
     </div>
   </header>
@@ -253,69 +280,122 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 중순 이후 중동發 지정학 리스크와 금리 급등으로 조정을 겪은 뒤, 최근 이틀간 국채금리 되밀림과 함께 반등. $700~$720 박스권 상단 재테스트 중.<br>
-      <b>단기</b>: 국채금리 진정으로 위험선호가 살아나는 흐름이나, 이란-미국 갈등이 여전히 진행형이라 변동성이 큰 구간.
+      <b>일봉</b>: 8월 중순 이후 조정 후 $700~$720 박스권에서 등락. 9/3~9/4 연속 상승으로 박스권 상단 재테스트 중. 52주 고점($748.65)까지는 아직 거리 있음.<br>
+      <b>15분봉</b>: NFP 발표 직후 변동성 확대됐으나 매수세가 유입되며 저점 $716대에서 지지. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
     </div>
   </section>
 
+
+  <!-- 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인</h2>
+    <p style="font-size:14px; color:var(--text-soft); margin-bottom:14px;">
+      9/3~9/4 QQQ는 SPY와 달리 상대적으로 견조한 흐름을 보였습니다. 기술주 중심 구성이 차별화 요인으로 작용했습니다.
+    </p>
+
+    <table class="reason-table">
+      <thead>
+        <tr>
+          <th class="col-cause">원인</th>
+          <th class="col-content">내용</th>
+          <th class="col-impact">영향</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-cause">8월 고용지표(NFP) 서프라이즈</td>
+          <td class="col-content">9/4 발표된 8월 비농업고용이 +16.2만 명 증가(시장 예상 +5.5~5.6만 명 대비 약 3배), 실업률 4.1% 유지</td>
+          <td class="col-impact">금리 인상 베팅 상승에도 QQQ는 +0.18%로 선방. SPY(-0.39%) 대비 상대 강세 — 기술주 선별 매수 유입</td>
+        </tr>
+        <tr>
+          <td class="col-cause">Fed 인사 발언 엇갈림</td>
+          <td class="col-content">9/3 월러 이사가 인플레이션 둔화 시 금리 동결 선호 시사 → 위험자산 심리 개선</td>
+          <td class="col-impact">9/3 +1.19% 반등의 주요 트리거. 다음날 NFP로 일부 상쇄됐으나 기술주 모멘텀은 유지</td>
+        </tr>
+        <tr>
+          <td class="col-cause">AI·빅테크 개별 모멘텀</td>
+          <td class="col-content">NVDA, MSFT, AAPL, META 등 대형 기술주가 상대적으로 견조. 반도체·클라우드 성장 스토리 지속</td>
+          <td class="col-impact">QQQ 구성 비중이 높은 종목들의 지지로 지수 전체 하락폭 제한</td>
+        </tr>
+        <tr>
+          <td class="col-cause">국채금리 재상승</td>
+          <td class="col-content">고용지표 발표 후 국채금리 상승, 밸류에이션 부담 재부각</td>
+          <td class="col-impact">성장주 전반에 압력으로 작용했으나, QQQ는 개별 실적·모멘텀으로 방어</td>
+        </tr>
+        <tr>
+          <td class="col-cause">9월 계절성</td>
+          <td class="col-content">Nasdaq-100이 최근 수년간 9월 평균 약세 경향</td>
+          <td class="col-impact">단기 추세보다는 이벤트 드리븐 장세 가능성 높음</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 9/4 NFP 서프라이즈로 금리 인상 베팅이 되살아났음에도 QQQ는 소폭 상승 마감하며 SPY 대비 상대 강세를 보였습니다. 
+      AI·빅테크 중심의 구성이 차별화 요인으로 작용한 것으로 보이며, 다음 트리거는 9/11 CPI와 9/17 FOMC입니다.
+    </div>
+  </section>
+
+
+  <section>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>연준 왈러 이사가 "인플레이션 지표가 계속 개선되면 금리 동결을 지지하는 쪽으로 기울 것"이라고 언급 → 국채금리(10년물 4.81%→4.75%) 되밀림, 위험자산 심리 개선</li>
         <li>Nasdaq-100 구성 종목(NVDA, AAPL, MSFT, AMZN, META, AVGO 등)의 AI·클라우드 구조적 성장 스토리 유지</li>
-        <li>52주 고점($748.65) 대비 조정 후 저가 매수세 유입, 최근 1년 총수익률 +27%대로 견조</li>
-        <li>8월 미국 기업 감원 발표 5.29만 건은 전년동월 대비로는 오히려 감소(-38%) — 고용시장 급격한 붕괴 신호는 아직 아님</li>
+        <li>52주 고점($748.65) 대비 조정 후 저가 매수세 유입, 최근 1년 총수익률 +25%대로 견조</li>
+        <li>NFP 이후에도 기술주 상대 강세가 확인된 점 — 성장주 선호 심리 일부 유지</li>
+        <li>CPI가 예상치를 하회할 경우 금리 인상 베팅 완화 → QQQ에 긍정적</li>
+        <li>중장기 기업 이익 성장 기대와 구조적 AI 테마</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>미국-이란 군사 갈등 격화</b> — 이란이 요르단·UAE·쿠웨이트 등 미국 동맹국을 겨냥한 공격을 재개, 지정학 리스크 프리미엄 확대</li>
-        <li>유가 급등 — WTI +2.1%(약 $92.9), Brent +1.9%(약 $97.5)로 인플레이션 재점화 우려</li>
-        <li>8월 ADP 민간고용 +3.8만 건(예상 +4.7만 하회, 1월 이후 최저) — 고용 둔화 시그널로 경기 우려도 병존</li>
-        <li>9월 계절성 — Nasdaq-100이 최근 수년간 9월 평균 약세 경향</li>
-        <li>9월 FOMC(9/17 새벽, KST)까지 인플레이션·고용 지표 대기 구간에서 변동성 지속 가능</li>
+        <li><b>9월 계절성</b> — Nasdaq-100이 역사적으로 약한 달, 변동성 확대 경계</li>
+        <li>고용지표 강세로 9월 FOMC 금리 인상 확률 상승 — 매파적 서프라이즈 리스크</li>
+        <li>국채금리 고수준 유지 시 밸류에이션 부담 재부각 가능</li>
+        <li>반도체·일부 대형주 가이던스 우려가 확대될 경우 지수 압력</li>
+        <li>유가·지정학 리스크 상존</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>이란-미국 갈등 완화 + FOMC에서 금리 동결·완화적 스탠스 확인 시 52주 고점($748.65) 재도전</div>
-      <div class="scenario base"><b>기본</b>$700~$730 박스권. 중동 리스크와 금리 기대 사이에서 지표(고용·CPI·FOMC) 결과에 따라 등락</div>
-      <div class="scenario bear"><b>약세</b>중동 확전 또는 인플레이션 재점화로 금리 인하 기대 후퇴 시 $680~$700 구간까지 재조정</div>
+      <div class="scenario bull"><b>강세</b>CPI 둔화 + FOMC 동결·완화적 스탠스 확인 시 52주 고점($748.65) 재도전</div>
+      <div class="scenario base"><b>기본</b>$700~$730 박스권. CPI(9/11)·FOMC(9/17 새벽) 등 매크로 이벤트 대기 속 변동성 장세</div>
+      <div class="scenario bear"><b>약세</b>CPI 서프라이즈 또는 FOMC 매파 발언으로 금리 재인상 우려 부각 시 $680~$700 구간까지 재조정</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 상품 구조</h2>
+    <h2>4. 상품 구조</h2>
     <table>
       <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
       <tr><td>📦 상품</td><td class="num">Invesco QQQ Trust</td><td class="num">Nasdaq-100 추적 ETF</td></tr>
       <tr><td>💰 순자산</td><td class="num">약 $450B+</td><td class="num">세계 최대 성장주 ETF 중 하나</td></tr>
       <tr><td>📊 보수</td><td class="num">0.18%</td><td class="num">연간</td></tr>
       <tr><td>📈 주요 편입</td><td class="num">NVDA, AAPL, MSFT, AMZN, META, AVGO, TSLA 등</td><td class="num">기술·커뮤니케이션 비중 높음</td></tr>
-      <tr><td>📅 주요 이벤트</td><td class="num">8월 고용지표(9/4), 8월 CPI(9/11), FOMC(9/17 새벽 KST)</td><td class="num">매크로 이벤트 집중 구간</td></tr>
+      <tr><td>📅 주요 이벤트</td><td class="num">CPI(9/11), FOMC(9/17 새벽 KST)</td><td class="num">매크로 이벤트 집중 구간</td></tr>
     </table>
 
     <div class="callout">
       → QQQ는 <b>Nasdaq-100</b>을 추적하는 대표 성장주 ETF입니다.
-      AI·빅테크 모멘텀과 금리 인하 기대가 중장기 지지 요인이지만, 단기적으로는 미국-이란 군사 갈등에 따른 유가·금리 변동성이 최대 리스크로 부각되고 있습니다.
-      최근 반등은 국채금리 되밀림에 따른 것으로, 지정학 리스크가 재확대되면 변동성이 커질 수 있습니다.
+      AI·빅테크 모멘텀이 중장기 지지 요인이지만, 단기적으로는 금리 경로와 9월 계절성이 변동성 요인으로 작용하고 있습니다.
+      9/4 NFP 이후에도 상대 강세를 보인 점은 긍정적이나, 다가오는 CPI·FOMC 결과에 따라 방향성이 결정될 가능성이 큽니다.
     </div>
   </section>
 
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 4일 (금) 오후 9:30</td>
-        <td><b>8월 미국 비농업고용지표(NFP)</b> 발표 — ADP 부진 이후 고용 둔화 확인 여부, 금리 경로에 직결</td>
-        <td><span class="star">★★★★★</span></td>
+        <td>9월 전 구간</td>
+        <td>9월 계절성 — 기술주·Nasdaq 역사적 약세 경향 주의</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>9월 11일 (금) 오후 9:30</td>
@@ -324,18 +404,13 @@
       </tr>
       <tr>
         <td>9월 17일 (목) 오전 3:00</td>
-        <td><b>FOMC 금리결정</b>(9/15~16 현지 회의) — 동결·인하 여부와 파월 기자회견이 QQQ 방향성 핵심</td>
+        <td><b>FOMC 금리결정</b>(9/15~16 현지 회의) — 동결·인상 여부와 파월 기자회견이 QQQ 방향성 핵심</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>미국-이란 군사 갈등 전개, 유가·국채금리 변동, NVDA/AVGO/MU 등 편입주 개별 뉴스</td>
+        <td>국채금리 변동, NVDA/AVGO/MU 등 편입주 개별 뉴스, 유가·지정학 리스크</td>
         <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 전 구간</td>
-        <td>9월 계절성 — 기술주·Nasdaq 역사적 약세 경향 주의</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>10~11월</td>
@@ -346,7 +421,7 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.04 오전 5:30 (KST) · 미국 09/03(목) 정규장 마감가($717.67, +1.19%) 기준.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.06 업데이트 / 미국 9/4 정규장 마감 기준. 가격은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
 
 </div>
