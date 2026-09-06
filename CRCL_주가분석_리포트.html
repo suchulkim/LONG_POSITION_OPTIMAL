@@ -6,26 +6,10 @@
 <title>CRCL 주가 분석 리포트</title>
 <style>
   :root{
-    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
-    --border:#e3e6ec; --accent:#0069b4; --up:#d92626; --down:#1f7a3d;
-    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
-    --chip-bg:#eef2f7; --table-head:#f0f2f6;
-    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
-      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
-      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
-      --chip-bg:#20242d; --table-head:#1d212a;
-      --shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
-    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+    --bg:#0e1015; --card:#161a21; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#262b35; --accent:#8a92ff; --up:#ff6b6b; --down:#5fd188;
     --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
-    --chip-bg:#20242d; --table-head:#1d212a;
+    --chip-bg:#1c2028; --table-head:#1a1e26;
     --shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
   *{box-sizing:border-box;}
@@ -67,94 +51,213 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
   .star{color:#e0a800;}
-  .star-dim{color:var(--border);}
+  .star-dim{color:#3a3f4a;}
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin:14px 0;}
+  .kpi{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:480px; border-radius:8px; overflow:hidden;}
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{height:100% !important; width:100% !important;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
-  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
-  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.06 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:10 (KST)</span>
+      <span>기준시각 오후 3:40 (KST)</span>
     </div>
     <h1>Circle Internet Group (CRCL) 주가 분석 리포트<span class="ticker">NYSE · Perpetual: CRCLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$103.23</div>
-        <div class="chg-up">일봉 +16.46% ($+14.59) · $93~96 저항 돌파, $103권 안착 시도</div>
+        <div class="price-main">$102.05</div>
+        <div class="chg-down">9/4 종가 -1.14% · 9/3 +16.46% 급등 후 소화 · 1개월 +약 63%</div>
       </div>
-      <div class="price-sub">GENIUS Act 신탁은행 진전·의회 증언·OKX 파트너십 등 겹호재로 급등. 미국 정규장 종가 $103.23, 시간외 $102.40(-0.80%).</div>
+      <div class="price-sub">
+        9/3 미국 정규장에서 $103.23(+16.46%, 거래량 약 2,470만 주)까지 급등한 뒤 9/4는 $102.05로 소폭 조정 마감했습니다.
+        시간외 약 $101.7대. GENIUS Act 이후 규제 명확화, OCC 국법신탁은행 인가, Arc 메인넷(9/16) 기대가 겹치며 최근 1개월 약 63% 상승했습니다.
+        주말 기준 다음 촉매는 9/15 CLARITY Act 상원 표결 관련 일정과 9/16 Arc 메인넷 출시입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · CRCLUSDT.P (OKX) · 일봉 / 15분봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_crcl_daily" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_crcl_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · CRCLUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_crcl_daily" style="height:100%; width:100%;"></div>
-      </div>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>9/3 +16.5% 급등 후 소화</b></td>
+        <td>9/3 종가 $103.23(+16.46%), 거래량 급증. 9/4 $102.05(-1.14%)로 일부 차익실현. 1개월 기준 약 +63% 랠리</td>
+        <td>단기 과열 후 조정 국면. $100 전후 지지 여부와 $110 재돌파 시도가 관건</td>
+      </tr>
+      <tr>
+        <td><b>Arc 메인넷 9/16 출시 임박</b></td>
+        <td>USDC 네이티브 L1. 창립 검증인에 BlackRock, DTCC, Visa, Mastercard, ICE, Standard Chartered 등. 프라이빗 메인넷 100+ 파트너, 테스트넷 누적 거래 5억 건 이상</td>
+        <td>기관 인프라 스토리의 핵심 촉매. 출시 성공 여부가 중기 밸류에이션에 직접 영향</td>
+      </tr>
+      <tr>
+        <td><b>규제·은행 인가 모멘텀</b></td>
+        <td>GENIUS Act 이후 스테이블코인 규제 프레임 정비. OCC 국법신탁은행(Circle National Trust) 인가 완료. CLARITY Act 상원 일정(9/15 전후) 대기</td>
+        <td>규제 명확화가 기관 채택·밸류에이션 리레이팅의 배경. 입법 지연 시 단기 변동성 가능</td>
+      </tr>
+      <tr>
+        <td><b>실적·가이던스 상향</b></td>
+        <td>Q2 총매출·준비금 이자 $701M(+7% YoY), 조정 EBITDA $143M(+8%). Other revenue 가이던스 $310~330M으로 상향, RLDC 마진 가이던스 상향</td>
+        <td>금리 하락 압력 속에서도 유통량·플랫폼 믹스 개선으로 마진 방어. Arc 토큰 프리세일 인식 기대 포함</td>
+      </tr>
+      <tr>
+        <td><b>애널리스트 온도차</b></td>
+        <td>Bernstein 목표가 $140 유지(Outperform). 일부 하우스는 중립·비중축소 및 낮은 목표가 유지</td>
+        <td>강세 시나리오와 밸류에이션 부담 논쟁이 공존. 이벤트 소화 과정에서 변동성 확대 가능</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 9/3 급등 이후 <b>$102 전후에서 단기 소화</b> 중입니다. 구조적으로는
+      <b>Arc 메인넷(9/16) + CLARITY Act 일정 + OCC 신탁은행</b>이 겹치는 이벤트 구간이며,
+      준비금 이자 의존(약 95%)과 금리 민감도는 여전히 핵심 리스크입니다.
     </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · CRCLUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_crcl_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 장기 박스 상단($93~96) 돌파 후 $103권 진입, 거래량 급증 동반. <b>15분봉</b>: 장중 변동성 확대, 하루 +16% 급등에 따른 단기 과열·되돌림 가능성 주의.</div>
   </section>
 
   <section>
     <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">최근 고점·저항</div>
+        <div class="value">$103~$110</div>
+        <div class="sub">9/3 고점 돌파 여부</div>
+      </div>
+      <div class="kpi">
+        <div class="label">단기 지지</div>
+        <div class="value">$100 / $95</div>
+        <div class="sub">심리적 지지 · 박스 하단</div>
+      </div>
+      <div class="kpi">
+        <div class="label">붕괴 시 노출</div>
+        <div class="value">$90 / $80대</div>
+        <div class="sub">급등분 되돌림 구간</div>
+      </div>
+    </div>
+
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
-      <ul class="plain"><li>USDC 유통 $733억(+19% YoY), 조정 EBITDA +8% (2분기 실적)</li><li>Bernstein 목표가 $140 재확인(9/1) — 스테이블코인 거래액 연환산 $17조 전망</li><li>USDC 유통량 6개월 만에 감소세 반전, 최근 1주 +$17억 순증</li><li>Arc 메인넷 9/16 출시 — BlackRock·Visa·DTCC 참여</li><li>OCC 국법신탁은행 인가 완료, Circle Trust Bank 출범 준비</li><li>Circle 대표 의회 증언(9/2)·CLARITY Act 등 스테이블코인 우호 입법 기대, OKX와 USDC 유동성 파트너십</li></ul>
+      <ul class="plain">
+        <li>USDC 유통 $73.3B(+19% YoY), 온체인 거래량 $14.8T(+151% YoY) — Q2 기준</li>
+        <li>조정 EBITDA +8%, RLDC 마진 개선, Other revenue·마진 가이던스 상향</li>
+        <li>Arc 메인넷 9/16 출시 — BlackRock·DTCC·Visa·Mastercard 등 창립 검증인</li>
+        <li>OCC 국법신탁은행 인가 완료, Circle National Trust 출범 준비</li>
+        <li>Bernstein 목표가 $140 재확인, 스테이블코인 거래액 성장 스토리 유지</li>
+        <li>1개월 약 +63% 모멘텀, 기관·규제 내러티브 강화</li>
+      </ul>
     </div>
+
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain"><li>모건스탠리 비중축소(UW) 유지, 목표가 $38(8/3)</li><li>JPMorgan 중립, 연말 목표가 $80</li><li>서스쿼해나: 준비금 이자 매출 95% 의존 + 코인베이스 수익배분 마진 압박, 경쟁자 증가 지적(목표가 $92로 상향에도 중립 유지)</li><li>USDC 스테이블코인 시장점유율 27%로 하락(YoY -66bp), 2분기 말 유통량 QoQ -4.8%</li><li>하루 새 +16% 급등에 따른 단기 과열·차익실현 리스크</li></ul>
+      <ul class="plain">
+        <li>준비금 이자 매출 비중 약 95% — 금리 하락 시 직접 타격 (Q2 수익률 -66bp가 성장분 상당 상쇄)</li>
+        <li>모건스탠리 비중축소, JPMorgan 중립 등 일부 하우스는 보수적 시각 유지</li>
+        <li>USDC 스테이블 시장점유율 약 27%(YoY -66bp), 경쟁 심화</li>
+        <li>9/3 +16% 급등 이후 단기 과열·차익실현 리스크</li>
+        <li>CLARITY Act 일정 지연·Arc 출시 실행 리스크</li>
+      </ul>
     </div>
+
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>Arc 출시 성공 + FOMC 비둘기파 시 $110~$120, Bernstein 목표가 $140 재도전</div>
-      <div class="scenario base"><b>기본</b>$95~$105 박스권, CLARITY Act·Arc 출시·FOMC 소화하며 변동성 확대</div>
-      <div class="scenario bear"><b>약세</b>급등분 되돌림 시 $90 지지선 테스트, 붕괴 시 $80대 재하락</div>
+      <div class="scenario bull"><b>강세</b>Arc 출시 성공 + CLARITY Act 진전 + FOMC 비둘기파 시 $110~$120, Bernstein 목표가 $140 재도전</div>
+      <div class="scenario base"><b>기본</b>$95~$110 박스권에서 Arc·CLARITY·FOMC를 소화. 급등분 일부 되돌림 후 이벤트 결과에 따라 방향 결정</div>
+      <div class="scenario bear"><b>약세</b>급등분 되돌림으로 $90 지지 테스트, 붕괴 시 $80대 재하락. 금리 하락 가속·입법 지연·출시 실망이 트리거</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 매출 구조 (2026년 2분기)</h2>
+    <h2>3. 매출·사업 구조 (2026년 2분기)</h2>
     <table>
-<tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-<tr><td>🏦 준비금 이자</td><td class="num">$668M</td><td class="num" style="color:var(--pos-text)">+5%</td><td class="num">95.3%</td></tr>
-<tr><td>💼 기타 매출</td><td class="num">$34M</td><td class="num" style="color:var(--pos-text)">+41%</td><td class="num">4.9%</td></tr>
-<tr><td><b>합계</b></td><td class="num"><b>$701M</b></td><td class="num"><b>+7%</b></td><td class="num"><b>100%</b></td></tr>
-</table>
-<div class="callout">→ 준비금 이자 매출 95%대 의존 구조 지속. 분기말 USDC 유통량은 $733억로 QoQ -4.8% 감소했으나, 최근 1주간 +$17억 반등 신호. <b>금리 경로·은행권 스테이블코인 경쟁·Arc 출시</b>가 핵심 변수입니다.</div>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>🏦 준비금 이자</td><td class="num">$668M</td><td class="num" style="color:var(--pos-text)">+5%</td><td class="num">95.3%</td></tr>
+      <tr><td>💼 기타 매출</td><td class="num">$34M</td><td class="num" style="color:var(--pos-text)">+41%</td><td class="num">4.9%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$701M</b></td><td class="num"><b>+7%</b></td><td class="num"><b>100%</b></td></tr>
+    </table>
+    <div class="callout">
+      → 준비금 이자 의존 구조(약 95%)가 지속됩니다. USDC 평균 유통 증가(+25%)가 금리 하락(-66bp)을 상당 부분 상쇄했으나,
+      구조적 다각화(Arc·CPN·기타 플랫폼)가 중기 관건입니다. Other revenue 가이던스 상향과 Arc 토큰 프리세일 인식 일정이
+      2026년 하반기 실적 가시성을 좌우할 수 있습니다.
+    </div>
   </section>
 
   <section>
     <h2>4. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 15일 (화)</td><td>미국 상원 CLARITY Act(디지털자산 시장구조법) 표결 (예정)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-<tr><td>9월 16일 (수)</td><td><b>Arc 메인넷 출시</b> — BlackRock·Visa 참여</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>9월 하순 (예정)</td><td>디지털자산 과세법안(Digital Asset Tax Bill) 표결, Circle Trust Bank 출범</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-<tr><td>10월 말~11월 초 (예정)</td><td>3분기 실적 발표 (공식 일정 미확정)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr>
+        <td>9월 15일 (화) 전후</td>
+        <td>미국 상원 CLARITY Act(디지털자산 시장구조법) 관련 표결·일정</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 16일 (수)</td>
+        <td><b>Arc 메인넷 출시</b> — BlackRock·DTCC·Visa 등 창립 검증인 참여</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 — 준비금 수익률·위험자산 심리에 직접 영향</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 하순 (예정)</td>
+        <td>디지털자산 과세 관련 논의, Circle National Trust 출범 진행</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 말~11월 초 (예정)</td>
+        <td>3분기 실적 발표 (공식 일정 미확정)</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.04 오전 5:10 (KST), 2026.09.03 미국 정규장 종가 기준.
+    ※ 본 자료는 공개된 차트·뉴스·공시 기반 분석이며 투자 조언이 아닙니다.
+    가격 데이터 기준: 2026.09.04 미국 정규장 종가 $102.05 (주말 기준 최신 종가), 시간외 약 $101.7대.
+    USDC·실적 수치는 Circle Q2 2026 공시 기준. Arc·CLARITY 일정은 공개 발표·보도 기준이며 변경될 수 있습니다.
+    상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
+
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -165,7 +268,7 @@
     "symbol": "OKX:CRCLUSDT.P",
     "interval": "D",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "toolbar_bg": "#161a21", "enable_publishing": false,
     "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
@@ -176,7 +279,7 @@
     "symbol": "OKX:CRCLUSDT.P",
     "interval": "15",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#1a1d24", "enable_publishing": false,
+    "toolbar_bg": "#161a21", "enable_publishing": false,
     "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"

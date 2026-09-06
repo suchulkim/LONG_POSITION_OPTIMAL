@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MSTR 주가 분석 리포트</title>
+<title>MSTR 주가 분석 리포트 (업데이트)</title>
 <style>
   :root{
     --bg:#f5f6f8;
@@ -241,6 +241,33 @@
   }
   .callout b{color:var(--text);}
 
+  .reason-table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    font-size:13.5px;
+    margin-bottom:16px;
+  }
+  .reason-table th{
+    background:var(--table-head);
+    padding:12px 14px;
+    font-weight:600;
+    color:var(--text-soft);
+    text-align:left;
+  }
+  .reason-table td{
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  .reason-table tr:last-child td{border-bottom:none;}
+  .reason-table .col-cause{width:22%; font-weight:600;}
+  .reason-table .col-content{width:48%;}
+  .reason-table .col-impact{width:30%; color:var(--text-soft);}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -255,20 +282,20 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.06 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 6:00 (KST, 미국 9/3 정규장 마감 기준)</span>
+      <span>기준시각 미국 9/4 정규장 마감 (KST 9/5 새벽)</span>
     </div>
     <h1>Strategy (MSTR) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: MSTRUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$142.00</div>
-        <div class="chg-up">9/3(미 동부시간) 정규장 종가 · 전일 대비 +15.27% 급등 (전일 종가 $123.19) · 일부 실시간 소스는 $144~145, +17~18%대까지 반영</div>
+        <div class="price-main">$142.80</div>
+        <div class="chg-down">9/4(미 동부시간) 정규장 종가 · 전일 대비 -1.39% (전일 종가 $144.82) · 고가 $144.40 / 저가 $137.07</div>
       </div>
       <div class="price-sub">
-        9/1(-6.06%)·9/2(-1.35%) 이틀 연속 조정을 거친 뒤, 9/3 "10주 만의 비트코인 추가 매입 재개" 소식이 전해지며 하루 만에 급반등.
-        8월 말~9월 초 $124~$142 사이에서 변동성이 매우 컸던 구간을 단숨에 뚫고 최근 저항대였던 $137~140을 회복했습니다.
+        9/1(-6.06%)·9/2(-1.35%) 조정 후 9/3 "10주 만의 비트코인 추가 매입 재개" 소식으로 +17.56% 급등($144.82)했으나, 9/4 고용지표 서프라이즈와 매크로 변동성으로 소폭 조정. 
+        8월 말~9월 초 $124~$145 박스권에서 변동성이 컸던 구간을 돌파한 뒤 단기  Consolidation 중. 
         정확한 이동평균선·RSI 등 기술적 수치는 데이터 제공 시점 차이가 있을 수 있어, 아래 TradingView 실시간 차트로 확인하시기 바랍니다.
       </div>
     </div>
@@ -293,21 +320,72 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8/27~9/3 사이 $124~$142 구간에서 큰 변동성. 9/1~9/2 조정(-6.06%, -1.35%) 후 9/3 비트코인 재매수 발표로 +15% 이상 급등하며 박스권 상단을 돌파, $137~140 저항대를 회복했습니다.<br>
-      <b>15분봉</b>: 급등 초입 구간으로 거래량이 크게 늘며 단기 모멘텀이 강하게 살아난 모습. 급등 직후 구간은 단기 과열(과매수) 가능성에 유의할 필요가 있습니다. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
+      <b>일봉</b>: 8/27~9/4 사이 $124~$145 구간에서 큰 변동성. 9/3 BTC 재매수 발표로 +17.56% 급등 후 9/4 소폭 되돌림(-1.39%). $137~145 구간에서 단기 지지/저항 형성 중.<br>
+      <b>15분봉</b>: 급등 후 거래량 감소와 함께 단기 과열 해소 구간. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+
+  <!-- 최근 주가 움직임의 주요 원인 (추가 섹션) -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인</h2>
+    <p style="font-size:14px; color:var(--text-soft); margin-bottom:14px;">
+      MSTR는 비트코인 가격과 극도로 연동되므로, 최근 BTC·매크로 움직임이 주가에 직접 반영되었습니다. (9/3~9/4 기준)
+    </p>
+
+    <table class="reason-table">
+      <thead>
+        <tr>
+          <th class="col-cause">원인</th>
+          <th class="col-content">내용</th>
+          <th class="col-impact">영향</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-cause">8월 고용지표(NFP) 서프라이즈</td>
+          <td class="col-content">9/4 발표된 8월 비농업고용이 +16.2만 명 증가(시장 예상 +5.6만 명 대비 약 3배), 실업률은 4.1%로 유지, 이전월 수치도 +5.5만 명 상향 수정</td>
+          <td class="col-impact">9월 FOMC 금리인하 베팅이 한 주 만에 급등(약 58~59%), 발표 직후 5분 내 BTC $81,340→$79,661 급락, 1시간 롱 청산 약 $2.02억(24시간 누적 $7.69억)</td>
+        </tr>
+        <tr>
+          <td class="col-cause">Fed 인사 발언 엇갈림</td>
+          <td class="col-content">9/3 월러 이사가 인플레이션 둔화 확인 시 금리 동결 선호 시사 → 9/3~4 위험자산 랠리 촉발, 그러나 같은 인사가 개선세가 일시적이면 인상 지지 입장도 병기</td>
+          <td class="col-impact">비둘기파 기대감에 $82,200 신고점 터치 후, 바로 다음날 고용지표로 매파 베팅이 되살아나며 변동성 확대</td>
+        </tr>
+        <tr>
+          <td class="col-cause">현물 ETF 자금흐름 급변동</td>
+          <td class="col-content">9/1 -$2.365억 순유출(IBIT -$2.012억)→9/2 +$1.012억 순유입(IBIT +$1.155억)→9/3 +$7.31억 순유입(연중 최대급, IBIT +$4.54억, ARKB +$1.38억)</td>
+          <td class="col-impact">기관 수급 방향성이 하루 단위로 급반전, 미국 현물 BTC ETF 합산 순자산은 약 $1,033억(BTC 시가총액 대비 약 6.3%)까지 확대</td>
+        </tr>
+        <tr>
+          <td class="col-cause">채굴 환경 완만한 개선</td>
+          <td class="col-content">해시레이트가 9/4 기준 약 1,001 EH/s로 1 ZH/s 근접(8월 말 7일 평균 914~915 EH/s 대비 상승), 채굴 난이도는 연중 저점(124.9T) 대비 소폭 반등한 125.81T</td>
+          <td class="col-impact">연초 이후 이어진 채굴업체 발전기 가동 중단(약 150 EH/s 이탈) 국면에서 일부 회복 신호, 다음 난이도 조정(9/6 오전경 KST 예상)에서 추세 확인 필요</td>
+        </tr>
+        <tr>
+          <td class="col-cause">안전자산 동반 매도</td>
+          <td class="col-content">고용지표 발표 직후 금(XAU)도 온스당 $4,473→$4,376으로 급락 — 위험/안전자산 구분 없는 전반적 유동성 긴축 우려</td>
+          <td class="col-impact">BTC-금 동조화 재확인, 다음 트리거는 9/11 CPI로 이동</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 8월 마지막 주~9월 초는 ETF 자금 재유입과 Fed 비둘기파 발언이 겹치며 4개월래 신고점($82,200)을 찍었으나, 바로 다음날 고용지표 서프라이즈로 금리인하 베팅이 급반전하며 상승분을 상당 부분 반납했습니다. 채굴 지표(해시레이트·난이도)는 완만히 개선되고 있어 공급 측 매도압력은 다소 완화된 모습이지만, 매크로(고용→CPI→FOMC) 변수가 가격을 주도하는 국면이 이어지고 있습니다. MSTR 주가도 이 흐름에 강하게 연동되었습니다.
+    </div>
+  </section>
+
+
+  <!-- 향후 전망 -->
+  <section>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>비트코인 보유량 <b>845,050 BTC</b> (세계 최대 상장사 보유, 2026.08.30 기준) — 10주 매수 공백 이후 4,603 BTC(약 $370M) 추가 매입을 9/1 재개하며 시장 심리 개선</li>
-        <li>현재 시가총액이 보유 비트코인 평가가치(약 $66~68B)를 밑도는 이례적 구간에 진입 — 부채·우선주 조정 후 mNAV는 약 1.0배 내외로 프리미엄이 거의 소멸된 저평가 논쟁 구간</li>
-        <li>애널리스트 평균 목표주가 약 $224.6 (Strong Buy 13 / Buy 2 / Hold 1, 총 16개사) — 9/3 종가 대비 약 55~60% 상승 여력 제시</li>
+        <li>비트코인 보유량 <b>845,050 BTC</b> (세계 최대 상장사 보유, 2026.08.30 기준) — 10주 매수 공백 이후 4,603 BTC(약 $370M) 추가 매입을 8/24~8/30 재개하며 시장 심리 개선</li>
+        <li>현재 시가총액(약 $53~56B)이 보유 비트코인 평가가치(약 $67~68B, BTC ~$80,000 기준)를 밑도는 이례적 구간에 진입 — 부채·우선주 조정 후 mNAV는 약 1.0배 내외로 프리미엄이 거의 소멸된 저평가 논쟁 구간</li>
+        <li>애널리스트 평균 목표주가 약 $224~236 (Strong Buy 다수) — 9/4 종가 대비 약 55~65% 상승 여력 제시</li>
         <li>2분기(Q2) 기준 BTC 보유량 전분기 대비 +11%, 주당 비트코인 지표(BTC/Share)는 201,170 → 210,824 사토시로 +5% 개선 — 희석에도 불구한 주당 실질가치 증가</li>
         <li>마이클 세일러 회장·필롱 리 CEO의 지속적 비트코인 강세 기조 재확인, 급등 국면에서 거래량 동반 유입</li>
       </ul>
@@ -319,29 +397,30 @@
         <li>2분기 실적은 비트코인 공정가치 평가손 영향으로 순손실 기록, 대차대조표상 미실현 평가손실 약 $18.5B 반영 — 실적 변동성이 큰 회계 구조</li>
         <li>3~8월 사이 우선주 배당·부채 상환 재원 마련을 위해 약 7,000 BTC를 매각한 이력 — "무조건 매수" 전략은 아니라는 점 시사</li>
         <li>STRC(디지털크레딧) 액면가 안정화가 2027년 9월 풋옵션 시점까지 핵심 과제로 남아있어, 장기적 자금조달 압박 가능성 상존</li>
-        <li>주가가 비트코인 가격에 극도로 연동 — 9/1~9/3 사흘간 -6%, -1%, +15% 등 일일 변동성이 매우 큼</li>
+        <li>주가가 비트코인 가격에 극도로 연동 — 9/1~9/4 사흘간 -6%, -1%, +17.56%, -1.39% 등 일일 변동성이 매우 큼</li>
         <li>STRC·MSTR 대규모 ATM 주식 발행 프로그램(각 $21B 규모) 지속으로 기존 주주 지분 희석 부담 상존</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>비트코인 추가 매입이 이어지고 BTC 가격이 강세를 유지할 경우, 시가총액-BTC가치 역전(할인) 구간 해소와 함께 mNAV 프리미엄 재형성 → 애널리스트 목표가 구간($180~$224)을 향한 재평가 시도</div>
-      <div class="scenario base"><b>기본</b>$124~$145 박스권 등락 지속. 비트코인 가격 흐름에 동조화되며 방향성은 BTC 시세가 결정. 추가 BTC 매입 공시 여부가 단기 변수</div>
+      <div class="scenario bull"><b>강세</b>비트코인 추가 매입이 이어지고 BTC 가격이 강세를 유지할 경우, 시가총액-BTC가치 역전(할인) 구간 해소와 함께 mNAV 프리미엄 재형성 → 애널리스트 목표가 구간($180~$236)을 향한 재평가 시도</div>
+      <div class="scenario base"><b>기본</b>$130~$150 박스권 등락 지속. 비트코인 가격 흐름에 동조화되며 방향성은 BTC 시세가 결정. 추가 BTC 매입 공시 여부와 9/11 CPI·9/17 FOMC가 단기 변수</div>
       <div class="scenario bear"><b>약세</b>비트코인 급락 또는 STRC 안정화 우려 재부각, 추가 BTC 매각 뉴스 시 $110~$120대 재테스트 가능. 희석·부채 부담 이슈 재부각 리스크</div>
     </div>
   </section>
 
-  <!-- 3. 사업·자산 구조 -->
+
+  <!-- 핵심 자산 구조 -->
   <section>
-    <h2>3. 핵심 자산 구조 (2026.08.30 기준)</h2>
+    <h2>4. 핵심 자산 구조 (2026.08.30 기준)</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
       <tr><td>🪙 비트코인 보유량</td><td class="num">845,050 BTC</td><td class="num">세계 최대 상장사 보유</td></tr>
       <tr><td>💰 평균 매수가</td><td class="num">$75,412</td><td class="num">누적 취득 단가</td></tr>
       <tr><td>💵 총 매입원가</td><td class="num">약 $63.73B</td><td class="num">누적 투자 원금</td></tr>
-      <tr><td>📊 비트코인 평가가치(NAV)</td><td class="num">약 $66~68B</td><td class="num">BTC 현물가 약 $78,900~ 기준 추정</td></tr>
-      <tr><td>🏢 시가총액</td><td class="num">약 $54~56B</td><td class="num">9/3 종가·발행주식 약 3.84억주 기준</td></tr>
+      <tr><td>📊 비트코인 평가가치(NAV)</td><td class="num">약 $67~68B</td><td class="num">BTC 현물가 약 $80,000 기준 추정</td></tr>
+      <tr><td>🏢 시가총액</td><td class="num">약 $53~56B</td><td class="num">9/4 종가·발행주식 기준</td></tr>
       <tr><td>⚖️ mNAV</td><td class="num">약 1.0배 내외</td><td class="num">부채·우선주 조정 기준, 프리미엄 거의 소멸</td></tr>
       <tr><td>📈 최근 매수</td><td class="num">4,603 BTC</td><td class="num">10주 공백 후 재개 (약 $370M, 8/24~8/30)</td></tr>
       <tr><td>📉 2분기 순손익</td><td class="num">순손실</td><td class="num">BTC 공정가치 평가손 · 미실현손 약 $18.5B</td></tr>
@@ -369,14 +448,20 @@
     </div>
   </section>
 
-  <!-- 4. 주요 일정 -->
+
+  <!-- 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
         <td>수시</td>
         <td>비트코인 추가 매수/매각 공시 (8-K) — 세일러·필롱 리의 매매 동향 지속 모니터링</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 11일 (목) 경</td>
+        <td>미국 CPI 발표 — 최근 매크로 민감도가 높아진 BTC·MSTR에 직접 영향</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -391,7 +476,7 @@
       </tr>
       <tr>
         <td>비트코인 가격</td>
-        <td>BTC 주요 지지/저항 돌파 시 MSTR 동조화 움직임 강화 (최근 BTC 약 $78,000~$79,000대)</td>
+        <td>BTC 주요 지지/저항 돌파 시 MSTR 동조화 움직임 강화 (최근 BTC 약 $79,800~$80,000대)</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -408,7 +493,7 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.04 오전 6:00 (KST) / 미국 9/3 정규장 마감 기준. 비트코인 보유량·매입원가는 2026.08.30 공시 기준. 가격·mNAV·시가총액은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.06 업데이트 / 미국 9/4 정규장 마감 기준. 비트코인 보유량·매입원가는 2026.08.30 공시 기준. 가격·mNAV·시가총액은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
 
 </div>

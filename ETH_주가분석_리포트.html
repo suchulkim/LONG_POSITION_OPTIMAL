@@ -171,16 +171,6 @@
   .star{color:#e0a800;}
   .star-dim{color:#3a3f4a;}
 
-  .callout{
-    background:var(--chip-bg);
-    border-radius:10px;
-    padding:14px 16px;
-    font-size:14px;
-    color:var(--text-soft);
-    margin-top:16px;
-  }
-  .callout b{color:var(--text);}
-
   .kpi-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
@@ -197,6 +187,26 @@
   .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
   .kpi .value{font-size:18px; font-weight:700;}
   .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:170px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    position:relative;
+  }
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:56px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
 
   .chart-card{
     margin-top:16px;
@@ -227,6 +237,16 @@
     gap:16px;
   }
 
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -241,26 +261,27 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.03 (목) · 업데이트</span>
+      <span>2026.09.05 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 11:50 (KST)</span>
+      <span>기준시각 오후 1:00 (KST)</span>
     </div>
     <h1>이더리움 (ETH) 주가 분석 리포트<span class="ticker">Perpetual: ETHUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$2,390</div>
-        <div class="chg-down">일간 -1.1% · 주간 -3~6% · 8월 고점($2,550권) 대비 조정, $2,400 지지선 공방</div>
+        <div class="price-main">$2,452</div>
+        <div class="chg-down">일간 -0.2%↔-1.4% (자료별 편차) · $2,444~2,459 박스권 소강 · $2,400 지지선 공방 지속</div>
       </div>
       <div class="price-sub">
-        8월 한 달간 $1,850~1,900대에서 $2,550선까지 약 +30% 급등했으나, 이후 $2,550 저항선에서 거듭 밀리며
-        9월 첫째 주 들어 $2,380~2,440 박스권으로 되돌림. ETF 자금 유입은 이어지고 있지만 일별 유입 강도가
-        뚜렷이 둔화되고 있어, 8월 랠리의 상승 동력이 약해지는 국면으로 해석됩니다.
+        9/4(금) 미국 8월 비농업고용(NFP) 발표 직후 $2,430선까지 밀렸다가 낙폭을 되돌려 $2,444~2,459 구간에서 소강 상태.
+        8월 한 달 $1,850~1,900대에서 $2,550선까지 약 +30% 급등했으나 $2,550 저항에서 두 차례 실패, 9월 첫 주 내내
+        $2,380~2,490 박스권에서 방향성을 탐색 중입니다. ETF 자금은 9/4 기준으로도 순유입을 이어가고 있으나
+        발행사별 자금 쏠림(블랙록 유입 vs 피델리티 유출)이 뚜렷해지는 국면입니다.
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · ETHUSDT.P (OKX) · 15분봉 / 1시간봉 — 아래 탭에서 전환 가능</div>
+      <div class="cap">📊 실시간 차트 · ETHUSDT.P (OKX) · 15분봉 / 1시간봉</div>
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
@@ -288,32 +309,37 @@
     <table>
       <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
       <tr>
-        <td><b>ETF 자금 유입세 둔화</b></td>
-        <td>8/17~8/28 9거래일 연속 순유입(총 $14.2억), 8/28 단일 세션 $2.258억(10개월래 최대) 기록 후 유입세 지속되고 있으나 일별 유입 규모가 $234.5백만→$87.7백만 등으로 큰 폭 축소, 11~12거래일째 연속 순유입 이어가는 중</td>
-        <td>기관 수급은 여전히 플러스지만 모멘텀 둔화 — 코인베이스 프리미엄 지수가 마이너스로 전환하며 현물 매수세 약화 신호</td>
+        <td><b>ETF 자금 유입 지속되나 발행사별 쏠림 심화</b></td>
+        <td>9/1 $10.95백만 순유입(12거래일 연속), 9/4 $26.46백만 순유입 — 다만 블랙록 ETHA·ETHB가 $74.23백만을 흡수한 반면 피델리티 FETH는 $48.3백만 순유출을 기록하며 발행사 간 자금 쏠림이 뚜렷</td>
+        <td>기관 수급 총량은 플러스를 유지하지만, 자금이 특정 상품에 집중되는 현상은 신규 매수세보다 상품 간 이동(리밸런싱) 성격이 강함을 시사</td>
       </tr>
       <tr>
-        <td><b>$2,550 저항선 재차 실패 &amp; 되돌림</b></td>
-        <td>8월 말 $2,542~2,550 구간에서 재차 돌파에 실패, 과열 지표(RSI 등) 되돌림과 함께 단기 차익실현 매물 출회 — 9월 첫 거래일 -1.1%, 주간 기준 -3~6% 조정</td>
-        <td>상승쐐기(rising wedge) 패턴상 하방 이탈 리스크 지속, $2,400 지지 여부가 단기 방향성의 분수령</td>
+        <td><b>$2,550 저항선 재차 실패 &amp; 박스권 소강</b></td>
+        <td>8월 말 이후 $2,550 부근에서 두 차례 거듭 저항에 막힘. 0.618 피보나치 지지선인 $2,438~2,441 부근을 지지선으로 삼아 $2,444~2,490 박스권에서 등락</td>
+        <td>상승쐐기(rising wedge) 패턴상 하방 이탈 리스크 상존, $2,438 지지 여부가 단기 방향성의 분수령</td>
       </tr>
       <tr>
-        <td><b>거래소 입금·레버리지 청산 경계</b></td>
-        <td>대형 지갑에서 44,126 ETH가 코인베이스로, 70,739 ETH가 복수 거래소로 이체(잠재 매도 물량), 약 $10.8억 규모 롱 포지션이 청산 위험권에 노출, 10배 레버리지 고래 롱 $1.023억(청산가 $2,241)도 여전히 존재</td>
-        <td>거래소 유입 물량과 레버리지 청산이 겹칠 경우 단기 변동성 확대 가능, $2,241 부근이 주요 트리거 구간</td>
+        <td><b>8월 NFP 서프라이즈 &amp; 매크로 변동성</b></td>
+        <td>9/4 발표된 8월 비농업고용이 예상을 상회하며 위험자산 전반에 일시 하방 압력, ETH도 $2,430선까지 밀렸다가 낙폭 되돌림. 국채금리·달러 강세 부담 여전</td>
+        <td>9/11 CPI, 9/17 FOMC를 앞두고 매크로 지표 발표 때마다 단기 변동성이 확대되는 패턴 반복 중</td>
       </tr>
       <tr>
-        <td><b>매크로 역풍 + 계절성 약세</b></td>
-        <td>미 국채금리 상승과 달러 강세가 위험자산 전반에 부담, 잭슨홀 이후 매파적 연준 스탠스 여진 지속. 9월은 ETH 역사상 두 번째로 약한 달(11년 평균 -10.2%, 중앙값 -12.7%, 11번 중 4번만 상승 마감)</td>
-        <td>8월 급등 이후 프로핏테이킹 리스크가 계절성·매크로 부담과 겹쳐 부각, 온체인 SOPR도 1 이상으로 차익실현 국면 시사</td>
+        <td><b>거래소 입금·레버리지 청산 경계 지속</b></td>
+        <td>대형 지갑발 거래소 입금(11만 ETH 이상) 이력 및 약 $10억 규모 레버리지 롱 청산 위험 노출 잔존, 고래 롱 청산가 $2,241 부근 여전히 유효</td>
+        <td>$2,438 지지 붕괴 시 $2,290~2,241 구간에서 청산 물량과 맞물려 변동성 확대 가능</td>
+      </tr>
+      <tr>
+        <td><b>계절성 약세</b></td>
+        <td>9월은 ETH 역사상 두 번째로 약한 달(11년 평균 -10.2%, 중앙값 -12.7%, 11번 중 4번만 상승 마감)</td>
+        <td>8월 급등 이후 프로핏테이킹 리스크가 계절적 패턴과 겹쳐 부각</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 8월 랠리는 <b>ETF 기관자금 유입이라는 구조적 동력</b>으로 촉발됐으나, $2,550 저항선 앞에서 유입 강도가
-      약해지며 <b>가격이 정체·조정</b>되는 국면입니다. 트랜잭션 수·활성 주소 수 등 <b>네트워크 활동 지표가 가격 상승을
-      뒷받침하지 못하는 점</b>이 랠리의 지속가능성에 대한 의구심을 키우고 있으며, 계절적 약세 패턴까지 겹쳐 있어
-      9월 초는 방향성 확인이 필요한 구간입니다.
+      → 8월 랠리를 이끈 <b>ETF 기관자금 유입</b>이라는 구조적 동력 자체는 살아있으나, $2,550 저항 앞에서 자금이
+      특정 발행사로 쏠리며 <b>신규 순매수보다는 상품 간 이동에 가까운 흐름</b>으로 변질되는 조짐이 보입니다.
+      여기에 8월 NFP 서프라이즈발 매크로 변동성과 계절적 약세 패턴이 겹치며, 9월 둘째 주 CPI·FOMC를 앞두고
+      $2,438~2,550 사이에서 방향성 확인이 필요한 국면입니다.
     </div>
   </section>
 
@@ -330,7 +356,7 @@
       <div class="kpi">
         <div class="label">0.618 피보나치 지지</div>
         <div class="value">$2,438</div>
-        <div class="sub">지난주 지지로 작동, 유지 여부가 관건</div>
+        <div class="sub">최근 지지로 작동, 유지 여부가 관건</div>
       </div>
       <div class="kpi">
         <div class="label">붕괴 시 노출 구간</div>
@@ -342,70 +368,171 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>스팟 ETH ETF는 9/1까지 11~12거래일 연속 순유입 지속, 블랙록 ETHA는 출시 이후 단 하루도 순유출 없이 전체 유입의 약 72%(약 $10.2억) 흡수</li>
+        <li>스팟 ETH ETF는 9월 들어서도 순유입 기조 유지 — 9/1 12거래일 연속 순유입, 9/4 블랙록 ETHA·ETHB 합산 $74.23백만 유입으로 전체 순유입($26.46백만) 견인</li>
         <li>이번 사이클 첫 고점 갱신(higher high) — 2025년 8월 고점 이후 이어진 하락추세선을 8월 랠리로 상향 돌파한 구조는 유효</li>
         <li>Tom Lee(Fundstrat) 등은 비트코인 강세 연동 시 ETH $6,000 목표를 여전히 제시(중장기 낙관 시나리오)</li>
-        <li>0.618 피보나치($2,438) 지지가 유지될 경우 0.5 되돌림($2,880~2,920, 현재가 대비 약 +20%)이 다음 목표로 부상</li>
+        <li>0.618 피보나치($2,438) 지지가 유지될 경우 0.5 되돌림($2,880~2,920, 현재가 대비 약 +19%)이 다음 목표로 부상</li>
+        <li>스테이블코인·RWA·TVL 등 온체인 펀더멘털은 가격 조정과 무관하게 견조(3번 섹션 참고)</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>$2,550 저항 재차 실패 + 코인베이스 프리미엄 마이너스 전환 — 현물 매수세가 8월 대비 약화</li>
-        <li>ETF 일별 유입 규모 뚜렷한 둔화(8/28 $2.26억 → 9/1 $0.9억 내외) — 자금 유입 지속에도 가격 전이 약화</li>
-        <li>거래소 입금 증가(11만 ETH 이상) + 약 $10.8억 규모 레버리지 롱 청산 위험 노출</li>
-        <li>트랜잭션 수·활성 주소 등 네트워크 활동 지표 하락 — 가격 상승을 온체인 펀더멘털이 확인해주지 못함</li>
-        <li>9월 계절성 약세(11년 평균 -10.2%)와 미 국채금리 상승·달러 강세 등 매크로 역풍이 중첩</li>
+        <li>$2,550 저항 재차 실패 + 발행사 간 자금 쏠림(블랙록 유입 vs 피델리티 유출) — 순매수 강도 자체는 8월 대비 둔화 신호</li>
+        <li>8월 NFP 서프라이즈로 금리 인하 기대가 후퇴하며 국채금리·달러 강세 재부각 — 위험자산 전반에 부담</li>
+        <li>거래소 입금 증가분(11만 ETH 이상) + 약 $10억 규모 레버리지 롱 청산 위험 노출 잔존</li>
+        <li>네트워크 매출(수수료)은 2026년 상반기 기준 전년 동기 대비 큰 폭 감소 — 가격 상승을 온체인 수수료 지표가 뒷받침하지 못함(3번 섹션 참고)</li>
+        <li>9월 계절성 약세(11년 평균 -10.2%)와 매크로 이벤트(CPI 9/11, FOMC 9/17) 앞둔 관망 심리</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
       <div class="scenario bull"><b>강세</b>$2,550 종가 기준 돌파 시 상승쐐기 무효화, $2,800~2,920(0.5 피보나치) 구간 목표 부상</div>
-      <div class="scenario base"><b>기본</b>$2,400~2,550 박스권에서 ETF 자금 흐름 둔화 여부와 CPI(9/11)·FOMC(9/17)를 대기하며 등락</div>
-      <div class="scenario bear"><b>약세</b>$2,400 및 $2,290(200일 EMA 부근) 붕괴 시 $2,241(고래 청산가) 테스트, 계절성 약세 심화 시 $2,160(20일 EMA)까지 조정 가능</div>
+      <div class="scenario base"><b>기본</b>$2,400~2,550 박스권에서 ETF 자금 흐름과 CPI(9/11)·FOMC(9/17)를 대기하며 등락</div>
+      <div class="scenario bear"><b>약세</b>$2,438 및 $2,290(200일 EMA 부근) 붕괴 시 $2,241(고래 청산가) 테스트, 계절성 약세 심화 시 $2,160대까지 조정 가능</div>
     </div>
   </section>
 
-  <!-- 3. 주요일정 -->
+  <!-- 3. 네트워크 수익구조 (신규) -->
   <section>
-    <h2>3. 주요 일정 (KST 기준)</h2>
+    <h2>3. 핵심 온체인 지표 · 네트워크 수익구조</h2>
+    <table>
+      <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
+      <tr><td>💰 2026년 상반기 네트워크 매출</td><td class="num">$127백만</td><td class="num">전년동기 $414백만 대비 -69.3% YoY (2022→2023 침체기 -64%와 유사 패턴)</td></tr>
+      <tr><td>🏦 스테이블코인 예치자산(AUM)</td><td class="num">약 $1,560억</td><td class="num">+22% YoY, 전 세계 스테이블코인 공급량의 절반가량이 이더리움에 위치</td></tr>
+      <tr><td>🏢 실물자산 토큰화(RWA) 점유율</td><td class="num">$34B 중 47% (~$160억)</td><td class="num">토큰화 주식·채권·원자재 시장에서 정산 레이어로서 우위 유지</td></tr>
+      <tr><td>🔒 TVL(예치자산) 점유율</td><td class="num">전체 크립토 TVL의 54%</td><td class="num">알트코인 시총 비중(32%) 대비 압도적 — TVL 쏠림이 구조적 해자로 작용</td></tr>
+      <tr><td>👥 월간 활성 주소</td><td class="num">약 840만 개</td><td class="num">+15% YoY</td></tr>
+      <tr><td>🧑‍💻 스마트컨트랙트 배포</td><td class="num">130만 건 이상</td><td class="num">+74% YoY (스팸 배포 일부 포함 가능성)</td></tr>
+    </table>
+
+    <h3>온체인 밸류 캡처 구조 — 이더리움이 차지하는 비중 (2026년 상반기 기준)</h3>
+    <div class="rev-bar-wrap">
+      <div class="rev-row">
+        <div class="rev-label">전체 크립토 TVL 점유율</div>
+        <div class="rev-track"><div class="rev-fill" style="width:54%; background:#8a92ff;"></div></div>
+        <div class="rev-pct">54%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">글로벌 스테이블코인 공급 점유율</div>
+        <div class="rev-track"><div class="rev-fill" style="width:50%; background:#5fd188;"></div></div>
+        <div class="rev-pct">~50%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">RWA(실물자산 토큰화) 점유율</div>
+        <div class="rev-track"><div class="rev-fill" style="width:47%; background:#e0a800;"></div></div>
+        <div class="rev-pct">47%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">알트코인 시가총액 비중</div>
+        <div class="rev-track"><div class="rev-fill" style="width:32%; background:#9aa2b1;"></div></div>
+        <div class="rev-pct">32%</div>
+      </div>
+    </div>
+
+    <h3>네트워크 매출(수수료) 발생 경로</h3>
+    <div class="callout" style="margin-top:0;">
+      이더리움의 온체인 매출은 ① <b>L1 베이스 수수료</b>, ② <b>우선순위 수수료(팁)</b>, ③ <b>MEV(최대추출가능가치)</b>,
+      ④ <b>L2 정산·블롭 수수료</b> 네 갈래에서 발생합니다. 2026년 상반기에는 트레이딩·DeFi 활동 위축으로 네 흐름 모두
+      동반 감소하며 총매출이 전년 동기 대비 -69.3%(-$287백만) 줄었습니다. 다만 세부 스트림별 정확한 달러 비중은
+      공개 데이터에서 세분화되지 않아 위 그래프처럼 정확히 표시하기 어려우며, 대신 TVL·스테이블코인·RWA 점유율처럼
+      <b>실측 가능한 밸류 캡처 지표</b>로 대체 제시했습니다.
+    </div>
+
+    <div class="callout">
+      → 가격은 8월 급등 후 조정 중이지만, <b>이더리움이 크립토 생태계 가치의 절반 이상(TVL 54%, 스테이블코인 ~50%)을
+      계속 흡수하고 있다는 점</b>은 구조적 해자가 훼손되지 않았음을 시사합니다. 반면 <b>거래 수수료 매출 자체는
+      L2로의 활동 이전과 시장 위축으로 뚜렷이 감소</b>하고 있어, 'ETH가 현금흐름 자산으로서 얼마나 가치를 포착하는가'에
+      대한 논쟁은 당분간 지속될 전망입니다. Apple/Google 앱스토어 대비 밸류에이션 프레임(21Shares) 등 장기 밸류에이션
+      논리는 여전히 유효하나, 단기 주가와는 별개의 시계열로 접근할 필요가 있습니다.
+    </div>
+  </section>
+
+  <!-- 4. 주요일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
         <td>지속</td>
-        <td>스팟 ETH ETF 일별 자금 흐름 — 유입 지속 여부와 블랙록 ETHA 매수 강도가 핵심 변수</td>
+        <td>스팟 ETH ETF 일별 자금 흐름 — 발행사별 쏠림(블랙록 vs 피델리티) 지속 여부가 핵심 변수</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 11일 (금) 밤 9:30</td>
-        <td>미국 8월 CPI(소비자물가지수) 발표 — FOMC 직전 마지막 주요 인플레이션 지표, 위험자산 전반 변동성 요인</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        <td>9월 11일 (금) 오후 9:30</td>
+        <td>미국 8월 CPI(소비자물가지수) 발표 — FOMC 직전 마지막 핵심 인플레이션 지표, 위험자산 전반 변동성 요인</td>
+        <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td>FOMC 금리결정 발표 (현지 9/15~16 회의, SEP·점도표 포함) — 오전 3:30 파월 의장 기자회견</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 18일 (금)</td>
-        <td>9월 월간 옵션만기 — 변동성 확대 구간과 겹침</td>
+        <td>9월 18일 (금) 오후 5:00</td>
+        <td>이더리움 9월 월간 옵션 만기 — 변동성 확대 구간과 겹침</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
-        <td>2026년 3분기 중 (일자 미확정)</td>
-        <td>Glamsterdam 업그레이드(Fusaka 후속, 실행계층 Glasgow + 합의계층 Amsterdam) 메인넷 목표 — 테스트넷 진행 상황에 따라 일정 변동 가능</td>
+        <td>9월 30일 (수) 오후 9:30</td>
+        <td>미국 8월 근원 PCE 물가지수 — 연준이 선호하는 인플레이션 지표</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>2026년 하반기 중 (일자 미확정)</td>
+        <td>Glamsterdam 업그레이드(실행계층 병렬처리 + 100M 가스/블록 목표) — 세폴리아 테스트넷 포크가 9월 하순으로 제안된 상태로, 진행 상황에 따라 메인넷 일정 변동 가능</td>
         <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 오후 11:50 (KST) · 가격 및 ETF 자금 흐름 수치는 2026.09.02 미국 동부시간 기준 최신 보도 반영. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 가격 데이터 기준: 2026.09.05 오후 1:00경(KST) 스냅샷(전일 미 동부시간 종가 및 당일 아시아 세션 반영). ETF 자금 흐름은 SoSoValue 집계(2026.09.01, 2026.09.04) 기준. 네트워크 매출·온체인 지표는 DeFiLlama·Blockworks·TokenTerminal 집계(2026.06.30 기준, 21Shares 리포트 인용) 기준으로, 시점 차이가 있을 수 있습니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 
 </div>
 
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_eth_15m",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:ETHUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#161a21",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+
+  new TradingView.widget({
+    "container_id": "tv_eth_1h",
+    "width": "100%",
+    "height": 460,
+    "symbol": "OKX:ETHUSDT.P",
+    "interval": "60",
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#161a21",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
 </body>
 </html>

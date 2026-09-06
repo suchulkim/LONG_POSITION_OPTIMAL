@@ -70,100 +70,251 @@
   .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
-  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
-  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin:14px 0;}
+  .kpi{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:420px; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+
+  .bar-row{margin-bottom:16px;}
+  .bar-row .bar-label{display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; margin-bottom:6px;}
+  .bar-row .bar-label .name{color:var(--text); font-weight:600;}
+  .bar-row .bar-label .val{color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums;}
+  .bar-track{background:var(--chip-bg); border-radius:7px; height:16px; overflow:hidden; border:1px solid var(--border);}
+  .bar-fill{height:100%; border-radius:7px; background:linear-gradient(90deg, var(--accent), var(--accent)); opacity:0.85;}
+  .bar-note{font-size:12px; color:var(--text-soft); margin-top:4px;}
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.03 (목) · 업데이트</span>
+      <span>2026.09.05 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 8:20 (KST)</span>
+      <span>기준시각 오전 10:00 (KST)</span>
     </div>
     <h1>비트코인 (BTC) 주가 분석 리포트<span class="ticker">Perpetual: BTCUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$77,893.0</div>
-        <div class="chg-down">일간 -0.1% · 주간 -2.2% · 월간 +21.8%</div>
+        <div class="price-main">$79,700</div>
+        <div class="chg-down">일간 -1.3~-2.8%(고용지표 발표 직후 낙폭) · 8월 한달 +22~25%</div>
       </div>
-      <div class="price-sub">8월 랠리(+약 24%) 이후 $76,800~$80,000 박스권에서 숨 고르기. 중동發 유가 급등과 매파적 Fed 발언이 상단을 제한하는 가운데, ETF 자금은 유입에서 유출로 방향이 흔들리는 국면.</div>
+      <div class="price-sub">
+        9/3~9/4 장중 $82,200(4개월래 신고점)까지 터치했으나, 예상을 크게 웃돈 8월 미국 비농업고용(NFP)
+        발표에 9월 금리인상 베팅이 되살아나며 5분 만에 $81,340→$79,661로 급락. 이후 $79,200~80,000 구간에서
+        방향성을 탐색 중이며, 직전 리포트에서 제시했던 피보나치 저항 $82,206을 실제로 터치했다가 되돌림이
+        나온 국면입니다.
       </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · BTCUSDT.P (OKX) · 15분봉 / 1시간봉</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_btc_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1시간봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_btc_1h" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
+  <!-- 1. 원인 -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · BTCUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_btc_daily" style="height:100%; width:100%;"></div>
-      </div>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>8월 고용지표(NFP) 서프라이즈</b></td>
+        <td>9/4 발표된 8월 비농업고용이 +16.2만 명 증가(시장 예상 +5.6만 명 대비 약 3배), 실업률은 4.1%로 유지, 이전월 수치도 +5.5만 명 상향 수정</td>
+        <td>9월 FOMC 금리인상 베팅이 한 주 만에 급등(약 58~59%), 발표 직후 5분 내 BTC $81,340→$79,661 급락, 1시간 롱 청산 약 $2.02억(24시간 누적 $7.69억)</td>
+      </tr>
+      <tr>
+        <td><b>Fed 인사 발언 엇갈림</b></td>
+        <td>9/3 월러 이사가 인플레이션 둔화 확인 시 금리 동결 선호 시사 → 9/3~4 위험자산 랠리 촉발, 그러나 같은 인사가 개선세가 일시적이면 인상 지지 입장도 병기</td>
+        <td>비둘기파 기대감에 $82,200 신고점 터치 후, 바로 다음날 고용지표로 매파 베팅이 되살아나며 변동성 확대</td>
+      </tr>
+      <tr>
+        <td><b>현물 ETF 자금흐름 급변동</b></td>
+        <td>9/1 -$2.365억 순유출(IBIT -$2.012억)→9/2 +$1.012억 순유입(IBIT +$1.155억)→9/3 +$7.31억 순유입(연중 최대급, IBIT +$4.54억, ARKB +$1.38억)</td>
+        <td>기관 수급 방향성이 하루 단위로 급반전, 미국 현물 BTC ETF 합산 순자산은 약 $1,033억(BTC 시가총액 대비 약 6.3%)까지 확대</td>
+      </tr>
+      <tr>
+        <td><b>채굴 환경 완만한 개선</b></td>
+        <td>해시레이트가 9/4 기준 약 1,001 EH/s로 1 ZH/s 근접(8월 말 7일 평균 914~915 EH/s 대비 상승), 채굴 난이도는 연중 저점(124.9T) 대비 소폭 반등한 125.81T</td>
+        <td>연초 이후 이어진 채굴업체 발전기 가동 중단(약 150 EH/s 이탈) 국면에서 일부 회복 신호, 다음 난이도 조정(9/6 오전경 KST 예상)에서 추세 확인 필요</td>
+      </tr>
+      <tr>
+        <td><b>안전자산 동반 매도</b></td>
+        <td>고용지표 발표 직후 금(XAU)도 온스당 $4,473→$4,376으로 급락 — 위험/안전자산 구분 없는 전반적 유동성 긴축 우려</td>
+        <td>BTC-금 동조화 재확인, 다음 트리거는 9/11 CPI로 이동</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 8월 마지막 주~9월 초는 <b>ETF 자금 재유입과 Fed 비둘기파 발언이 겹치며 4개월래 신고점($82,200)</b>을
+      찍었으나, 바로 다음날 <b>고용지표 서프라이즈로 금리인상 베팅이 급반전</b>하며 상승분을 상당 부분
+      반납했습니다. 채굴 지표(해시레이트·난이도)는 완만히 개선되고 있어 공급 측 매도압력은 다소 완화된
+      모습이지만, 매크로(고용→CPI→FOMC) 변수가 가격을 주도하는 국면이 이어지고 있습니다.
     </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · BTCUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_btc_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: $76,800~$80,000 박스권 횡보, 8월 상승분 소화 중. <b>15분봉</b>: 뉴스(중동 리스크·ETF 유출) 헤드라인에 따라 변동성 확대, 방향성은 불분명.</div>
   </section>
 
+  <!-- 2. 향후 전망 -->
   <section>
     <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">핵심 저항</div>
+        <div class="value">$82,206</div>
+        <div class="sub">피보나치 1.0 · 9/3~4 터치 완료, 종가 기준 재돌파 시 유효</div>
+      </div>
+      <div class="kpi">
+        <div class="label">즉시 지지</div>
+        <div class="value">$79,200</div>
+        <div class="sub">9/4 고용지표 발표 후 저점</div>
+      </div>
+      <div class="kpi">
+        <div class="label">200일 EMA</div>
+        <div class="value">$78,085</div>
+        <div class="sub">붕괴 시 하방 가속 우려 구간</div>
+      </div>
+    </div>
+
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
-      <ul class="plain"><li>8월 현물 ETF 순유입 $35.2억 — 2026년 최대 월간 유입, ETF 운용자산 $996억까지 증가</li><li>Strategy(MSTR) 10주 만의 매입 재개 — 4,603 BTC 추가 매수(총 845,050 BTC 보유)</li><li>Fear&Greed 지수 55 · 중립 — 과열 없이 추가 상승 여력 존재</li><li>중동 리스크에도 급락 없이 낙폭 제한적, 저가 매수세 유입</li></ul>
+      <ul class="plain">
+        <li>8월 현물 ETF 순유입 약 $35.2억 — 2026년 최대 월간 유입, 합산 AUM $1,033억(시총 대비 약 6.3%)까지 확대</li>
+        <li>Strategy(MSTR), 약 2개월 만에 매입 재개 — 4,603 BTC 추가 매수(총 845,050 BTC 보유, 유통 공급량의 약 4%)</li>
+        <li>해시레이트 1 ZH/s 근접 회복, 채굴 난이도도 연중 저점에서 소폭 반등 — 공급측 매도압력 완화 신호</li>
+        <li>9/3~4 장중 $82,200 터치로 4개월래 신고점 경신, 상승추세 구조 자체는 아직 유효</li>
+      </ul>
     </div>
+
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain"><li>9월 들어 ETF 자금흐름 유입→유출 반전 — 9/1 -$2.36억 순유출(IBIT가 유출의 85% 차지)</li><li>매파적 Fed — 9월 FOMC 금리인상 가능성 시장 반영 약 67~68%, 미 10년물 금리 4.8%대 상승</li><li>이란 관련 지정학 리스크로 브렌트유 배럴당 $96 상회, 위험자산 회피 우려</li><li>채굴 난이도 7.76% 급락(연중 두 번째 낙폭), 해시레이트 1ZH/s 하회 — 채산성 악화로 채굴업체 매도압력 우려</li></ul>
+      <ul class="plain">
+        <li>예상을 크게 웃돈 8월 고용지표로 9월 FOMC 금리인상 베팅이 약 58~59%까지 급등(2주 전 대비 큰 폭 상승)</li>
+        <li>ETF 자금흐름이 유출→유입을 하루 단위로 반복 — 추세의 지속가능성 아직 불투명</li>
+        <li>발표 직후 1시간 만에 약 $2.02억 롱 포지션 청산 — 레버리지 취약성 노출</li>
+        <li>금 등 전통 안전자산도 동반 급락 — 위험자산 전반의 유동성 긴축 우려가 확산</li>
+      </ul>
     </div>
+
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$82,206 돌파 시 $97,278 목표 (ETF 자금흐름 재유입 전환이 트리거)</div>
-      <div class="scenario base"><b>기본</b>$76,800~$80,000 박스권, 9/4 고용지표·9/17 FOMC 대기하며 관망</div>
-      <div class="scenario bear"><b>약세</b>$76,800 붕괴 시 $73,891, 추가 이탈 시 $70,000 부근까지 조정</div>
+      <div class="scenario bull"><b>강세</b>$82,206 종가 기준 재돌파 시 상단 저항 소멸, $97,278 목표 구간 재부상(ETF 자금 재유입 확인이 트리거)</div>
+      <div class="scenario base"><b>기본</b>$78,000~$82,000 박스권에서 9/11 CPI·9/17 FOMC를 대기하며 등락, 뉴스 헤드라인에 따른 단기 변동성 확대</div>
+      <div class="scenario bear"><b>약세</b>$78,085(200일 EMA) 붕괴 시 $76,800 테스트, 추가 이탈 시 $73,891→$70,000 부근까지 조정 가능</div>
     </div>
   </section>
 
+  <!-- 3. 매출구조 / 온체인 밸류캡처 -->
   <section>
-    <h2>3. 주요 레벨</h2>
-    <table>
-<tr><th>레벨</th><th class="num">가격</th><th>비고</th></tr>
-<tr><td>피보나치 1.0 저항</td><td class="num">$82,206</td><td>돌파 시 $97K 목표</td></tr>
-<tr><td>즉시 지지</td><td class="num">$76,800~77,000</td><td>붕괴 시 $73,891</td></tr>
-<tr><td>주간 바닥</td><td class="num">$69,843~70,302</td><td>50주선 부근</td></tr>
-</table>
-<div class="callout">→ 8월 ETF 대규모 유입·MSTR 매집이 하방을 지지해왔으나, 9월 들어 자금흐름이 흔들리는 만큼 <b>9/4 고용지표·9/11 CPI·9/17 FOMC</b>가 단기 방향성의 핵심 변수입니다.</div>
+    <h2>3. 네트워크 밸류캡처 지표</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin:-4px 0 16px;">
+      비트코인은 일반 기업과 같은 매출구조가 없어, 대신 <b>기관 자금이 네트워크 가치를 얼마나 흡수하고 있는지</b>와
+      <b>채굴 네트워크의 보안·수익 기반</b>을 밸류캡처 지표로 제시합니다.
+    </p>
+
+    <div class="bar-row">
+      <div class="bar-label"><span class="name">현물 ETF AUM / BTC 시가총액</span><span class="val">6.3%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:31.5%;"></div></div>
+      <div class="bar-note">미국 현물 BTC ETF 합산 순자산 약 $1,033억, BTC 시가총액(약 $1.33조) 대비 비중</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span class="name">Strategy(MSTR) 보유량 / 유통 공급량</span><span class="val">4.2%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:21%;"></div></div>
+      <div class="bar-note">보유 845,050 BTC ÷ 유통 공급량 약 1,982만 BTC — 단일 상장기업 기준 최대 보유 주체</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span class="name">해시레이트 (사상 최고 대비)</span><span class="val">78%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:78%;"></div></div>
+      <div class="bar-note">9/4 기준 약 1,001 EH/s, 전고점(약 1.28 ZH/s, 2025년 9월) 대비 수준</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span class="name">채굴 난이도 (2026년 최고치 대비)</span><span class="val">81%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:81%;"></div></div>
+      <div class="bar-note">현재 125.81T, 연중 최고치(155.97T, 2025년 10월 ATH) 대비 약 19% 낮은 수준</div>
+    </div>
+
+    <div class="callout">
+      → <b>기관 자금 캡처(ETF+MSTR)는 시가총액의 약 10% 안팎</b>을 흡수하며 꾸준히 저변을 넓히는 반면,
+      <b>채굴 네트워크는 2026년 내내 반복된 해시레이트 이탈(최대 약 150 EH/s)에서 서서히 회복하는 국면</b>입니다.
+      채굴자 수익원은 블록보상(3.125 BTC/블록) 비중이 여전히 압도적이며 거래수수료 비중은 한 자릿수%대에
+      머물러 있어, 반감기 이후 채굴 수익성은 <b>BTC 가격 자체와 수수료 시장 활성화</b>에 크게 의존하는 구조입니다.
+      최근 해시프라이스는 PH/s당 일 $30대 후반 수준으로 완만한 회복세를 보이고 있습니다.
+    </div>
   </section>
 
+  <!-- 4. 주요 일정 -->
   <section>
     <h2>4. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 4일 (금) 오후 9:30</td><td>8월 비농업고용지표(NFP)</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>9월 10일 (목) 오후 9:30</td><td>8월 PPI(생산자물가지수)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-<tr><td>9월 11일 (금) 오후 9:30</td><td>8월 CPI(소비자물가지수)</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 (9/15~16 회의)</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>9월 25일 (금) 오후 5:00 (추정)</td><td>Deribit 월간 옵션만기</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr>
+        <td>지속</td>
+        <td>현물 BTC ETF 일별 자금흐름 — 유출입 방향 전환 빈도가 잦아 단기 심리 지표로 유효</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 6일 (일) 밤 8:00 (예상)</td>
+        <td>다음 채굴 난이도 조정 — 최근 해시레이트 반등 반영 시 소폭 상승·하락 여부 확인</td>
+        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 11일 (금) 밤 9:30</td>
+        <td>미국 8월 CPI(소비자물가지수) — FOMC 직전 마지막 핵심 인플레이션 지표, 9월 금리인상 베팅 재조정 트리거</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, SEP·점도표 포함) — 3:30 파월 의장 기자회견</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 25일 (금) 오후 5:00 (추정)</td>
+        <td>Deribit 비트코인 월간 옵션 만기 — 만기 규모에 따라 단기 변동성 확대 가능</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 오후 8:20 (KST).
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.05 오전 10:00 (KST) ·
+    가격·ETF 자금흐름·고용지표 수치는 2026.09.04 미국 동부시간 기준 최신 보도 반영, 해시레이트·난이도는 2026.09.04 기준
+    추정치입니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
+
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
   new TradingView.widget({
-    "container_id": "tv_btc_daily",
-    "width": "100%", "height": 460,
+    "container_id": "tv_btc_15m",
+    "width": "100%", "height": 400,
     "symbol": "OKX:BTCUSDT.P",
-    "interval": "D",
+    "interval": "15",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
     "toolbar_bg": "#1a1d24", "enable_publishing": false,
     "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
@@ -171,10 +322,10 @@
     "support_host": "https://www.tradingview.com"
   });
   new TradingView.widget({
-    "container_id": "tv_btc_15m",
-    "width": "100%", "height": 460,
+    "container_id": "tv_btc_1h",
+    "width": "100%", "height": 400,
     "symbol": "OKX:BTCUSDT.P",
-    "interval": "15",
+    "interval": "60",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
     "toolbar_bg": "#1a1d24", "enable_publishing": false,
     "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
